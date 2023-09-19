@@ -1,0 +1,111 @@
+:root {
+    --background-color: #F6F4EB;
+    --navbar-color: #4682A9;
+    --container-color: #91C8E4;
+    --header-color: #003753;
+    --button-color: #749BC2;
+    --button-hover-color: #4980b6;
+    --md-dark-color: #262626;
+    --dark-color: #171717;
+    --light-dark-color: #2d2f30;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.big-container {
+    background-color: var(--container-color);
+    margin: 3.5em 2em;
+    padding: 2em;
+}
+
+.big-container h3 {
+    font-weight: bold;
+    color: var(--header-color);
+    text-align: center;
+}
+
+.librarian-container, .membership-container, .ophours-container, .rules-container, .fines-container {
+    width: 80%;
+    margin: auto auto;
+    padding: 2em;
+    background-color: white;
+    border: none;
+}
+
+.wrap {
+    padding: 2rem 3rem;
+}
+
+.wrap .InputText {
+    background: transparent;
+    text-align: center;
+    height: 2.2rem;
+    width: 100%;
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.wrap .InputText input {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding-bottom: 0;
+    border-bottom: 0.1rem solid #fff;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+}
+
+.wrap .InputText input:focus~label,
+.wrap .InputText input:valid~label {
+    transform: translateY(-1.6rem);
+    transition: all 0.3s ease;
+    color: #fff;
+    outline: none;
+}
+
+.wrap .InputText label {
+    font-size: 1rem;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0;
+    color: #c0d8f6;
+    pointer-events: none;
+}
+
+.login-btn, .signup-btn {
+    padding-top: 1.6rem;
+    text-align: center;
+}
+
+.login, .signup {
+    outline: none;
+    border-radius: 0.1rem;
+    border: none;
+    background-color: #d1d5f2;
+    color: #0f0c30;
+    box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.6rem 6rem;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.login:hover, .signup:hover {
+    background-color: #66659c;
+}
+
+.not-register, .not-register:active, .registered, .registered:active {
+    margin-top: 10px;
+    padding: 0.1rem;
+    font-size: 0.8rem;
+    text-align: center;
+}

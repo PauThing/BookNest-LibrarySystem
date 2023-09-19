@@ -1,0 +1,109 @@
+:root {
+    --background-color: #F6F4EB;
+    --navbar-color: #4682A9;
+    --container-color: #91C8E4;
+    --header-color: #003753;
+    --button-color: #749BC2;
+    --button-hover-color: #4980b6;
+    --md-dark-color: #262626;
+    --dark-color: #171717;
+    --light-dark-color: #2d2f30;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.big-container {
+    background-color: var(--container-color);
+    margin: 3.5em 2em;
+    padding: 2em;
+}
+
+/* Slideshow */
+/* Slideshow container */
+.slideshow-container {
+    width: 45%;
+    position: relative;
+    margin: auto;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 45%;
+    width: auto;
+    padding: 1em;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    transition: 0.6s ease;
+    border-radius: 0 2em 2em 0;
+    user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+    right: 0;
+    border-radius: 2em 0 0 2em;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+    background-color: #53799ebc;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+    cursor: pointer;
+    height: 0.8em;
+    width: 0.8em;
+    margin: 0 0.1em;
+    background-color: #e9eff5;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+    background-color: #53799e;
+}
+
+/* Fading animation */
+.slide-fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {
+        opacity: .4
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* Announcement & Monthly Report */
+.big-container h3 {
+    font-weight: bold;
+    color: var(--header-color);
+    text-align: center;
+}
+
+.announcement-container, .monthr-container {
+    width: 70%;
+    margin: auto auto;
+    padding: 2em;
+    background-color: white;
+    border: none;
+}
+
+.wrap {
+    padding: 2rem 3rem;
+}
