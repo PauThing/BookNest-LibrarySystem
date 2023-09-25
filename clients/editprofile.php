@@ -77,18 +77,18 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                         <br /><br/>
 
                         <div class="InputText">
-                            <label>Full Name</label>
-                            <input type="text" name="fname" id="fname" value="<?php echo $row['fullname']; ?>" disabled>
+                            <label for="fname">Full Name</label>
+                            <input type="text" name="fname" id="fname" value="<?php echo $row['fullname']; ?>">
                         </div>
 
                         <div class="InputText">
-                            <label>Email</label>
-                            <input type="email" name="uEmail" id="uEmail" value="<?php echo $row['email']; ?>" disabled>
+                            <label for="uEmail">Email</label>
+                            <input type="email" name="uEmail" id="uEmail" value="<?php echo $row['email']; ?>">
                         </div>
 
                         <div class="InputText">
-                            <label>User ID</label>
-                            <input type="text" name="uID" id="uID" value="<?php echo $row['user_id']; ?>" disabled>
+                            <label for="uID">User ID</label>
+                            <input type="text" name="uID" id="uID" value="<?php echo $row['user_id']; ?>">
                         </div>
 
                         <br /><br />

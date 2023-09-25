@@ -49,18 +49,18 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                     // Check if there is image data in the row
                     if ($row['profile_img']) {
                         // Get the image data from the row
-                        $imageData = $row['profile_img'];
+                        $imageBinary = $row['profile_img'];
 
                         // Detect the image format
-                        $imageInfo = getimagesizefromstring($imageData);
-                        if ($imageInfo !== false) {
+                        $image = getimagesizefromstring($imageBinary);
+                        if ($image !== false) {
                             // Determine the MIME type based on the detected image format
-                            $mimeType = $imageInfo['mime'];
+                            $mimeType = $image['mime'];
                 ?>
 
                     <div class="wrap">
                         <div class="show-profile-pic">
-                            <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageData); ?>" name="show-profile" id="show-profile" class="show-profile" />
+                            <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageBinary); ?>" name="show-profile" id="show-profile" class="show-profile" />
                         </div>
 
                     <?php
@@ -77,17 +77,17 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                         <br /><br/>
 
                         <div class="InputText">
-                            <label>Full Name</label>
+                            <label for="fname">Full Name</label>
                             <input type="text" name="fname" id="fname" value="<?php echo $row['fullname']; ?>" disabled>
                         </div>
 
                         <div class="InputText">
-                            <label>Email</label>
-                            <input type="email" name="uEmail" id="uEmail" value="<?php echo $row['email']; ?>" disabled>
+                            <label for="uEmail">Email</label>
+                            <input type="email" name="uEmail" id="uEmail" value="<?php echo $row['user_email']; ?>" disabled>
                         </div>
 
                         <div class="InputText">
-                            <label>User ID</label>
+                            <label for="uID">User ID</label>
                             <input type="text" name="uID" id="uID" value="<?php echo $row['user_id']; ?>" disabled>
                         </div>
 

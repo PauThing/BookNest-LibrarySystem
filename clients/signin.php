@@ -20,7 +20,7 @@ include('navbar.php');
 <body>
     <div class="big-container">
         <div class="signin-container">
-            <form class="signin-form" id="signin-form" method="post" action="./backend/signindb.php">
+            <form class="signin-form" id="signin-form" method="post" action="./backend/signindb.php" enctype="multipart/form-data">
                 <div class="header">
                     <h2>SIGN IN</h2>
                 </div>

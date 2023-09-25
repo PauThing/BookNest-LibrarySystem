@@ -1,49 +1,66 @@
 <?php
-session_start();
-include('../connect.php');
-
-if (isset($_POST["User_ID"])) {
-	// Specify the path to the image file you want to convert
-	$imagePath = 'path_to_your_image.jpg'; // Replace with your image file path
-
-	// Read the image file as binary data
-	$imageData = file_get_contents($imagePath);
-
-	if ($imageData === false) {
-		die("Failed to read the image file.");
-	}
-
-	// Encode the binary data as VARBINARY
-	$varbinaryData = '0x' . bin2hex($imageData);
+if (isset($_POST["signup"])) {
+	session_start();
+	include('../connect.php');
 
 	$userid = $_POST['uID'];
 
-	$query = mysqli_query($connected, "SELECT * FROM users WHERE user_id = '$USER_ID' && user_type = 'Admin'");
+	$query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = '$userid'");
 
-	if (mysqli_num_rows($query) == 1) {
-		header("location:RegisterForm.php?st=failure");
-
-		$_SESSION['message'] = "<script>alert('ID already exists!Please use another ID.')</script>";
+	if (sqlsrv_num_rows($query) == 1) {
+		$_SESSION['message'] = "<script>alert('The user ID already exists!')</script>";
+		header("location: ../signup.php");
 	} else {
-		$USER_id		= $_POST['User_ID'];
-		$USER_type		= "Admin";
-		$USERNAME		= $_POST['Username'];
-		$EMAIL			= $_POST['User_email'];
-		$PASSWORD		= $_POST['User_pwd'];
+		$fullname = $_POST['fname'];
+		$email = $_POST['uEmail'];
 
-		$query = "INSERT INTO `users`(`user_id`, `user_type`, `username`, `email`, `password`) VALUES ('$USER_id', '$USER_type', '$USERNAME', '$EMAIL', '$PASSWORD');";
+		//Password Encrypt
+		$password = $_POST['password'];
+		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-		if (mysqli_multi_query($connected, $query)) {
-			header("location:index.php?st=success");
-			$_SESSION['message'] = "<script>alert('Registered successful. You may login now.');</script>";
-			$_SESSION['message'] = "Registered successful. You may login now.";
+		//Student card image
+		$stuimage = $_FILES['file-upload-field']['tmp_name'];
+
+		// Read the image file as binary data
+		$imageBinary = file_get_contents($stuimage);
+
+		if ($imageBinary === false) {
+			die("Failed to read the image file.");
+		}
+
+		// Encode the binary data as VARBINARY
+		$stucimg = '0x' . bin2hex($imageBinary);
+
+		$profileimg	= null;
+		$usertype = "Student";
+		$status = "Pending";
+		
+		//Set time zone
+		date_default_timezone_set('Asia/Kuala_Lumpur');
+		$register = date('Y-m-d H:i:s');
+		$update = date('Y-m-d H:i:s');
+
+		// Insert the data into database
+		$query = "INSERT INTO [user] (user_id, fullname, email, user_password, stu_img, profile_img, usertype, acc_status, registered_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		$statement = sqlsrv_prepare($conn, $query, array(&$userid, &$fullname, &$email, &$hashedPassword, &$stucimg, &$profileimg, &$usertype, &$status, &$register, &$update));
+
+		// Check if the prepared statement executed successfully
+		if ($statement) {
+			if (sqlsrv_execute($statement)) {
+				$_SESSION['message'] = "Successfully registered. Please wait for the approval.";
+				header("location: ../signup.php");
+			} else {
+				$_SESSION['message'] = "<script>alert('Failed to register. Try again.');</script>";
+				header("location: ../signup.php?st=failure");
+			}
 		} else {
-			$_SESSION['message'] = "<script>alert('Login failed. Try again.');</script>";
-			header("location:RegisterForm.php?st=failure");
+			$_SESSION['message'] = "Failed to execute the query.";
+			header("location: ../signup.php?st=failure");
 		}
 	}
 } else {
-	echo "<script>alert('Connect failed. Try again.')</script>";
-	header("location:RegisterForm.php?st=allfailure");
+	echo "<script>alert('Failed to register. Try again.')</script>";
+	header("location: ../signup.php?st=failure");
 }
 ?>

@@ -6,7 +6,7 @@ if (isset($_POST['signin'])) {
     $userid = $_POST['uID'];
     $password = $_POST['password'];
 
-    $query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = '$userid' AND [password] = '$password'");
+    $query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = '$userid' AND [user_password] = '$password'");
 
     // Fetch the result
     $row = sqlsrv_fetch_array($query);

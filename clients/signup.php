@@ -31,7 +31,7 @@ include('navbar.php');
 <body>
     <div class="big-container">
         <div class="signup-container">
-            <form class="signup-form" id="signup-form" action="" enctype="multipart/form-data">
+            <form class="signup-form" id="signup-form" method="post" action="./backend/signupdb.php" enctype="multipart/form-data">
                 <div class="header">
                     <h2>SIGN UP</h2>
                 </div>
@@ -39,31 +39,31 @@ include('navbar.php');
                 <div class="wrap">
                     <div class="InputText">
                         <input type="text" name="fname" id="fname" required>
-                        <label>Full Name</label>
+                        <label for="fname">Full Name</label>
                     </div>
 
                     <div class="InputText">
                         <input type="email" name="uEmail" id="uEmail" required>
-                        <label>Student Email</label>
+                        <label for="uEmail">Student Email</label>
                     </div>
 
                     <div class="InputText">
                         <input type="text" name="uID" id="uID" required>
-                        <label>Student ID</label>
+                        <label for="uID">Student ID</label>
                     </div>
 
                     <div class="InputFile">
-                        <label>Student ID Image</label>
+                        <label for="file-upload-field">Student ID Card</label>
                         <br />
                         <div class="file-upload-wrapper" data-text="Choose File (PNG, JPG, JPEG)">
-                            <input type="file" name="file-upload-field" class="file-upload-field" required onchange="updateDataText(this)">
+                            <input type="file" name="file-upload-field" id="file-upload-field" class="file-upload-field" required onchange="updateDataText(this)">
                         </div>
                     </div>
                     <br /><br />
 
                     <div class="InputText">
                         <input type="password" name="password" id="password" required>
-                        <label>Password</label>
+                        <label for="password">Password</label>
                     </div>
 
                     <div class="signup-btn">
@@ -77,6 +77,16 @@ include('navbar.php');
             </form>
         </div>
     </div>
+
+    <span>
+        <?php
+        if (isset($_SESSION['message'])) {
+            echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+        }
+
+        unset($_SESSION['message']);
+        ?>
+    </span>
 </body>
 
 </html>
