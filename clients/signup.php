@@ -23,7 +23,7 @@ include('navbar.php');
             var fileName = input.value.replace(/.*(\/|\\)/, '');
 
             // Update the data-text attribute of the parent element
-            $(input).closest(".file-upload-wrapper").attr("data-text", fileName);
+            $(input).closest(".file-upload-wrapper").attr("aria-placeholder", fileName);
         }
     </script>
 </head>
@@ -55,14 +55,14 @@ include('navbar.php');
                     <div class="InputFile">
                         <label for="file-upload-field">Student ID Card</label>
                         <br />
-                        <div class="file-upload-wrapper" data-text="Choose File (PNG, JPG, JPEG)">
-                            <input type="file" name="file-upload-field" id="file-upload-field" class="file-upload-field" required onchange="updateDataText(this)">
+                        <div class="file-upload-wrapper" aria-placeholder="Choose File (PNG, JPG, JPEG)">
+                            <input type="file" name="file-upload-field" id="file-upload-field" class="file-upload-field" accept="image/*" required onchange="updateDataText(this)">
                         </div>
                     </div>
                     <br /><br />
 
                     <div class="InputText">
-                        <input type="password" name="password" id="password" required>
+                        <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 8 or more characters" required>
                         <label for="password">Password</label>
                     </div>
 

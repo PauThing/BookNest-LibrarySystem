@@ -1,8 +1,8 @@
 <?php
-if (isset($_POST["signup"])) {
-	session_start();
-	include('../connect.php');
+session_start();
+include('../connect.php');
 
+if (isset($_POST["signup"])) {
 	$userid = $_POST['uID'];
 
 	$query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = '$userid'");
@@ -18,20 +18,26 @@ if (isset($_POST["signup"])) {
 		$password = $_POST['password'];
 		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-		//Student card image
-		$stuimage = $_FILES['file-upload-field']['tmp_name'];
+		//Student ID Card
+		$simgPath = $_FILES['file-upload-field']['tmp_name'];
+		$simgFormat = pathinfo($simgPath, PATHINFO_EXTENSION);
+		//Read the image file as binary data
+		$simgBinary = file_get_contents($simgPath);
 
-		// Read the image file as binary data
-		$imageBinary = file_get_contents($stuimage);
-
-		if ($imageBinary === false) {
+		if ($simgBinary === false) {
 			die("Failed to read the image file.");
 		}
 
-		// Encode the binary data as VARBINARY
-		$stucimg = '0x' . bin2hex($imageBinary);
+		//Profile Image
+		$pimgPath = '../assets/default_profile.jpg';
+		$pimgFormat = pathinfo($pimgPath, PATHINFO_EXTENSION);
+		//Read the image file as binary data
+		$pimgBinary = file_get_contents($pimgPath);
 
-		$profileimg	= null;
+		if ($pimgBinary === false) {
+			die("Failed to read the image file.");
+		}
+		
 		$usertype = "Student";
 		$status = "Pending";
 		
@@ -40,27 +46,22 @@ if (isset($_POST["signup"])) {
 		$register = date('Y-m-d H:i:s');
 		$update = date('Y-m-d H:i:s');
 
-		// Insert the data into database
-		$query = "INSERT INTO [user] (user_id, fullname, email, user_password, stu_img, profile_img, usertype, acc_status, registered_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		//Insert the data into database
+		$query = "INSERT INTO [user] ([user_id], [fullname], [user_email], [user_password], [stu_img], [stuimg_format], [profile_img], [profile_format], [usertype], [acc_status], [registered_at], [updated_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, CONVERT(varbinary(max), ?), ?, ?, ?, ?, ?)";
+		$array = [$userid, $fullname, $email, $hashedPassword, $simgBinary, $simgFormat, $pimgBinary, $pimgFormat, $usertype, $status, $register, $update];
+		$statement = sqlsrv_query($conn, $query, $array);
 
-		$statement = sqlsrv_prepare($conn, $query, array(&$userid, &$fullname, &$email, &$hashedPassword, &$stucimg, &$profileimg, &$usertype, &$status, &$register, &$update));
-
-		// Check if the prepared statement executed successfully
+		//Check if the statement executed successfully
 		if ($statement) {
-			if (sqlsrv_execute($statement)) {
-				$_SESSION['message'] = "Successfully registered. Please wait for the approval.";
-				header("location: ../signup.php");
-			} else {
-				$_SESSION['message'] = "<script>alert('Failed to register. Try again.');</script>";
-				header("location: ../signup.php?st=failure");
-			}
+			$_SESSION['message'] = "Successfully registered. Please wait for the approval.";
+			header("location: ../signup.php");
 		} else {
-			$_SESSION['message'] = "Failed to execute the query.";
-			header("location: ../signup.php?st=failure");
+			$_SESSION['message'] = "Failed to register. Please try again.";
+			header("location: ../signup.php");
 		}
 	}
 } else {
-	echo "<script>alert('Failed to register. Try again.')</script>";
-	header("location: ../signup.php?st=failure");
+	$_SESSION['message'] = "Failed to register. Please make sure every input is correct.";
+	header("location: ../signup.php");
 }
 ?>

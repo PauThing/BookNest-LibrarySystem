@@ -27,7 +27,7 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
 <body>
     <div class="big-container">
         <div class="profile-container">
-            <form class="profile-form" id="profile-form" action="editprofile.php">
+            <form class="profile-form" id="profile-form" method="post" action="editprofile.php">
                 <div class="header">
                     <h2>MY PROFILE</h2>
                 </div>
@@ -74,7 +74,7 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                     }
                     ?>
 
-                        <br /><br/>
+                        <br /><br />
 
                         <div class="InputText">
                             <label for="fname">Full Name</label>

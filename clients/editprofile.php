@@ -22,12 +22,18 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
     <title>My Profile</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var loadImage = function(event) {
+            var image = document.getElementById("new-profile");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
 </head>
 
 <body>
     <div class="big-container">
         <div class="profile-container">
-            <form class="profile-form" id="profile-form" action="">
+            <form class="profile-form" id="profile-form" method="post" action="eprofiledb.php">
                 <div class="header">
                     <h2>EDIT MY PROFILE</h2>
                 </div>
@@ -58,12 +64,17 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                             $mimeType = $imageInfo['mime'];
                 ?>
 
-                    <div class="wrap">
-                        <div class="show-profile-pic">
-                            <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageData); ?>" name="show-profile" id="show-profile" class="show-profile" />
-                        </div>
+                            <div class="wrap">
+                                <div class="profile-pic">
+                                    <label class="word" for="upload-image">
+                                        <span class="glyphicon glyphicon-camera"></span>
+                                        <span>Change Profile</span>
+                                    </label>
+                                    <input type="file" name="upload-image" id="upload-image" class="upload-image" accept="image/*" onchange="loadImage(event)" />
+                                    <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageData); ?>" name="new-profile" id="new-profile" class="new-profile" />
+                                </div>
 
-                    <?php
+                        <?php
                         } else {
                             // the image format could not be detected
                             echo "Unable to detect image format.";
@@ -72,9 +83,9 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                         // there is no image data in the row
                         echo "No image data found.";
                     }
-                    ?>
+                        ?>
 
-                        <br /><br/>
+                        <br /><br />
 
                         <div class="InputText">
                             <label for="fname">Full Name</label>
@@ -83,12 +94,12 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
 
                         <div class="InputText">
                             <label for="uEmail">Email</label>
-                            <input type="email" name="uEmail" id="uEmail" value="<?php echo $row['email']; ?>">
+                            <input type="email" name="uEmail" id="uEmail" value="<?php echo $row['user_email']; ?>">
                         </div>
 
                         <div class="InputText">
                             <label for="uID">User ID</label>
-                            <input type="text" name="uID" id="uID" value="<?php echo $row['user_id']; ?>">
+                            <input type="text" name="uID" id="uID" value="<?php echo $row['user_id']; ?>" disabled>
                         </div>
 
                         <br /><br />
@@ -96,8 +107,8 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                         <div class="editprofile-btn">
                             <input type="submit" name="editprofile" id="editprofile" class="editprofile" value="Edit Profile">
                         </div>
-                    </div>
-                <?php } ?>
+                            </div>
+                        <?php } ?>
             </form>
         </div>
     </div>

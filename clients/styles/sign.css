@@ -88,7 +88,7 @@ body {
     height: 2em;
 
     &:after {
-        content: attr(data-text);
+        content: attr(aria-placeholder);
         position: absolute;
         top: 0;
         left: 0;
