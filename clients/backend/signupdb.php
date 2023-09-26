@@ -20,7 +20,6 @@ if (isset($_POST["signup"])) {
 
 		//Student ID Card
 		$simgPath = $_FILES['file-upload-field']['tmp_name'];
-		$simgFormat = pathinfo($simgPath, PATHINFO_EXTENSION);
 		//Read the image file as binary data
 		$simgBinary = file_get_contents($simgPath);
 
@@ -30,7 +29,6 @@ if (isset($_POST["signup"])) {
 
 		//Profile Image
 		$pimgPath = '../assets/default_profile.jpg';
-		$pimgFormat = pathinfo($pimgPath, PATHINFO_EXTENSION);
 		//Read the image file as binary data
 		$pimgBinary = file_get_contents($pimgPath);
 
@@ -47,8 +45,8 @@ if (isset($_POST["signup"])) {
 		$update = date('Y-m-d H:i:s');
 
 		//Insert the data into database
-		$query = "INSERT INTO [user] ([user_id], [fullname], [user_email], [user_password], [stu_img], [stuimg_format], [profile_img], [profile_format], [usertype], [acc_status], [registered_at], [updated_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, CONVERT(varbinary(max), ?), ?, ?, ?, ?, ?)";
-		$array = [$userid, $fullname, $email, $hashedPassword, $simgBinary, $simgFormat, $pimgBinary, $pimgFormat, $usertype, $status, $register, $update];
+		$query = "INSERT INTO [user] ([user_id], [fullname], [user_email], [user_password], [stu_img], [profile_img], [usertype], [acc_status], [registered_at], [updated_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), CONVERT(varbinary(max), ?), ?, ?, ?, ?)";
+		$array = [$userid, $fullname, $email, $hashedPassword, $simgBinary, $pimgBinary, $usertype, $status, $register, $update];
 		$statement = sqlsrv_query($conn, $query, $array);
 
 		//Check if the statement executed successfully

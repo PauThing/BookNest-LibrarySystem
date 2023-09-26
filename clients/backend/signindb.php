@@ -23,14 +23,12 @@ if (isset($_POST['signin'])) {
                     case 'Student':
                         $_SESSION['userid'] = $row['user_id'];
                         $_SESSION['loggedin'] = true;
-                        $_SESSION['message'] = "Sign in successful!";
                         header('location: ../index.php');
                         break;
 
                     case 'Admin':
                         $_SESSION['userid'] = $row['user_id'];
                         $_SESSION['loggedin'] = true;
-                        $_SESSION['message'] = "Sign in successful!";
                         header('location: ../index.php');
                         break;
                 }

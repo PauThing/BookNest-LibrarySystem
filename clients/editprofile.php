@@ -33,7 +33,7 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
 <body>
     <div class="big-container">
         <div class="profile-container">
-            <form class="profile-form" id="profile-form" method="post" action="eprofiledb.php">
+            <form class="profile-form" id="profile-form" method="post" action="./backend/eprofiledb.php" enctype="multipart/form-data">
                 <div class="header">
                     <h2>EDIT MY PROFILE</h2>
                 </div>
@@ -64,15 +64,15 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                             $mimeType = $imageInfo['mime'];
                 ?>
 
-                            <div class="wrap">
-                                <div class="profile-pic">
-                                    <label class="word" for="upload-image">
-                                        <span class="glyphicon glyphicon-camera"></span>
-                                        <span>Change Profile</span>
-                                    </label>
-                                    <input type="file" name="upload-image" id="upload-image" class="upload-image" accept="image/*" onchange="loadImage(event)" />
-                                    <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageData); ?>" name="new-profile" id="new-profile" class="new-profile" />
-                                </div>
+                    <div class="wrap">
+                        <div class="profile-pic">
+                            <label class="word" for="upload-image">
+                                <span class="glyphicon glyphicon-camera"></span>
+                                <span>Change Profile</span>
+                            </label>
+                            <input type="file" name="upload-image" id="upload-image" class="upload-image" accept="image/*" onchange="loadImage(event)" />
+                            <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageData); ?>" name="new-profile" id="new-profile" class="new-profile" />
+                        </div>
 
                         <?php
                         } else {
@@ -105,10 +105,10 @@ if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
                         <br /><br />
 
                         <div class="editprofile-btn">
-                            <input type="submit" name="editprofile" id="editprofile" class="editprofile" value="Edit Profile">
+                            <input type="submit" name="editprofile" id="editprofile" class="editprofile" value="Save">
                         </div>
-                            </div>
-                        <?php } ?>
+                    </div>
+                <?php } ?>
             </form>
         </div>
     </div>

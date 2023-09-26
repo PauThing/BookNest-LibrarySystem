@@ -3,65 +3,58 @@ session_start();
 include('../connect.php');
 
 if (isset($_POST["editprofile"])) {
-	$userid = $_SESSION['userid'];
+    $userid = $_SESSION['userid'];
 
-	$query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = '$userid'");
+    $fullname = $_POST['fname'];
+    $email = $_POST['uEmail'];
 
-	if (sqlsrv_num_rows($query) == 1) {
-		$_SESSION['message'] = "<script>alert('The user ID already exists!')</script>";
-		header("location: ../signup.php");
-	} else {
-		$fullname = $_POST['fname'];
-		$email = $_POST['uEmail'];
+    //Set time zone
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $register = date('Y-m-d H:i:s');
+    $update = date('Y-m-d H:i:s');
 
-		//Password Encrypt
-		$password = $_POST['password'];
-		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Check if a new image file was provided
+    if ($_FILES['upload-image']['error'] === UPLOAD_ERR_OK) {
+        //Profile Image
+        $pimgPath = $_FILES['upload-image']['tmp_name'];
+        //Read the image file as binary data
+        $pimgBinary = file_get_contents($pimgPath);
 
-		//Student ID Card
-		$simgPath = $_FILES['file-upload-field']['tmp_name'];
-		$simgFormat = pathinfo($simgPath, PATHINFO_EXTENSION);
-		//Read the image file as binary data
-		$simgBinary = file_get_contents($simgPath);
+        if ($pimgBinary === false) {
+            die("Failed to read the image file.");
+        }
 
-		if ($simgBinary === false) {
-			die("Failed to read the image file.");
-		}
+        //Update the data in database
+        $query = "UPDATE [user] SET [fullname] = ?, [user_email] = ?, [profile_img] = CONVERT(varbinary(max), ?), [registered_at] = ?, [updated_at] = ? WHERE [user_id] = '$userid'";
+        $array = [$fullname, $email, $pimgBinary, $register, $update];
+        $statement = sqlsrv_query($conn, $query, $array);
 
-		//Profile Image
-		$pimgPath = '../assets/default_profile.jpg';
-		$pimgFormat = pathinfo($pimgPath, PATHINFO_EXTENSION);
-		//Read the image file as binary data
-		$pimgBinary = file_get_contents($pimgPath);
+        //Check if the statement executed successfully
+        if ($statement) {
+            $_SESSION['message'] = "Successfully updated the profile picture and details.";
+            header("location: ../myprofile.php");
+        } else {
+            die(print_r(sqlsrv_errors(), true));
+            //$_SESSION['message'] = "Failed to update the details. Please try again.";
+            header("location: ../editprofile.php");
+        }
+    } else {
+        //Update the data in database
+        $query2 = "UPDATE [user] SET [fullname] = ?, [user_email] = ?, [registered_at] = ?, [updated_at] = ? WHERE [user_id] = '$userid'";
+        $array2 = [$fullname, $email, $register, $update];
+        $statement2 = sqlsrv_query($conn, $query2, $array2);
 
-		if ($pimgBinary === false) {
-			die("Failed to read the image file.");
-		}
-		
-		$usertype = "Student";
-		$status = "Pending";
-		
-		//Set time zone
-		date_default_timezone_set('Asia/Kuala_Lumpur');
-		$register = date('Y-m-d H:i:s');
-		$update = date('Y-m-d H:i:s');
-
-		//Insert the data into database
-		$query = "INSERT INTO [user] ([user_id], [fullname], [user_email], [user_password], [stu_img], [stuimg_format], [profile_img], [profile_format], [usertype], [acc_status], [registered_at], [updated_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, CONVERT(varbinary(max), ?), ?, ?, ?, ?, ?)";
-		$array = [$userid, $fullname, $email, $hashedPassword, $simgBinary, $simgFormat, $pimgBinary, $pimgFormat, $usertype, $status, $register, $update];
-		$statement = sqlsrv_query($conn, $query, $array);
-
-		//Check if the statement executed successfully
-		if ($statement) {
-			$_SESSION['message'] = "Successfully registered. Please wait for the approval.";
-			header("location: ../signup.php");
-		} else {
-			$_SESSION['message'] = "Failed to register. Please try again.";
-			header("location: ../signup.php");
-		}
-	}
+        if ($statement2) {
+            $_SESSION['message'] = "Successfully updated the details.";
+            header("location: ../myprofile.php");
+        } else {
+            die(print_r(sqlsrv_errors(), true));
+            //$_SESSION['message'] = "Failed to update the details. Please try again.";
+            header("location: ../editprofile.php");
+        }
+    }
 } else {
-	$_SESSION['message'] = "Failed to register. Please make sure every input is correct.";
-	header("location: ../signup.php");
+	$_SESSION['message'] = "Failed to update the details. Please make sure every input is correct.";
+	header("location: ../editprofile.php");
 }
 ?>
