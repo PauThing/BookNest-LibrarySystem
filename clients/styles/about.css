@@ -29,16 +29,67 @@ body {
 .librarian-container, .membership-container, .ophours-container, .rules-container, .fines-container {
     width: 80%;
     margin: auto auto;
-    padding: 2em;
+    padding: 1.5em;
     background-color: white;
     border: none;
+}
+
+/* edit image */
+.librarian-container .library-pic {
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s ease;
+    position: relative;
+    margin: auto;
+    width: 50em;
+    height: 30em;
+
+    .upload-image {
+        display: none;
+    }
+
+    .new-library {
+        position: absolute;
+        object-fit: cover;
+        width: 45em;
+        height: 25em;
+        box-shadow: 0 0 1em 0 rgba(255, 255, 255, .35);
+        z-index: 0;
+    }
+
+    .word {
+        cursor: pointer;
+        width: 45em;
+        height: 25em;
+    }
+
+    &:hover {
+        .word {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(74, 81, 88, 0.8);
+            z-index: 10000;
+            color: var(--fontColor);
+            transition: background-color .2s ease-in-out;
+            margin-bottom: 0;
+        }
+    }
+
+    span {
+        display: inline-flex;
+        padding: .2em;
+        height: 2em;
+    }
 }
 
 .wrap {
     padding: 2rem 3rem;
 }
 
-.wrap .InputText {
+.wrap .edit-librarian-text {
     background: transparent;
     text-align: center;
     height: 2.2rem;
@@ -47,51 +98,35 @@ body {
     margin-bottom: 3rem;
 }
 
-.wrap .InputText input {
+.wrap .edit-librarian-text textarea {
     height: 100%;
     width: 100%;
     background: transparent;
     border: none;
     padding-bottom: 0;
-    border-bottom: 0.1rem solid #fff;
-    color: #fff;
+    border-bottom: 0.1rem solid #6d6e6f;
     font-size: 1rem;
     outline: none;
+    resize: none;
 }
 
-.wrap .InputText input:focus~label,
-.wrap .InputText input:valid~label {
-    transform: translateY(-1.6rem);
-    transition: all 0.3s ease;
-    color: #fff;
-    outline: none;
-}
-
-.wrap .InputText label {
-    font-size: 1rem;
-    position: absolute;
-    bottom: 0.5rem;
-    left: 0;
-    color: #c0d8f6;
-    pointer-events: none;
-}
-
-.login-btn, .signup-btn {
+/* Button */
+.editlibrary-btn, .clearlibrary-btn {
     padding-top: 1.6rem;
     text-align: center;
 }
 
-.login, .signup {
+.editlibrary {
     outline: none;
     border-radius: 0.1rem;
     border: none;
-    background-color: #d1d5f2;
+    background-color: var(--button-color);
     color: #0f0c30;
     box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.2);
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    padding: 0.6rem 6rem;
+    padding: 0.6rem 2rem;
     text-align: center;
     text-transform: uppercase;
     -webkit-transition: all 0.2s;
@@ -99,13 +134,24 @@ body {
     transition: all 0.2s;
 }
 
-.login:hover, .signup:hover {
-    background-color: #66659c;
+.clearlibrary {
+    outline: none;
+    border-radius: 0.1rem;
+    border: none;
+    background-color: var(--button-color);
+    color: #0f0c30;
+    box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
 }
 
-.not-register, .not-register:active, .registered, .registered:active {
-    margin-top: 10px;
-    padding: 0.1rem;
-    font-size: 0.8rem;
-    text-align: center;
+.editlibrary:hover, .clearlibrary:hover {
+    background-color: var(--button-hover-color);
 }

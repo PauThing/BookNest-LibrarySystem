@@ -1,3 +1,7 @@
+<?php
+include('navbar.php');
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -12,9 +16,7 @@
 
     <title>About Library</title>
 
-    <?php
-    include "./navBar.php";
-    ?>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -22,19 +24,71 @@
         <div class="header">
             <h3>About Library</h3>
         </div>
-        <div class="librarian-container">
-            <form class="librarian-form" id="librarian-form" action="">
-                <div class="wrap">
-                    <div class="header">
-                        <h4>The Librarians</h4>
 
-                        <br />
+        <?php
+        // SQL Query to retrieve data from a table
+        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
 
-                        
+        // Execute the SQL query
+        $query = sqlsrv_query($conn, $sql);
+
+        // Check if the query was successful
+        if ($query === false) {
+            die("Query failed: " . print_r(sqlsrv_errors(), true));
+        }
+
+        // Fetch and display data from the result set
+        while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+        ?>
+
+            <div class="librarian-container">
+                <form class="librarian-form" id="librarian-form" action="">
+                    <div class="wrap">
+                        <div class="header">
+                            <h4>The Librarians</h4>
+
+                            <br />
+
+                            <div class="librarian-details">
+                                <?php
+                                if ($row['info_img'] == null) {
+                                    echo '<div class="show-librarian-text">' . $row['info_text'] . '</div>';
+                                } elseif ($row['info_text'] == null) {
+                                    // Get the image data from the row
+                                    $imageBinary = $row['info_img'];
+
+                                    // Detect the image format
+                                    $image = getimagesizefromstring($imageBinary);
+                                    if ($image !== false) {
+                                        // Determine the MIME type based on the detected image format
+                                        $mimeType = $image['mime'];
+                                        echo '<div class="show-librarian-pic">
+                                                <img src="data:' . $mimeType . ';base64,' . base64_encode($imageBinary) . '" name="show-librarian" id="show-librarian" class="show-librarian" />
+                                            </div>';
+                                    }
+                                } elseif ($row['info_text'] != null && $row['info_img'] != null) {
+                                    // Get the image data from the row
+                                    $imageBinary = $row['info_img'];
+
+                                    // Detect the image format
+                                    $image = getimagesizefromstring($imageBinary);
+                                    if ($image !== false) {
+                                        // Determine the MIME type based on the detected image format
+                                        $mimeType = $image['mime'];
+                                        echo '<div class="show-librarian-pic">
+                                                    <img src="data:' . $mimeType . ';base64,' . base64_encode($imageBinary) . '" name="show-librarian" id="show-librarian" class="show-librarian" />
+                                            </div> <br />';
+                                    }
+                                    echo '<div class="show-librarian-text">' . $row['info_text'] . '</div>';
+                                }
+                                ?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+
+        <?php } ?>
 
         <br /><br />
 
@@ -60,6 +114,16 @@
             </form>
         </div>
     </div>
+
+    <span>
+        <?php
+        if (isset($_SESSION['message'])) {
+            echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+        }
+
+        unset($_SESSION['message']);
+        ?>
+    </span>
 </body>
 
 </html>

@@ -1,3 +1,7 @@
+<?php
+include "./navBar.php";
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -12,9 +16,7 @@
 
     <title>Fines and Penalty</title>
 
-    <?php
-    include "./navBar.php";
-    ?>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -32,6 +34,16 @@
             </form>
         </div>
     </div>
+
+    <span>
+        <?php
+        if (isset($_SESSION['message'])) {
+            echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+        }
+
+        unset($_SESSION['message']);
+        ?>
+    </span>
 </body>
 
 </html>

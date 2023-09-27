@@ -78,8 +78,8 @@ body {
 
     .word {
         cursor: pointer;
-        height: 10em;
         width: 10em;
+        height: 10em;
     }
 
     &:hover {
