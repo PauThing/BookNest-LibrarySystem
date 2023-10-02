@@ -28,10 +28,14 @@ body {
 
 .librarian-container, .membership-container, .ophours-container, .rules-container, .fines-container {
     width: 80%;
-    margin: auto auto;
+    margin: 0 auto;
     padding: 1.5em;
     background-color: white;
     border: none;
+}
+
+.tox-promotion {
+    display: none;
 }
 
 .wrap {
@@ -92,7 +96,6 @@ body {
     border: none;
     background-color: var(--button-color);
     color: #0f0c30;
-    box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.2);
     text-align: center;
     font-size: 0.8rem;
     font-weight: bold;
@@ -104,6 +107,6 @@ body {
     transition: all 0.2s;
 }
 
-.editlibrary:hover, .clearlibrary:hover {
-    background-color: var(--button-hover-color);
+.editlibrarian:hover, .editmember:hover, .editophour:hover, .editrules:hover, .editfines:hover {
+    box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }

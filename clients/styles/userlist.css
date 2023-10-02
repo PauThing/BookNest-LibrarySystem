@@ -1,0 +1,74 @@
+:root {
+    --background-color: #F6F4EB;
+    --navbar-color: #4682A9;
+    --container-color: #91C8E4;
+    --header-color: #003753;
+    --button-color: #749BC2;
+    --button-hover-color: #4980b6;
+    --md-dark-color: #262626;
+    --dark-color: #171717;
+    --light-dark-color: #2d2f30;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.big-container {
+    background-color: var(--container-color);
+    margin: 3.5em 2em;
+    padding: 2em;
+}
+
+.big-container h3 {
+    font-weight: bold;
+    color: var(--header-color);
+    text-align: center;
+}
+
+/* table list */
+.adminlist-container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 1.5em;
+    border: none;
+}
+
+.adminlist-container table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-radius: 0.5em;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
+.number, .action {
+    width: 8em;
+    text-align: center;
+}
+
+.action:hover {
+    color: var(--button-hover-color);
+}
+
+th, td {
+    padding: 0.8em;
+}
+
+.adminlist-container table thead th {
+    text-align: center;
+    background-color: var(--header-color);
+    color: white;
+}
+
+.adminlist-container table tbody tr:hover {
+    background-color: #f2f5f7;
+}
+
+.adminlist-container table tbody td {
+    position: relative;
+    color: var(--md-dark-color);
+}

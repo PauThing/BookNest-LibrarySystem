@@ -156,7 +156,6 @@ body {
     border: none;
     background-color: var(--button-color);
     color: #0f0c30;
-    box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.2);
     text-align: center;
     font-size: 0.9rem;
     font-weight: bold;
@@ -169,7 +168,7 @@ body {
 }
 
 .signin:hover, .signup:hover {
-    background-color: var(--button-hover-color);
+    box-shadow: inset -9em 0 0 0 var(--button-hover-color), inset 9em 0 0 0 var(--button-hover-color);
 }
 
 .not-register, .not-register:active, .registered, .registered:active {

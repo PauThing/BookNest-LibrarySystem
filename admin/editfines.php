@@ -1,4 +1,8 @@
 <?php
+// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+ini_set('session.gc_maxlifetime', 4 * 60 * 60);
+session_start();
+
 include('../clients/navbar.php');
 ?>
 

@@ -1,8 +1,5 @@
 <?php
-// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
-ini_set('session.gc_maxlifetime', 4 * 60 * 60);
-session_start();
-include('connect.php');
+include('../clients/connect.php');
 ?>
 
 <!DOCTYPE html>
@@ -48,9 +45,9 @@ include('connect.php');
                 <div class="dropdown">
                     <button class="dropbtn">USING THE LIBRARY</button>
                     <div class="dropdown-content">
-                        <a href="aboutlibrary.php">About Library</a>
-                        <a href="aboutrules.php">Rules & Regulation</a>
-                        <a href="aboutfines.php">Fines & Penalty</a>
+                        <a href="../clients/aboutlibrary.php">About Library</a>
+                        <a href="../clients/aboutrules.php">Rules & Regulation</a>
+                        <a href="../clients/aboutfines.php">Fines & Penalty</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -78,7 +75,7 @@ include('connect.php');
                 <div class="dropdown">
                     <button class="dropbtn">MY ACCOUNT</button>
                     <div class="dropdown-content">
-                        <a href="myprofile.php">My Profile</a>
+                        <a href="../clients/myprofile.php">My Profile</a>
                         <a href="#">My Favorites</a>
                         <a href="#">On Loan Books</a>
                         <a href="#">Reservations</a>
@@ -108,9 +105,9 @@ include('connect.php');
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
                                 <div class="dropdown-content">
-                                    <a href="aboutlibrary.php">About Library</a>
-                                    <a href="aboutrules.php">Rules & Regulation</a>
-                                    <a href="aboutfines.php">Fines & Penalty</a>
+                                    <a href="../clients/aboutlibrary.php">About Library</a>
+                                    <a href="../clients/aboutrules.php">Rules & Regulation</a>
+                                    <a href="../clients/aboutfines.php">Fines & Penalty</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -138,7 +135,7 @@ include('connect.php');
                             <div class="dropdown">
                                 <button class="dropbtn">MY ACCOUNT</button>
                                 <div class="dropdown-content">
-                                    <a href="myprofile.php">My Profile</a>
+                                    <a href="../clients/myprofile.php">My Profile</a>
                                     <a href="#">My Favorites</a>
                                     <a href="#">On Loan Books</a>
                                     <a href="#">Reservations</a>
@@ -179,8 +176,8 @@ include('connect.php');
                                 <button class="dropbtn">ACCOUNT</button>
                                 <div class="dropdown-content">
                                     <a href="../clients/myprofile.php">My Profile</a>
-                                    <a href="#">Administrator List</a>
-                                    <a href="#">User List</a>
+                                    <a href="../admin/adminlist.php">Administrator List</a>
+                                    <a href="../admin/userlist.php">User List</a>
                                 </div>
                             </div>
                         </div>
