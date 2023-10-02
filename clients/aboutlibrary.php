@@ -25,9 +25,75 @@ include('navbar.php');
             <h3>About Library</h3>
         </div>
 
+        <div class="container-row">
+            <?php
+            // SQL Query to retrieve data from a table
+            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+
+            // Execute the SQL query
+            $query = sqlsrv_query($conn, $sql);
+
+            // Check if the query was successful
+            if ($query === false) {
+                die("Query failed: " . print_r(sqlsrv_errors(), true));
+            }
+
+            // Fetch and display data from the result set
+            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            ?>
+
+                <div class="librarian-container">
+                    <form class="librarian-form" id="librarian-form">
+                        <div class="wrap">
+                            <div class="header">
+                                <h4>The Librarians</h4>
+                            </div>
+
+                            <div class="show-librarian-text" contenteditable="false">
+                                <?php echo html_entity_decode($row['info_text']); ?>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            <?php }
+
+            // SQL Query to retrieve data from a table
+            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'openinghour'";
+
+            // Execute the SQL query
+            $query = sqlsrv_query($conn, $sql);
+
+            // Check if the query was successful
+            if ($query === false) {
+                die("Query failed: " . print_r(sqlsrv_errors(), true));
+            }
+
+            // Fetch and display data from the result set
+            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            ?>
+
+                <br /><br />
+
+                <div class="ophours-container">
+                    <form class="ophours-form" id="ophours-form">
+                        <div class="wrap">
+                            <div class="header">
+                                <h4>Opening Hours</h4>
+                            </div>
+
+                            <div class="show-ophour-text">
+                                <?php echo html_entity_decode($row['info_text']); ?>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            <?php } ?>
+        </div>
+
         <?php
         // SQL Query to retrieve data from a table
-        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'membership'";
 
         // Execute the SQL query
         $query = sqlsrv_query($conn, $sql);
@@ -41,78 +107,23 @@ include('navbar.php');
         while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
         ?>
 
-            <div class="librarian-container">
-                <form class="librarian-form" id="librarian-form" action="">
+            <br /><br />
+
+            <div class="membership-container">
+                <form class="member-form" id="member-form">
                     <div class="wrap">
                         <div class="header">
-                            <h4>The Librarians</h4>
+                            <h4>Membership</h4>
+                        </div>
 
-                            <br />
-
-                            <div class="librarian-details">
-                                <?php
-                                if ($row['info_img'] == null) {
-                                    echo '<div class="show-librarian-text">' . $row['info_text'] . '</div>';
-                                } elseif ($row['info_text'] == null) {
-                                    // Get the image data from the row
-                                    $imageBinary = $row['info_img'];
-
-                                    // Detect the image format
-                                    $image = getimagesizefromstring($imageBinary);
-                                    if ($image !== false) {
-                                        // Determine the MIME type based on the detected image format
-                                        $mimeType = $image['mime'];
-                                        echo '<div class="show-librarian-pic">
-                                                <img src="data:' . $mimeType . ';base64,' . base64_encode($imageBinary) . '" name="show-librarian" id="show-librarian" class="show-librarian" />
-                                            </div>';
-                                    }
-                                } elseif ($row['info_text'] != null && $row['info_img'] != null) {
-                                    // Get the image data from the row
-                                    $imageBinary = $row['info_img'];
-
-                                    // Detect the image format
-                                    $image = getimagesizefromstring($imageBinary);
-                                    if ($image !== false) {
-                                        // Determine the MIME type based on the detected image format
-                                        $mimeType = $image['mime'];
-                                        echo '<div class="show-librarian-pic">
-                                                    <img src="data:' . $mimeType . ';base64,' . base64_encode($imageBinary) . '" name="show-librarian" id="show-librarian" class="show-librarian" />
-                                            </div> <br />';
-                                    }
-                                    echo '<div class="show-librarian-text">' . $row['info_text'] . '</div>';
-                                }
-                                ?>
-                            </div>
+                        <div class="show-member-text">
+                            <?php echo html_entity_decode($row['info_text']); ?>
                         </div>
                     </div>
                 </form>
             </div>
 
         <?php } ?>
-
-        <br /><br />
-
-        <div class="membership-container">
-            <form class="member-form" id="member-form" action="">
-                <div class="wrap">
-                    <div class="header">
-                        <h4>Membership</h4>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <br /><br />
-
-        <div class="ophours-container">
-            <form class="ophours-form" id="ophours-form" action="">
-                <div class="wrap">
-                    <div class="header">
-                        <h4>Opening Hours</h4>
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
 
     <span>

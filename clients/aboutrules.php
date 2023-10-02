@@ -1,5 +1,5 @@
 <?php
-include "./navBar.php";
+include('../clients/navbar.php');
 ?>
 
 <!DOCTYPE html>
@@ -21,18 +21,35 @@ include "./navBar.php";
 
 <body>
     <div class="big-container">
-        <div class="header">
-            <h3>Rules and Regulation</h3>
-        </div>
-        <div class="rules-container">
-            <form class="rules-form" id="rules-form" action="">
-                <div class="wrap">
-                    <div class="header">
-                        
+        <?php
+        // SQL Query to retrieve data from a table
+        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'rules'";
+
+        // Execute the SQL query
+        $query = sqlsrv_query($conn, $sql);
+
+        // Check if the query was successful
+        if ($query === false) {
+            die("Query failed: " . print_r(sqlsrv_errors(), true));
+        }
+
+        // Fetch and display data from the result set
+        while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+        ?>
+            <div class="rules-container">
+                <form class="rules-form" id="rules-form">
+                    <div class="wrap">
+                        <div class="header">
+                            <h4>Rules & Regulation</h4>
+                        </div>
+
+                        <div class="show-rules-text">
+                            <?php echo html_entity_decode($row['info_text']); ?>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        <?php } ?>
     </div>
 
     <span>

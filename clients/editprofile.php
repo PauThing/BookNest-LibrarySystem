@@ -1,5 +1,5 @@
 <?php
-include('navbar.php');
+include('../clients/navbar.php');
 
 if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
     header('location: signin.php');

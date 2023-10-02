@@ -34,89 +34,59 @@ body {
     border: none;
 }
 
-/* edit image */
-.librarian-container .library-pic {
-    color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all .3s ease;
-    position: relative;
-    margin: auto;
-    width: 50em;
-    height: 30em;
-
-    .upload-image {
-        display: none;
-    }
-
-    .new-library {
-        position: absolute;
-        object-fit: cover;
-        width: 45em;
-        height: 25em;
-        box-shadow: 0 0 1em 0 rgba(255, 255, 255, .35);
-        z-index: 0;
-    }
-
-    .word {
-        cursor: pointer;
-        width: 45em;
-        height: 25em;
-    }
-
-    &:hover {
-        .word {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(74, 81, 88, 0.8);
-            z-index: 10000;
-            color: var(--fontColor);
-            transition: background-color .2s ease-in-out;
-            margin-bottom: 0;
-        }
-    }
-
-    span {
-        display: inline-flex;
-        padding: .2em;
-        height: 2em;
-    }
-}
-
 .wrap {
-    padding: 2rem 3rem;
+    padding: 1rem 2rem;
 }
 
-.wrap .edit-librarian-text {
+.wrap .header {
+    text-align: center;
+    color: #0c426b;
+    background-color: #c4dde9;
+    padding: 0.1em 0;
+    border-top-right-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+}
+
+.container-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-row .librarian-container {
+    margin-right: 1em;
+}
+
+/* edit content */
+.wrap .edit-librarian-text, .edit-member-text, .edit-ophour-text, .edit-rules-text, .edit-fines-text {
+    width: 100%;
     background: transparent;
     text-align: center;
-    height: 2.2rem;
-    width: 100%;
-    position: relative;
-    margin-bottom: 3rem;
 }
 
-.wrap .edit-librarian-text textarea {
+.wrap .edit-librarian-text textarea, .edit-member-text textarea, .edit-ophour-text textarea, .edit-rules-text textarea, .edit-fines-text textarea {
+    width: 100%;
+}
+
+/* show content */
+.wrap .show-librarian-text, .show-member-text, .show-ophour-text, .show-rules-text, .show-fines-text {
     height: 100%;
     width: 100%;
-    background: transparent;
+    background-color: #eaf2f8;
+    box-sizing: border-box;
     border: none;
-    padding-bottom: 0;
-    border-bottom: 0.1rem solid #6d6e6f;
-    font-size: 1rem;
-    outline: none;
-    resize: none;
+    border-bottom-right-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    padding: 1em 2em;
+    font-size: 0.9em;
 }
 
 /* Button */
-.editlibrary-btn, .clearlibrary-btn {
+.editlibrarian-btn, .editmember-btn, .editophour-btn, .editrules-btn, .editfines-btn {
     padding-top: 1.6rem;
     text-align: center;
 }
 
-.editlibrary {
+.editlibrarian, .editmember, .editophour, .editrules, .editfines {
     outline: none;
     border-radius: 0.1rem;
     border: none;
@@ -127,24 +97,6 @@ body {
     font-size: 0.8rem;
     font-weight: bold;
     padding: 0.6rem 2rem;
-    text-align: center;
-    text-transform: uppercase;
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    transition: all 0.2s;
-}
-
-.clearlibrary {
-    outline: none;
-    border-radius: 0.1rem;
-    border: none;
-    background-color: var(--button-color);
-    color: #0f0c30;
-    box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.2);
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 0.6rem 1rem;
     text-align: center;
     text-transform: uppercase;
     -webkit-transition: all 0.2s;

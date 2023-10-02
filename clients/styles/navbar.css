@@ -84,6 +84,7 @@ a {
   
   .navbar a:hover, .dropdown:hover .dropbtn {
     background-color: var(--header-color);
+    transition: background-color .2s ease-in-out;
   }
   
   .dropdown-content {
@@ -109,6 +110,8 @@ a {
 
   .dropdown:hover .dropdown-content {
     display: block;
+    animation-name: fade;
+    animation-duration: 1.5s;
   }
 
   /* Third Level Dropdown*/

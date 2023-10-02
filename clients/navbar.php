@@ -13,6 +13,7 @@ include('connect.php');
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
+    <link rel="icon" href="../clients/assets/BookNest.ico" type="image/x-icon">
     <link rel="icon" href="./assets/BookNest_Logo.png" type="image/png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -154,8 +155,10 @@ include('connect.php');
 
                     <nav>
                         <div class="navbar">
-                            <a href="../clients/index.php">HOME</a>
-                            <a href="catalog.php">BOOK CATALOG</a>
+                            <a href="../admin/index.php">HOME</a>
+                            <a href="../admin/catalog.php">BOOK CATALOG</a>
+                            <a href="../admin/bookreturn.php">BOOK RETURN</a>
+                            <a href="../admin/discussionroom.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
                                 <div class="dropdown-content">
@@ -173,7 +176,7 @@ include('connect.php');
                                 </div>
                             </div>
                             <div class="dropdown">
-                                <button class="dropbtn">MY ACCOUNT</button>
+                                <button class="dropbtn">ACCOUNT</button>
                                 <div class="dropdown-content">
                                     <a href="../clients/myprofile.php">My Profile</a>
                                     <a href="#">Administrator List</a>

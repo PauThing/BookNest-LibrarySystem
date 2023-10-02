@@ -17,12 +17,23 @@ include('../clients/navbar.php');
 
     <title>About Library</title>
 
+    <script src="tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        var loadImage = function(event) {
-            var image = document.getElementById("new-library");
-            image.src = URL.createObjectURL(event.target.files[0]);
-        };
+        tinymce.init({
+            selector: '#librarian-info',
+            plugins: 'searchreplace autoresize image table lists',
+        });
+
+        tinymce.init({
+            selector: '#member-info',
+            plugins: 'searchreplace autoresize image table lists',
+        });
+
+        tinymce.init({
+            selector: '#ophour-info',
+            plugins: 'searchreplace autoresize image table lists',
+        });
     </script>
 </head>
 
@@ -32,9 +43,84 @@ include('../clients/navbar.php');
             <h3>About Library</h3>
         </div>
 
+        <div class="container-row">
+            <?php
+            // SQL Query to retrieve data from a table
+            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+
+            // Execute the SQL query
+            $query = sqlsrv_query($conn, $sql);
+
+            // Check if the query was successful
+            if ($query === false) {
+                die("Query failed: " . print_r(sqlsrv_errors(), true));
+            }
+
+            // Fetch and display data from the result set
+            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            ?>
+
+                <div class="librarian-container">
+                    <form class="librarian-form" id="librarian-form" method="post" action="./backend/elibrarydb.php">
+                        <div class="wrap">
+                            <div class="header">
+                                <h4>The Librarians</h4>
+                            </div>
+
+                            <div class="edit-librarian-text">
+                                <textarea name="librarian-info" id="librarian-info"><?php echo $row['info_text']; ?></textarea>
+                            </div>
+
+                            <div class="editlibrarian-btn">
+                                <input type="submit" name="editlibrarian" id="editlibrarian" class="editlibrarian" value="Save" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            <?php }
+
+            // SQL Query to retrieve data from a table
+            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'openinghour'";
+
+            // Execute the SQL query
+            $query = sqlsrv_query($conn, $sql);
+
+            // Check if the query was successful
+            if ($query === false) {
+                die("Query failed: " . print_r(sqlsrv_errors(), true));
+            }
+
+            // Fetch and display data from the result set
+            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            ?>
+
+                <br /><br />
+
+                <div class="ophours-container">
+                    <form class="ophours-form" id="ophours-form" method="post" action="./backend/eophourdb.php">
+                        <div class="wrap">
+                            <div class="header">
+                                <h4>Library Opening Hours</h4>
+                            </div>
+
+                            <div class="edit-ophour-text">
+                                <textarea name="ophour-info" id="ophour-info"><?php echo $row['info_text']; ?></textarea>
+                            </div>
+
+                            <div class="editophour-btn">
+                                <input type="submit" name="editophour" id="editophour" class="editophour" value="Save" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            <?php } ?>
+        </div>
+
         <?php
+
         // SQL Query to retrieve data from a table
-        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'membership'";
 
         // Execute the SQL query
         $query = sqlsrv_query($conn, $sql);
@@ -48,112 +134,26 @@ include('../clients/navbar.php');
         while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
         ?>
 
-            <div class="librarian-container">
-                <form class="librarian-form" id="librarian-form" method="post" action="./backend/elibrarydb.php">
+            <br /><br />
+
+            <div class="membership-container">
+                <form class="member-form" id="member-form" method="post" action="./backend/ememberdb.php">
                     <div class="wrap">
                         <div class="header">
-                            <h4>The Librarians</h4>
+                            <h4>Membership</h4>
                         </div>
 
-                        <div class="librarian-details">
+                        <div class="edit-member-text">
+                            <textarea name="member-info" id="member-info"><?php echo $row['info_text']; ?></textarea>
+                        </div>
 
-                            <?php
-                            if ($row['info_img'] == null) {
-                            ?>
-
-                                <div class="library-pic">
-                                    <label class="word" for="upload-image">
-                                        <span class="glyphicon glyphicon-camera"></span>
-                                        <span>Upload Image</span>
-                                    </label>
-                                    <input type="file" name="upload-image" id="upload-image" class="upload-image" accept="image/*" onchange="loadImage(event)" />
-                                    <img src="../clients/assets/noimage.png" name="new-library" id="new-library" class="new-library" />
-                                </div>
-
-                                <div class="edit-librarian-text">
-                                    <textarea name="librarian-info" id="librrian-info"><?php echo $row['info_text']; ?></textarea>
-                                </div>
-
-                                <div class="editlibrary-btn">
-                                    <input type="submit" name="editlibrary" id="editlibrary" class="editlibrary" value="Save" />
-                                </div>
-
-                                <?php
-                            } elseif ($row['info_text'] == null) {
-                                // Get the image data from the row
-                                $imageBinary = $row['info_img'];
-
-                                // Detect the image format
-                                $image = getimagesizefromstring($imageBinary);
-                                if ($image !== false) {
-                                    // Determine the MIME type based on the detected image format
-                                    $mimeType = $image['mime'];
-                                ?>
-
-                                    <div class="library-pic">
-                                        <label class="word" for="upload-image">
-                                            <span class="glyphicon glyphicon-camera"></span>
-                                            <span>Change Image</span>
-                                        </label>
-                                        <input type="file" name="upload-image" id="upload-image" class="upload-image" accept="image/*" onchange="loadImage(event)" />
-                                        <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageData); ?>" name="new-library" id="new-library" class="new-library" />
-                                    </div>
-
-                                    <div class="editlibrary-btn">
-                                        <input type="submit" name="editlibrary" id="editlibrary" class="editlibrary" value="Save" />
-                                        <input type="submit" name="clearlibrary" id="clearlibrary" class="clearlibrary" value="Clear Image" />
-                                    </div>
-
-                                <?php
-                                }
-                            } else {
-                                ?>
-
-                                <div class="edit-librarian-text">
-                                    <textarea name="librarian-info" id="librrian-info"><?php echo $row['info_text']; ?></textarea>
-                                </div>
-
-                                <br />
-
-                                <div class="editlibrary-btn">
-                                    <input type="submit" name="editlibrary" id="editlibrary" class="editlibrary" value="Save" />
-                                    <input type="submit" name="clearlibrary" id="clearlibrary" class="clearlibrary" value="Clear Image" />
-                                </div>
-
-                            <?php
-                            }
-                            ?>
-
+                        <div class="editmember-btn">
+                            <input type="submit" name="editmember" id="editmember" class="editmember" value="Save" />
                         </div>
                     </div>
                 </form>
             </div>
-
         <?php } ?>
-
-        <br /><br />
-
-        <div class="membership-container">
-            <form class="member-form" id="member-form" action="">
-                <div class="wrap">
-                    <div class="header">
-                        <h4>Membership</h4>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <br /><br />
-
-        <div class="ophours-container">
-            <form class="ophours-form" id="ophours-form" action="">
-                <div class="wrap">
-                    <div class="header">
-                        <h4>Opening Hours</h4>
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
 
     <span>
