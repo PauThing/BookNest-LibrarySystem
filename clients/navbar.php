@@ -28,7 +28,7 @@ include('../clients/connect.php');
                     echo '<li style="float:right"><a href="../clients/backend/signoutdb.php">SIGN OUT</a></li>';
                 } else {
                     // User is not logged in, display "Sign In" and "Sign Up"
-                    echo '<li style="float:right"><a href="../clients/signin.php">SIGN IN</a> / <a href="../clients/signup.php">SIGN UP</a></li>';
+                    echo '<li style="float:right"><a href="../clients/signin.php">SIGN IN</a> | <a href="../clients/signup.php">SIGN UP</a></li>';
                 }
                 ?>
             </ul>
@@ -148,6 +148,45 @@ include('../clients/connect.php');
                     break;
 
                 case 'Admin':
+                ?>
+
+                    <nav>
+                        <div class="navbar">
+                            <a href="../admin/index.php">HOME</a>
+                            <a href="../admin/catalog.php">BOOK CATALOG</a>
+                            <a href="../admin/bookreturn.php">BOOK RETURN</a>
+                            <a href="../admin/discussionroom.php">DISCUSSION ROOM</a>
+                            <div class="dropdown">
+                                <button class="dropbtn">USING THE LIBRARY</button>
+                                <div class="dropdown-content">
+                                    <a href="../admin/editlibrary.php">About Library</a>
+                                    <a href="../admin/editrules.php">Rules & Regulation</a>
+                                    <a href="../admin/editfines.php">Fines & Penalty</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn">ONLINE RESOURCES</button>
+                                <div class="dropdown-content">
+                                    <a href="#">Online Database</a>
+                                    <a href="#">Past Year Exam Papers</a>
+                                    <a href="#">Student's Project</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn">ACCOUNT</button>
+                                <div class="dropdown-content">
+                                    <a href="../clients/myprofile.php">My Profile</a>
+                                    <a href="../admin/adminlist.php">Administrator List</a>
+                                    <a href="../admin/userlist.php">User List</a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                <?php
+                    break;
+
+                case 'SuperAdmin':
                 ?>
 
                     <nav>

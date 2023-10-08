@@ -42,17 +42,17 @@ include('../clients/navbar.php');
 
                 <div class="wrap">
                     <div class="InputText">
-                        <input type="text" name="fname" id="fname" required>
+                        <input type="text" name="fname" id="fname" autocomplete="off" required>
                         <label for="fname">Full Name</label>
                     </div>
 
                     <div class="InputText">
-                        <input type="email" name="uEmail" id="uEmail" required>
+                        <input type="email" name="uEmail" id="uEmail" autocomplete="off" required>
                         <label for="uEmail">Student Email</label>
                     </div>
 
                     <div class="InputText">
-                        <input type="text" name="uID" id="uID" required>
+                        <input type="text" name="uID" id="uID" autocomplete="off" required>
                         <label for="uID">Student ID</label>
                     </div>
 
@@ -66,7 +66,7 @@ include('../clients/navbar.php');
                     <br /><br />
 
                     <div class="InputText">
-                        <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 8 or more characters" required>
+                        <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 10 or more characters" required>
                         <label for="password">Password</label>
                     </div>
 

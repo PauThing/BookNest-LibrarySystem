@@ -34,7 +34,7 @@ body {
     border: none;
 }
 
-.tox-promotion {
+.tox-promotion, svg {
     display: none;
 }
 

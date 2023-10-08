@@ -1,15 +1,15 @@
 <?php
 if (isset($_POST['signin'])) {
     session_start();
-    include('../connect.php');
+    include('../../clients/connect.php');
 
     $userid = $_POST['uID'];
     $password = $_POST['password'];
 
-    $query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = '$userid'");
-
-    // Fetch the result
-    $row = sqlsrv_fetch_array($query);
+    $query = "SELECT * FROM [user] WHERE [user_id] = ?";
+    $array = [$userid];
+	$statement = sqlsrv_query($conn, $query, $array);
+	$row = sqlsrv_fetch_array($statement);
 
     $hashedPassword = $row['user_password'];
 
@@ -22,30 +22,39 @@ if (isset($_POST['signin'])) {
                 switch ($usertype) {
                     case 'Student':
                         $_SESSION['userid'] = $row['user_id'];
+                        $_SESSION['usertype'] = $usertype;
                         $_SESSION['loggedin'] = true;
                         header('location: ../index.php');
                         break;
 
                     case 'Admin':
                         $_SESSION['userid'] = $row['user_id'];
+                        $_SESSION['usertype'] = $usertype;
                         $_SESSION['loggedin'] = true;
-                        header('location: ../index.php');
+                        header('location: ../../admin/index.php');
+                        break;
+
+                    case 'SuperAdmin':
+                        $_SESSION['userid'] = $row['user_id'];
+                        $_SESSION['usertype'] = $usertype;
+                        $_SESSION['loggedin'] = true;
+                        header('location: ../../admin/index.php');
                         break;
                 }
             } else {
                 $_SESSION['message'] = "Sign in failed. Incorrect password.";
-                header('location: ../signin.php');
+                header('location: ../../clients/signin.php');
             }
         } else {
             $_SESSION['message'] = "Sign in failed. Please wait for the approval from administrator.";
-            header('location: ../signin.php');
+            header('location: ../../clients/signin.php');
         }
     } else {
         $_SESSION['message'] = "Sign in failed. User not found.";
-        header('location: ../signin.php');
+        header('location: ../../clients/signin.php');
     }
 } else {
     $_SESSION['message'] = "Please enter your username and password.";
-    header('location: ../signin.php');
+    header('location: ../../clients/signin.php');
 }
 ?>

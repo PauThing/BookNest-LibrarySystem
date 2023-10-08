@@ -49,19 +49,16 @@ include('../clients/navbar.php');
 
         <div class="container-row">
             <?php
-            // SQL Query to retrieve data from a table
-            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
-
-            // Execute the SQL query
-            $query = sqlsrv_query($conn, $sql);
+            $query = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+            $statement = sqlsrv_query($conn, $query);
 
             // Check if the query was successful
-            if ($query === false) {
+            if ($statement === false) {
                 die("Query failed: " . print_r(sqlsrv_errors(), true));
             }
 
             // Fetch and display data from the result set
-            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
             ?>
 
                 <div class="librarian-container">
