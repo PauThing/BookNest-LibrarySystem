@@ -1,5 +1,5 @@
 <?php
-// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+//set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
 ini_set('session.gc_maxlifetime', 4 * 60 * 60);
 session_start();
 
@@ -15,8 +15,9 @@ include('../clients/navbar.php');
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./styles/sign.css">
+    <link rel="stylesheet" href="../clients/styles/sign.css">
 
     <title>Sign Up</title>
 
@@ -35,7 +36,7 @@ include('../clients/navbar.php');
 <body>
     <div class="big-container">
         <div class="signup-container">
-            <form class="signup-form" id="signup-form" method="post" action="./backend/signupdb.php" enctype="multipart/form-data">
+            <form class="signup-form" id="signup-form" method="post" action="../clients/backend/signupdb.php" enctype="multipart/form-data">
                 <div class="header">
                     <h2>SIGN UP</h2>
                 </div>
@@ -75,7 +76,7 @@ include('../clients/navbar.php');
                     </div>
 
                     <div class="registered">
-                        Already Registered? <a href="./signin.php">Sign In Here!</a>
+                        Already Registered? <a href="../clients/signin.php">Sign In Here!</a>
                     </div>
                 </div>
             </form>

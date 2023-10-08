@@ -1,5 +1,5 @@
 <?php
-// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+//set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
 ini_set('session.gc_maxlifetime', 4 * 60 * 60);
 session_start();
 if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
@@ -43,6 +43,14 @@ include('../clients/navbar.php');
                 link.addEventListener("click", function() {
                     const target = this.getAttribute("data-target");
                     showTab(target);
+
+                    //remove "active" class from all tab links
+                    tabLinks.forEach(function(tablink) {
+                        tablink.classList.remove("active");
+                    });
+
+                    //add "active" class to the clicked tab link
+                    this.classList.add("active");
                 });
             });
         });
@@ -72,7 +80,7 @@ include('../clients/navbar.php');
         </div>
 
         <div class="tabs">
-            <button class="tablinks" data-target="user-accepted">User List</button>
+            <button class="tablinks active" data-target="user-accepted">User List</button>
             <button class="tablinks" data-target="user-pending">User Pending</button>
         </div>
 

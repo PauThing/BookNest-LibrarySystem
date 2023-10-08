@@ -1,5 +1,5 @@
 <?php
-// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+//set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
 ini_set('session.gc_maxlifetime', 4 * 60 * 60);
 session_start();
 if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
@@ -38,7 +38,7 @@ include('../clients/navbar.php');
         function confirmDelete(userid) {
             const password = prompt("Please enter your password:");
             if (password !== null) {
-                window.location.href = `./backend/deluserdb.php?userid=${userid}&password=${password}`;
+                window.location.href = `../admin/backend/deluserdb.php?userid=${userid}&password=${password}`;
             }
         }
     </script>
@@ -89,7 +89,11 @@ include('../clients/navbar.php');
                             <td><?php echo $row['fullname']; ?></td>
                             <td><?php echo $row['user_email']; ?></td>
                             <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
-                            <td class="action"><a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a></td>
+                            <?php
+                            if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == 'SuperAdmin') {
+                            ?>
+                                <td class="action"><a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a></td>
+                            <?php } ?>
                         </tr>
                     </tbody>
                 <?php } ?>
@@ -98,7 +102,7 @@ include('../clients/navbar.php');
     </div>
 
     <div id="new-admin-container" class="new-admin-container">
-        <form id="new-admin-form" class="new-admin-form" method="post" action="./backend/nadmindb.php" enctype="multipart/form-data">
+        <form id="new-admin-form" class="new-admin-form" method="post" action="./backend/newadmindb.php" enctype="multipart/form-data">
             <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
                 <h3>NEW ADMIN</h3>

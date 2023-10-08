@@ -141,6 +141,10 @@ body {
     border: none;
 }
 
+.tablinks.active {
+    background-color: #ddd; /* Style for active tab */
+}
+
 .tablinks:hover {
     background-color: #ddd;
 }

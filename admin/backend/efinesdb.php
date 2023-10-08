@@ -19,13 +19,13 @@ if (isset($_POST["editfines"])) {
     //check if the statement executed successfully
     if ($statement) {
         $_SESSION['message'] = "Successfully updated the fines and penalty.";
-        header("location: ../../admin/editfines.php");
+        header("location: ../../admin/editfines.php?st=success");
     } else {
         $_SESSION['message'] = "Failed to update the fines.";
-        header("location: ../../admin/editfines.php");
+        header("location: ../../admin/editfines.php?st=error");
     }
 } else {
 	$_SESSION['message'] = "Failed to update the fines.";
-	header("location: ../../admin/editfines.php");
+	header("location: ../../admin/editfines.php?st=error");
 }
 ?>

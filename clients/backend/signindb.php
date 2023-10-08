@@ -43,18 +43,18 @@ if (isset($_POST['signin'])) {
                 }
             } else {
                 $_SESSION['message'] = "Sign in failed. Incorrect password.";
-                header('location: ../../clients/signin.php');
+                header('location: ../../clients/signin.php?st=error');
             }
         } else {
             $_SESSION['message'] = "Sign in failed. Please wait for the approval from administrator.";
-            header('location: ../../clients/signin.php');
+            header('location: ../../clients/signin.php?st=error');
         }
     } else {
         $_SESSION['message'] = "Sign in failed. User not found.";
-        header('location: ../../clients/signin.php');
+        header('location: ../../clients/signin.php?st=error');
     }
 } else {
     $_SESSION['message'] = "Please enter your username and password.";
-    header('location: ../../clients/signin.php');
+    header('location: ../../clients/signin.php?st=error');
 }
 ?>

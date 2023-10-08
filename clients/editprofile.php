@@ -1,5 +1,5 @@
 <?php
-// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+//set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
 ini_set('session.gc_maxlifetime', 4 * 60 * 60);
 session_start();
 if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
@@ -19,6 +19,7 @@ include('../clients/navbar.php');
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../clients/styles/profile.css">
 
@@ -42,28 +43,25 @@ include('../clients/navbar.php');
                 </div>
 
                 <?php
-                // SQL Query to retrieve data from a table
-                $sql = "SELECT * FROM [user] WHERE [user_id] = '" . $_SESSION['userid'] . "'";
+                $query = "SELECT * FROM [user] WHERE [user_id] = '" . $_SESSION['userid'] . "'";
+                $statement = sqlsrv_query($conn, $query);
 
-                // Execute the SQL query
-                $query = sqlsrv_query($conn, $sql);
-
-                // Check if the query was successful
-                if ($query === false) {
+                //check if the query was successful
+                if ($statement === false) {
                     die("Query failed: " . print_r(sqlsrv_errors(), true));
                 }
 
-                // Fetch and display data from the result set
-                while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
-                    // Check if there is image data in the row
+                //fetch and display data from database
+                while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
+                    //check if there is image data in the row
                     if ($row['profile_img']) {
-                        // Get the image data from the row
+                        //get the image data from the row
                         $imageData = $row['profile_img'];
 
-                        // Detect the image format
+                        //detect the image format
                         $imageInfo = getimagesizefromstring($imageData);
                         if ($imageInfo !== false) {
-                            // Determine the MIME type based on the detected image format
+                            //determine the MIME type based on the detected image format
                             $mimeType = $imageInfo['mime'];
                 ?>
 
@@ -79,11 +77,9 @@ include('../clients/navbar.php');
 
                         <?php
                         } else {
-                            // the image format could not be detected
                             echo "Unable to detect image format.";
                         }
                     } else {
-                        // there is no image data in the row
                         echo "No image data found.";
                     }
                         ?>

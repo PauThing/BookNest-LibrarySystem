@@ -20,16 +20,16 @@
 		{
 			$_SESSION['message'] = "This admin has been deleted.";
 
-			header("location: ../adminlist.php?st=success");
+			header("location: ../../admin/adminlist.php?st=success");
 		} else
 		{
 			$_SESSION['message'] = "Failed to delete this admin";
 				
-			header("location: ../adminlist.php?st=error");
+			header("location: ../../admin/adminlist.php?st=error");
 		}
 	} else
 	{
 		$_SESSION['message'] = "Unauthorized Access: Password does not match.";
-    	header("location: ../adminlist.php?st=error");
+    	header("location: ../../admin/adminlist.php?st=error");
 	}
 ?>

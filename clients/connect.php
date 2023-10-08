@@ -1,12 +1,12 @@
 <?php
-$serverName = "LAPTOP-FOGH91GN"; // Change this to your SQL Server instance name or IP address.
+$serverName = "LAPTOP-FOGH91GN";
 $connectionOptions = array(
     "Database" => "LibrarySystem",
     "Uid" => "sa",
     "PWD" => "sqlserverPT2001"
 );
 
-//Establishes the connection
+//establishes the connection
 $conn = sqlsrv_connect($serverName, $connectionOptions);
 
 if (!$conn) {

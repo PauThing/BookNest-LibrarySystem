@@ -1,5 +1,5 @@
 <?php
-// Set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+//set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
 ini_set('session.gc_maxlifetime', 4 * 60 * 60);
 session_start();
 
@@ -15,8 +15,9 @@ include('../clients/navbar.php');
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./styles/about.css">
+    <link rel="stylesheet" href="../clients/styles/about.css">
 
     <title>About Library</title>
 
@@ -31,19 +32,16 @@ include('../clients/navbar.php');
 
         <div class="container-row">
             <?php
-            // SQL Query to retrieve data from a table
-            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+            $query = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'librarian'";
+            $statement = sqlsrv_query($conn, $query);
 
-            // Execute the SQL query
-            $query = sqlsrv_query($conn, $sql);
-
-            // Check if the query was successful
-            if ($query === false) {
+            //check if the query was successful
+            if ($statement === false) {
                 die("Query failed: " . print_r(sqlsrv_errors(), true));
             }
 
-            // Fetch and display data from the result set
-            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            //fetch and display data from databse
+            while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
             ?>
 
                 <div class="librarian-container">
@@ -62,19 +60,16 @@ include('../clients/navbar.php');
 
             <?php }
 
-            // SQL Query to retrieve data from a table
-            $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'openinghour'";
+            $query2 = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'openinghour'";
+            $statement2 = sqlsrv_query($conn, $query2);
 
-            // Execute the SQL query
-            $query = sqlsrv_query($conn, $sql);
-
-            // Check if the query was successful
-            if ($query === false) {
+            //check if the query was successful
+            if ($statement2 === false) {
                 die("Query failed: " . print_r(sqlsrv_errors(), true));
             }
 
-            // Fetch and display data from the result set
-            while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+            //fetch and display data from databse
+            while ($row2 = sqlsrv_fetch_array($statement2, SQLSRV_FETCH_ASSOC)) {
             ?>
 
                 <br /><br />
@@ -87,7 +82,7 @@ include('../clients/navbar.php');
                             </div>
 
                             <div class="show-ophour-text">
-                                <?php echo html_entity_decode($row['info_text']); ?>
+                                <?php echo html_entity_decode($row2['info_text']); ?>
                             </div>
                         </div>
                     </form>
@@ -96,19 +91,16 @@ include('../clients/navbar.php');
         </div>
 
         <?php
-        // SQL Query to retrieve data from a table
-        $sql = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'membership'";
+        $query3 = "SELECT * FROM [libraryinfo] WHERE [info_type] = 'membership'";
+        $statement3 = sqlsrv_query($conn, $query3);
 
-        // Execute the SQL query
-        $query = sqlsrv_query($conn, $sql);
-
-        // Check if the query was successful
-        if ($query === false) {
+        //check if the query was successful
+        if ($statement3 === false) {
             die("Query failed: " . print_r(sqlsrv_errors(), true));
         }
 
-        // Fetch and display data from the result set
-        while ($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC)) {
+        //fetch and display data from databse
+        while ($row3 = sqlsrv_fetch_array($statement3, SQLSRV_FETCH_ASSOC)) {
         ?>
 
             <br /><br />
@@ -121,7 +113,7 @@ include('../clients/navbar.php');
                         </div>
 
                         <div class="show-member-text">
-                            <?php echo html_entity_decode($row['info_text']); ?>
+                            <?php echo html_entity_decode($row3['info_text']); ?>
                         </div>
                     </div>
                 </form>

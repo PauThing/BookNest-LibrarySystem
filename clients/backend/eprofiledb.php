@@ -36,7 +36,7 @@ if (isset($_POST["editprofile"])) {
         } else {
             //die(print_r(sqlsrv_errors(), true));
             $_SESSION['message'] = "Failed to update the details. Please try again.";
-            header("location: ../../clients/editprofile.php");
+            header("location: ../../clients/editprofile.php?st=error");
         }
     } else {
         //update the data in database
@@ -50,11 +50,11 @@ if (isset($_POST["editprofile"])) {
         } else {
             //die(print_r(sqlsrv_errors(), true));
             $_SESSION['message'] = "Failed to update the details. Please try again.";
-            header("location: ../../clients/editprofile.php");
+            header("location: ../../clients/editprofile.php?st=error");
         }
     }
 } else {
 	$_SESSION['message'] = "Failed to update the details. Please make sure every input is correct.";
-	header("location: ../../clients/editprofile.php");
+	header("location: ../../clients/editprofile.php?st=error");
 }
 ?>
