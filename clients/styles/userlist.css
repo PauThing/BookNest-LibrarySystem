@@ -32,7 +32,8 @@ body {
     float: right;
     padding: 0.4em;
     margin-right: 4.6em;
-    border-radius: 0.1em;
+    margin-bottom: 1em;
+    border-radius: 0.2em;
     background-color: var(--header-color);
     text-align: center;
     color: white;
@@ -41,7 +42,7 @@ body {
 
 .add-admin:hover {
     cursor: pointer;
-    background-color: #505a5f;
+    background-color: #005e8d;
     transition: .3s ease-in-out;
 }
 
@@ -49,22 +50,27 @@ body {
     display: none;
     position: absolute;
     top: 12em;
-    right: 22em;
-    width: 50%;
+    margin-left: 22em;
+    width: 55%;
+    animation: fade-in 0.5s;
     overflow-y: auto;
     border: none;
+    
 }
 
 .new-admin-form {
-    background-color: rgb(247, 251, 255);
+    width: 90%;
+    background-color: #f0f0f0;
     padding: 1.5em;
+    margin-bottom: 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
 }
 
-.wrap {
+.new-admin-container .wrap {
     padding: 1.5em 4em;
 }
 
-.wrap .InputText {
+.new-admin-container .wrap .InputText {
     background: transparent;
     text-align: center;
     height: 2.2em;
@@ -73,7 +79,7 @@ body {
     margin-bottom: 3em;
 }
 
-.wrap .InputText input {
+.new-admin-container .wrap .InputText input {
     height: 100%;
     width: 100%;
     background: transparent;
@@ -84,15 +90,15 @@ body {
     outline: none;
 }
 
-.wrap .InputText input:focus~label,
-.wrap .InputText input:valid~label {
+.new-admin-container .wrap .InputText input:focus~label,
+.new-admin-container .wrap .InputText input:valid~label {
     transform: translateY(-1.5em);
     transition: all 0.3s ease;
-    color: #fff;
+    color: #f0f0f0;
     outline: none;
 }
 
-.wrap .InputText label {
+.new-admin-container .wrap .InputText label {
     font-size: 0.9em;
     position: absolute;
     bottom: 0.5em;
@@ -107,9 +113,94 @@ body {
     color: var(--header-color);
 }
 
-.new-admin-container {
-    padding-bottom: 2em;
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.cancel {
+    float: right;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+/* pending user details */
+.add-admin {
+    width: 8em;
+    float: right;
+    padding: 0.4em;
+    margin-right: 4.6em;
+    margin-bottom: 1em;
+    border-radius: 0.2em;
+    background-color: var(--header-color);
+    text-align: center;
+    color: white;
+    font-size: 0.9em;
+}
+
+.add-admin:hover {
+    cursor: pointer;
+    background-color: #005e8d;
+    transition: .3s ease-in-out;
+}
+
+.user-detail-container {
+    display: none;
+    position: absolute;
+    top: 12em;
+    right: 22em;
+    width: 50%;
     animation: fade-in 0.5s;
+    overflow-y: auto;
+    border: none;
+}
+
+.user-detail-form {
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    
+}
+
+.user-detail-container .wrap {
+    padding: 1.5em 4em;
+}
+
+.user-detail-container .wrap .InputText {
+    background: transparent;
+    height: 2.2em;
+    width: 100%;
+    position: relative;
+    margin-bottom: 3em;
+}
+
+.user-detail-container .wrap .InputText input {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding-bottom: 0;
+    border-bottom: 0.1em solid var(--md-dark-color);
+    font-size: 0.9em;
+    outline: none;
+}
+
+.user-detail-container .wrap .InputText label {
+    font-size: 0.9em;
+    text-align: left;
+    font-weight: bold;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.user-detail-container .header {
+    text-align: center;
+    padding: 0 3em;
+    color: var(--header-color);
 }
 
 @keyframes fade-in {
@@ -121,32 +212,46 @@ body {
     float: right;
     border: none;
     background-color: transparent;
+    cursor: pointer;
     font-size: 1em;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     transition: all 0.2s;
-}
+} */
 
 /* user list tab */
+.tab-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .tabs {
     display: flex;
     justify-content: center;
+    margin: 0 auto;
+    width: 90%;
 }
 
 .tablinks {
-    background-color: #ccc;
-    padding: 10px 20px;
-    margin: 5px;
+    width: 100%;
+    background-color: var(--header-color);
+    color: white;
+    padding: 0.6em 0;
     cursor: pointer;
     border: none;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    font-weight: bold;
+    font-size: 1em;
+    font-family: "Poppins", sans-serif;
 }
 
 .tablinks.active {
-    background-color: #ddd; /* Style for active tab */
+    background-color: #005e8d;
 }
 
 .tablinks:hover {
-    background-color: #ddd;
+    background-color: #005e8d;
 }
 
 .tabcontent {
@@ -166,26 +271,35 @@ body {
 /* search bar */
 .search-box {
     width: 88%;
-    margin: 1em 4.2em;
+    margin: 3.5em 4.2em;
+    border: none;
 }
 
 .search-box .searchInput {
     width: 100%;
     padding: 1em;
     border: none;
-    border-radius: 3em;
+    border-radius: 2.5em;
     outline: none;
+}
+
+/* delete admin */
+.del {
+    color: var(--dark-color);
+}
+
+.del:hover {
+    color: var(--button-hover-color);
 }
 
 /* table list */
 .adminlist-container, .userlist-container {
     width: 90%;
     margin: 0 auto;
-    padding: 1.5em;
     border: none;
 }
 
-.adminlist-container table, .userlist-container table {
+.adminlist-container table {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
@@ -196,19 +310,22 @@ body {
     font-size: 0.9em;
 }
 
+.userlist-container table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
 .number,
 .action {
     width: 5em;
     text-align: center;
-}
-
-/* delete admin */
-.del {
-    color: var(--dark-color);
-}
-
-.del:hover {
-    color: var(--button-hover-color);
 }
 
 th,
@@ -249,7 +366,7 @@ td {
     font-size: 0.9rem;
     font-weight: bold;
     padding: 0.5rem 0;
-    text-align: center;
+    cursor: pointer;
     text-transform: uppercase;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;

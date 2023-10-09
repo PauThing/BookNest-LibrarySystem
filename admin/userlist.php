@@ -28,11 +28,11 @@ include('../clients/navbar.php');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function openForm() {
-            document.getElementById("new-admin-container").style.display = "block";
+            document.getElementById("user-detail-container").style.display = "block";
         }
 
         function closeForm() {
-            document.getElementById("new-admin-container").style.display = "none";
+            document.getElementById("user-detail-container").style.display = "none";
         }
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -76,115 +76,123 @@ include('../clients/navbar.php');
 <body>
     <div class="big-container">
         <div class="search-box">
-            <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by name or student ID">
+            <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID">
         </div>
 
-        <div class="tabs">
-            <button class="tablinks active" data-target="user-accepted">User List</button>
-            <button class="tablinks" data-target="user-pending">User Pending</button>
-        </div>
-
-        <div class="tab-content">
-            <div id="user-accepted" class="tabcontent">
-                <div class="header">
-                    <h3>User List</h3>
-                </div>
-
-                <div class="add-admin" onclick="openForm()">
-                    <i class="fa fa-plus"></i> Pending
-                </div>
-
-                <br />
-
-                <div class="userlist-container">
-                    <table id="userlist">
-                        <thead>
-                            <tr>
-                                <th class="number">No.</th>
-                                <th><i onclick="openForm()">Student ID</i></th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Registered Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <?php
-                        $query = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Approved'";
-                        $statement = sqlsrv_query($conn, $query);
-
-                        $i = 1;
-                        while ($row = sqlsrv_fetch_array($statement)) {
-                        ?>
-                            <tbody>
-                                <tr>
-                                    <td class="number"><?php echo $i++; ?></td>
-                                    <td><?php echo $row['user_id']; ?></td>
-                                    <td><?php echo $row['fullname']; ?></td>
-                                    <td><?php echo $row['user_email']; ?></td>
-                                    <td><?php echo $row['acc_status']; ?></td>
-                                    <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
-                                    <td class="action"><a href="./backend/deluserdb.php?userid=<?php echo $row['user_id']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this admin?');"><i class="fa fa-trash"></i></a></td>
-                                </tr>
-                            </tbody>
-                        <?php } ?>
-                    </table>
-                </div>
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tablinks active" data-target="user-accepted">User List</button>
+                <button class="tablinks" data-target="user-pending">User Pending</button>
             </div>
 
-            <div id="user-pending" class="tabcontent">
-                <div class="header">
-                    <h3>User Pending</h3>
-                </div>
-
-                <div class="add-admin" onclick="openForm()">
-                    <i class="fa fa-plus"></i> Pending
-                </div>
-
-                <br />
-
-                <div class="userlist-container">
-                    <table id="userlist">
-                        <thead>
-                            <tr>
-                                <th class="number">No.</th>
-                                <th>Student ID</th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Registered Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <?php
-                        $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending'";
-                        $statement2 = sqlsrv_query($conn, $query2);
-
-                        $i = 1;
-                        while ($row = sqlsrv_fetch_array($statement2)) {
-                        ?>
-                            <tbody>
+            <div class="tab-content">
+                <div id="user-accepted" class="tabcontent">
+                    <div class="userlist-container">
+                        <table id="userlist">
+                            <thead>
                                 <tr>
-                                    <td class="number"><?php echo $i++; ?></td>
-                                    <td><?php echo $row['user_id']; ?></td>
-                                    <td><?php echo $row['fullname']; ?></td>
-                                    <td><?php echo $row['user_email']; ?></td>
-                                    <td><?php echo $row['acc_status']; ?></td>
-                                    <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
-                                    <td class="action"><a href="./backend/deluserdb.php?userid=<?php echo $row['user_id']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this admin?');"><i class="fa fa-trash"></i></a></td>
+                                    <th class="number">No.</th>
+                                    <th>Student ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Registered Date</th>
+                                    <th>Action</th>
                                 </tr>
-                            </tbody>
-                        <?php } ?>
-                    </table>
+                            </thead>
+
+                            <?php
+                            $itemsPerPage = 1;
+                            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $offset = ($currentPage - 1) * $itemsPerPage;
+
+                            //check if offset is negative and adjust if necessary
+                            if ($offset < 0) {
+                                $offset = 0; //reset offset to 0 if it's negative
+                            }
+
+                            $query = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Approved' ORDER BY user_id OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+                            $statement = sqlsrv_query($conn, $query);
+
+                            $i = 1;
+                            while ($row = sqlsrv_fetch_array($statement)) {
+                            ?>
+                                <tbody>
+                                    <tr>
+                                        <td class="number"><?php echo $i++; ?></td>
+                                        <td><?php echo $row['user_id']; ?></td>
+                                        <td><?php echo $row['fullname']; ?></td>
+                                        <td><?php echo $row['user_email']; ?></td>
+                                        <td><?php echo $row['acc_status']; ?></td>
+                                        <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                        <td class="action"><a href="../admin/backend/deluserdb.php?userid=<?php echo $row['user_id']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this admin?');"><i class="fa fa-trash"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            <?php } ?>
+                        </table>
+                    </div>
+
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <?php if ($currentPage > 1) : ?>
+                                <li><a href="?page=<?php echo $currentPage - 1; ?>">Previous</a></li>
+                            <?php else : ?>
+                                <li><span>Previous</span></li>
+                            <?php endif;
+                            if ($currentPage <= 1) : ?>
+                                <li><a href="?page=<?php echo $currentPage + 1; ?>">Next</a></li>
+                            <?php else : ?>
+                                <li><span>Next</span></li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="user-pending" class="tabcontent">
+                    <div class="userlist-container">
+                        <table id="userlist">
+                            <thead>
+                                <tr>
+                                    <th class="number">No.</th>
+                                    <th>Student ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Registered Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <?php
+                            $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending'";
+                            $statement2 = sqlsrv_query($conn, $query2);
+
+                            $i = 1;
+                            while ($row = sqlsrv_fetch_array($statement2)) {
+                            ?>
+                                <tbody>
+                                    <tr>
+                                        <td class="number"><?php echo $i++; ?></td>
+                                        <td><?php echo $row['user_id']; ?></td>
+                                        <td><?php echo $row['fullname']; ?></td>
+                                        <td><?php echo $row['user_email']; ?></td>
+                                        <td><?php echo $row['acc_status']; ?></td>
+                                        <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                        <td class="action">
+                                            <div class="del" onclick="openForm()"><i class="fa fa-eye"></i></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            <?php } ?>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="new-admin-container" id="new-admin-container">
-        <form class="new-admin-form" id="new-admin-form" method="post" action="./backend/nadmindb.php" enctype="multipart/form-data">
+    <div class="user-detail-container" id="user-detail-container">
+        <form class="user-detail-form" id="user-detail-form" method="post" action="../admin/backend/appuserdb.php" enctype="multipart/form-data">
             <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
                 <h3>STUDENT DETAILS</h3>
@@ -192,23 +200,18 @@ include('../clients/navbar.php');
 
             <div class="wrap">
                 <div class="InputText">
-                    <input type="text" name="fname" id="fname" required>
                     <label for="fname">Full Name</label>
+                    <input type="text" name="fname" id="fname" required>
                 </div>
 
                 <div class="InputText">
-                    <input type="email" name="uEmail" id="uEmail" required>
                     <label for="uEmail">Email</label>
+                    <input type="email" name="uEmail" id="uEmail" required>
                 </div>
 
                 <div class="InputText">
-                    <input type="text" name="uID" id="uID" required>
                     <label for="uID">Admin ID</label>
-                </div>
-
-                <div class="InputText">
-                    <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 8 or more characters" required>
-                    <label for="password">Password</label>
+                    <input type="text" name="uID" id="uID" required>
                 </div>
 
                 <div class="new-admin-btn">

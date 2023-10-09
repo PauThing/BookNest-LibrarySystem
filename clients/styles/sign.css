@@ -160,7 +160,7 @@ body {
     font-size: 0.9rem;
     font-weight: bold;
     padding: 0.6rem 6rem;
-    text-align: center;
+    cursor: pointer;
     text-transform: uppercase;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;

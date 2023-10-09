@@ -102,7 +102,7 @@ include('../clients/navbar.php');
     </div>
 
     <div id="new-admin-container" class="new-admin-container">
-        <form id="new-admin-form" class="new-admin-form" method="post" action="./backend/newadmindb.php" enctype="multipart/form-data">
+        <form id="new-admin-form" class="new-admin-form" method="post" action="../admin/backend/newadmindb.php" enctype="multipart/form-data">
             <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
                 <h3>NEW ADMIN</h3>
