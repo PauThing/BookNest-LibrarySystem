@@ -36,41 +36,41 @@ include('../clients/navbar.php');
                     <h2>MY PROFILE</h2>
                 </div>
 
-                <?php
-                $query = "SELECT * FROM [user] WHERE [user_id] = '" . $_SESSION['userid'] . "'";
-                $statement = sqlsrv_query($conn, $query);
+                <div class="wrap">
 
-                //check if the query was successful
-                if ($statement === false) {
-                    die("Query failed: " . print_r(sqlsrv_errors(), true));
-                }
+                    <?php
+                    $query = "SELECT * FROM [user] WHERE [user_id] = '" . $_SESSION['userid'] . "'";
+                    $statement = sqlsrv_query($conn, $query);
 
-                //fetch and display data from databse
-                while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
-                    //check if there is image data in the row
-                    if ($row['profile_img']) {
-                        //get the image data from the row
-                        $imageBinary = $row['profile_img'];
+                    //check if the query was successful
+                    if ($statement === false) {
+                        die("Query failed: " . print_r(sqlsrv_errors(), true));
+                    }
 
-                        //detect the image format
-                        $image = getimagesizefromstring($imageBinary);
-                        if ($image !== false) {
-                            //determine the MIME type based on the detected image format
-                            $mimeType = $image['mime'];
-                ?>
+                    //fetch and display data from databse
+                    while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
+                        //check if there is image data in the row
+                        if ($row['profile_img']) {
+                            //get the image data from the row
+                            $imageBinary = $row['profile_img'];
 
-                            <div class="wrap">
+                            //detect the image format
+                            $image = getimagesizefromstring($imageBinary);
+                            if ($image !== false) {
+                                //determine the MIME type based on the detected image format
+                                $mimeType = $image['mime'];
+                    ?>
                                 <div class="show-profile-pic">
                                     <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageBinary); ?>" name="show-profile" id="show-profile" class="show-profile" />
                                 </div>
 
                         <?php
+                            } else {
+                                echo "Unable to detect image format.";
+                            }
                         } else {
-                            echo "Unable to detect image format.";
+                            echo "No image data found.";
                         }
-                    } else {
-                        echo "No image data found.";
-                    }
                         ?>
 
                         <br /><br />
@@ -95,8 +95,8 @@ include('../clients/navbar.php');
                         <div class="editprofile-btn">
                             <input type="submit" name="editprofile" id="editprofile" class="editprofile" value="Edit Profile">
                         </div>
-                            </div>
-                        <?php } ?>
+                    <?php } ?>
+                </div>
             </form>
         </div>
     </div>

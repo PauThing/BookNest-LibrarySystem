@@ -27,10 +27,6 @@ include('../clients/navbar.php');
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function openForm() {
-            document.getElementById("user-detail-container").style.display = "block";
-        }
-
         function closeForm() {
             document.getElementById("user-detail-container").style.display = "none";
         }
@@ -179,7 +175,7 @@ include('../clients/navbar.php');
                                         <td><?php echo $row['acc_status']; ?></td>
                                         <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
                                         <td class="action">
-                                            <div class="del" onclick="openForm()"><i class="fa fa-eye"></i></div>
+                                            <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -191,35 +187,7 @@ include('../clients/navbar.php');
         </div>
     </div>
 
-    <div class="user-detail-container" id="user-detail-container">
-        <form class="user-detail-form" id="user-detail-form" method="post" action="../admin/backend/appuserdb.php" enctype="multipart/form-data">
-            <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
-            <div class="header">
-                <h3>STUDENT DETAILS</h3>
-            </div>
-
-            <div class="wrap">
-                <div class="InputText">
-                    <label for="fname">Full Name</label>
-                    <input type="text" name="fname" id="fname" required>
-                </div>
-
-                <div class="InputText">
-                    <label for="uEmail">Email</label>
-                    <input type="email" name="uEmail" id="uEmail" required>
-                </div>
-
-                <div class="InputText">
-                    <label for="uID">Admin ID</label>
-                    <input type="text" name="uID" id="uID" required>
-                </div>
-
-                <div class="new-admin-btn">
-                    <input type="submit" name="new-admin" id="new-admin" class="new-admin" value="Register">
-                </div>
-            </div>
-        </form>
-    </div>
+    <div class="user-detail-container" id="user-detail-container"></div>
 
     <br /><br />
 
@@ -234,7 +202,7 @@ include('../clients/navbar.php');
     </span>
 
     <script>
-        // Search Function
+        //search Function
         function filterTable() {
             const input = document.getElementById("searchInput");
             const filter = input.value.toUpperCase();
@@ -257,8 +225,25 @@ include('../clients/navbar.php');
                 }
             }
         }
-        // Attach an event listener to the search input field
+        //attach an event listener to the search input field
         document.getElementById("searchInput").addEventListener("keyup", filterTable);
+
+        function openForm(userid) {
+            $.ajax({
+                type: 'GET',
+                url: '../admin/userdetail.php',
+                data: {
+                    uid: userid
+                },
+                success: function(response) {
+                    $('#user-detail-container').html(response);
+                    document.getElementById("user-detail-container").style.display = "block";
+                },
+                error: function() {
+                    alert('Failed to load user details.');
+                }
+            });
+        }
     </script>
 </body>
 

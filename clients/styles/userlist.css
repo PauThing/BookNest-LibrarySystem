@@ -152,18 +152,20 @@ body {
 .user-detail-container {
     display: none;
     position: absolute;
-    top: 12em;
+    top: 14em;
     right: 22em;
-    width: 50%;
+    width: 55%;
     animation: fade-in 0.5s;
     overflow-y: auto;
     border: none;
 }
 
 .user-detail-form {
+    width: 90%;
     background-color: #f0f0f0;
     padding: 1.5em;
-    
+    margin-bottom: 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
 }
 
 .user-detail-container .wrap {
@@ -189,12 +191,22 @@ body {
     outline: none;
 }
 
-.user-detail-container .wrap .InputText label {
+.user-detail-container .wrap .InputText label, .user-detail-container .wrap .show-stu-id label {
     font-size: 0.9em;
     text-align: left;
     font-weight: bold;
     color: var(--header-color);
     pointer-events: none;
+}
+
+.user-detail-container .wrap .show-stu-id .center {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.user-detail-container .wrap .show-stu-id img {
+    width: 35%;
 }
 
 .user-detail-container .header {
@@ -234,7 +246,7 @@ body {
 
 .tablinks {
     width: 100%;
-    background-color: var(--header-color);
+    background-color: #005e8d;
     color: white;
     padding: 0.6em 0;
     cursor: pointer;
@@ -247,11 +259,11 @@ body {
 }
 
 .tablinks.active {
-    background-color: #005e8d;
+    background-color: var(--header-color);
 }
 
 .tablinks:hover {
-    background-color: #005e8d;
+    background-color: var(--header-color);
 }
 
 .tabcontent {
@@ -271,7 +283,10 @@ body {
 /* search bar */
 .search-box {
     width: 88%;
-    margin: 3.5em 4.2em;
+    margin-top: 2em;
+    margin-bottom: 3.5em;
+    margin-left: 4.4em;
+    margin-right: 4.4em;
     border: none;
 }
 
@@ -283,12 +298,12 @@ body {
     outline: none;
 }
 
-/* delete admin */
-.del {
+/* delete admin and view user details buttons */
+.del, .view {
     color: var(--dark-color);
 }
 
-.del:hover {
+.del:hover, .view:hover {
     color: var(--button-hover-color);
 }
 
@@ -349,13 +364,13 @@ td {
     color: var(--md-dark-color);
 }
 
-/* Buttons */
-.new-admin-btn {
+/* buttons */
+.new-admin-btn, .user-detail-btn {
     padding-top: 1em;
     text-align: center;
 }
 
-.new-admin {
+.new-admin-btn .new-admin, .user-detail-btn .user-approve, .user-detail-btn .user-reject {
     width: 8em;
     outline: none;
     border-radius: 0.1rem;
@@ -373,7 +388,7 @@ td {
     transition: all 0.2s;
 }
 
-.new-admin:hover {
+.new-admin-btn .new-admin:hover, .user-detail-btn .user-approve:hover, .user-detail-btn .user-reject:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
 
