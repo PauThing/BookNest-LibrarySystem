@@ -27,54 +27,63 @@ include('../clients/navbar.php');
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function closeForm() {
-            document.getElementById("user-detail-container").style.display = "none";
-        }
-
         document.addEventListener("DOMContentLoaded", function() {
-            showTab("user-accepted"); //show "User List" by default
+            //set the active tab
+            function setActive(tabId) {
+                const tabLinks = document.querySelectorAll(".tablinks");
+                tabLinks.forEach(function(link) {
+                    link.classList.remove("active");
+                    if (link.getAttribute("data-target") === tabId) {
+                        link.classList.add("active");
+                    }
+                });
+
+                const tabContents = document.querySelectorAll(".tabcontent");
+                tabContents.forEach(function(content) {
+                    content.classList.remove("active");
+                });
+
+                const tab = document.getElementById(tabId);
+                tab.classList.add("active");
+
+                window.scrollTo({
+                    top: tab.offsetTop,
+                    behavior: "smooth"
+                });
+            }
+
+            //check if the active tab is stored in local storage
+            const storedTab = localStorage.getItem("activeTab");
+
+            if (storedTab) {
+                setActive(storedTab);
+            } else {
+                setActive("user-accepted"); //set s default tab if none is stored
+            }
 
             const tabLinks = document.querySelectorAll(".tablinks");
             tabLinks.forEach(function(link) {
                 link.addEventListener("click", function() {
                     const target = this.getAttribute("data-target");
-                    showTab(target);
+                    setActive(target);
 
-                    //remove "active" class from all tab links
-                    tabLinks.forEach(function(tablink) {
-                        tablink.classList.remove("active");
-                    });
-
-                    //add "active" class to the clicked tab link
-                    this.classList.add("active");
+                    //store the active tab in local storage
+                    localStorage.setItem("activeTab", target);
                 });
             });
         });
 
-        function showTab(tabId) {
-            const tabContents = document.querySelectorAll(".tabcontent");
-            tabContents.forEach(function(content) {
-                content.classList.remove("active");
-            });
-
-            const tab = document.getElementById(tabId);
-            tab.classList.add("active");
-
-            //smoothly scroll to the tab content
-            window.scrollTo({
-                top: tab.offsetTop,
-                behavior: "smooth"
-            });
+        function confirmDelete(userid) {
+            const password = prompt("Please enter your password:");
+            if (password !== null) {
+                window.location.href = `../admin/backend/deluserdb.php?userid=${userid}&password=${password}`;
+            }
         }
     </script>
 </head>
 
 <body>
     <div class="big-container">
-        <div class="search-box">
-            <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID">
-        </div>
-
         <div class="tab-container">
             <div class="tabs">
                 <button class="tablinks active" data-target="user-accepted">User List</button>
@@ -83,6 +92,10 @@ include('../clients/navbar.php');
 
             <div class="tab-content">
                 <div id="user-accepted" class="tabcontent">
+                    <div class="search-box">
+                        <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID">
+                    </div>
+
                     <div class="userlist-container">
                         <table id="userlist">
                             <thead>
@@ -98,7 +111,7 @@ include('../clients/navbar.php');
                             </thead>
 
                             <?php
-                            $itemsPerPage = 1;
+                            $itemsPerPage = 5;
                             $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
                             $offset = ($currentPage - 1) * $itemsPerPage;
 
@@ -121,7 +134,10 @@ include('../clients/navbar.php');
                                         <td><?php echo $row['user_email']; ?></td>
                                         <td><?php echo $row['acc_status']; ?></td>
                                         <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
-                                        <td class="action"><a href="../admin/backend/deluserdb.php?userid=<?php echo $row['user_id']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this admin?');"><i class="fa fa-trash"></i></a></td>
+                                        <td class="action">
+                                            <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')"><i class="fa fa-eye"></i></a>
+                                            <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             <?php } ?>
@@ -145,8 +161,12 @@ include('../clients/navbar.php');
                 </div>
 
                 <div id="user-pending" class="tabcontent">
+                    <div class="search-box">
+                        <input type="text" name="searchInput2" id="searchInput2" class="searchInput2" placeholder="Search by student name or student ID">
+                    </div>
+
                     <div class="userlist-container">
-                        <table id="userlist">
+                        <table id="userpending">
                             <thead>
                                 <tr>
                                     <th class="number">No.</th>
@@ -160,7 +180,28 @@ include('../clients/navbar.php');
                             </thead>
 
                             <?php
-                            $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending'";
+                            $itemsPerPage2 = 2;
+                            $currentPage2 = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $offset2 = ($currentPage2 - 1) * $itemsPerPage2;
+
+                            //check if offset is negative and adjust if necessary
+                            if ($offset2 < 0) {
+                                $offset2 = 0; //reset offset to 0 if it's negative
+                            }
+
+                            $cquery = "SELECT COUNT(*) AS totalRecords FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Pending'";
+                            $cstatement = sqlsrv_query($conn, $cquery);
+                            $totalRecords = 0;
+
+                            if ($cstatement) {
+                                $crow = sqlsrv_fetch_array($cstatement);
+                                $totalRecords = $crow['totalRecords'];
+                            }
+
+                            //calculate the total number of pages
+                            $totalPages = ceil($totalRecords / $itemsPerPage2);
+
+                            $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending' ORDER BY user_id OFFSET $offset2 ROWS FETCH NEXT $itemsPerPage2 ROWS ONLY";
                             $statement2 = sqlsrv_query($conn, $query2);
 
                             $i = 1;
@@ -182,6 +223,21 @@ include('../clients/navbar.php');
                             <?php } ?>
                         </table>
                     </div>
+
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <?php if ($currentPage2 > 1) : ?>
+                                <li><a href="?page=<?php echo $currentPage - 1; ?>">Previous</a></li>
+                            <?php else : ?>
+                                <li><span>Previous</span></li>
+                            <?php endif;
+                            if ($currentPage2 < $totalPages) : ?>
+                                <li><a href="?page=<?php echo $currentPage + 1; ?>">Next</a></li>
+                            <?php else : ?>
+                                <li><span>Next</span></li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -202,31 +258,103 @@ include('../clients/navbar.php');
     </span>
 
     <script>
-        //search Function
-        function filterTable() {
+        //search function for approved list
+        function filterApproved() {
             const input = document.getElementById("searchInput");
             const filter = input.value.toUpperCase();
             const table = document.getElementById("userlist");
-            const rows = table.getElementsByTagName("tr");
+            const row = table.getElementsByTagName("tr");
+            let found = false;
 
-            for (let i = 1; i < rows.length; i++) {
-                const idColumn = rows[i].getElementsByTagName("td")[1];
-                const nameColumn = rows[i].getElementsByTagName("td")[2];
+            for (let i = 1; i < row.length; i++) {
+                const idColumn = row[i].getElementsByTagName("td")[1];
+                const nameColumn = row[i].getElementsByTagName("td")[2];
 
                 if (idColumn || nameColumn) {
                     const idText = idColumn.textContent || idColumn.innerText;
                     const nameText = nameColumn.textContent || nameColumn.innerText;
 
                     if (idText.toUpperCase().indexOf(filter) > -1 || nameText.toUpperCase().indexOf(filter) > -1) {
-                        rows[i].style.display = "";
+                        row[i].style.display = "";
+                        found = true;
                     } else {
-                        rows[i].style.display = "none";
+                        row[i].style.display = "none";
                     }
+                }
+            }
+
+            //check if any matching rows were found
+            if (!found) {
+                const noRecordsRow = document.getElementById("noRecordsRow");
+                if (noRecordsRow) {
+                    table.removeChild(noRecordsRow);
+                }
+
+                const noRecords = document.createElement("tr");
+                noRecords.id = "noRecordsRow";
+                const noRecordsCell = document.createElement("td");
+                noRecordsCell.setAttribute("colspan", "7");
+                noRecordsCell.textContent = "No records found.";
+                noRecords.appendChild(noRecordsCell);
+                table.appendChild(noRecords);
+            } else {
+                const noRecordsRow = document.getElementById("noRecordsRow");
+                if (noRecordsRow) {
+                    table.removeChild(noRecordsRow);
                 }
             }
         }
         //attach an event listener to the search input field
-        document.getElementById("searchInput").addEventListener("keyup", filterTable);
+        document.getElementById("searchInput").addEventListener("keyup", filterApproved);
+
+        //search function for pending list
+        function filterPending() {
+            const input = document.getElementById("searchInput2");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("userpending");
+            const row = table.getElementsByTagName("tr");
+            let found = false;
+
+            for (let i = 1; i < row.length; i++) {
+                const idColumn = row[i].getElementsByTagName("td")[1];
+                const nameColumn = row[i].getElementsByTagName("td")[2];
+
+                if (idColumn || nameColumn) {
+                    const idText = idColumn.textContent || idColumn.innerText;
+                    const nameText = nameColumn.textContent || nameColumn.innerText;
+
+                    if (idText.toUpperCase().indexOf(filter) > -1 || nameText.toUpperCase().indexOf(filter) > -1) {
+                        row[i].style.display = "";
+                        found = true;
+                    } else {
+                        row[i].style.display = "none";
+                    }
+                }
+            }
+
+            //check if any matching rows were found
+            if (!found) {
+                const noRecordsRow = document.getElementById("noRecordsRow");
+                if (noRecordsRow) {
+                    table.removeChild(noRecordsRow);
+                }
+
+                const noRecords = document.createElement("tr");
+                noRecords.id = "noRecordsRow";
+                const noRecordsCell = document.createElement("td");
+                noRecordsCell.setAttribute("colspan", "7");
+                noRecordsCell.textContent = "No records found.";
+                noRecords.appendChild(noRecordsCell);
+                table.appendChild(noRecords);
+            } else {
+                const noRecordsRow = document.getElementById("noRecordsRow");
+                if (noRecordsRow) {
+                    table.removeChild(noRecordsRow);
+                }
+            }
+        }
+        //attach an event listener to the search input field
+        document.getElementById("searchInput2").addEventListener("keyup", filterPending);
 
         function openForm(userid) {
             $.ajax({
@@ -243,6 +371,10 @@ include('../clients/navbar.php');
                     alert('Failed to load user details.');
                 }
             });
+        }
+
+        function closeForm() {
+            document.getElementById("user-detail-container").style.display = "none";
         }
     </script>
 </body>

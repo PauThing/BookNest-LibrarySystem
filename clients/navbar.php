@@ -77,9 +77,9 @@ include('../clients/connect.php');
                     <button class="dropbtn">MY ACCOUNT</button>
                     <div class="dropdown-content">
                         <a href="../clients/myprofile.php">My Profile</a>
-                        <a href="#">My Favorites</a>
-                        <a href="#">On Loan Books</a>
-                        <a href="#">Reservations</a>
+                        <a href="../clients/myfavorites.php">My Favorites</a>
+                        <a href="../clients/onloanbook.php">On Loan Books</a>
+                        <a href="../clients/reservation.php">Reservations</a>
                     </div>
                 </div>
             </div>
@@ -137,9 +137,9 @@ include('../clients/connect.php');
                                 <button class="dropbtn">MY ACCOUNT</button>
                                 <div class="dropdown-content">
                                     <a href="../clients/myprofile.php">My Profile</a>
-                                    <a href="#">My Favorites</a>
-                                    <a href="#">On Loan Books</a>
-                                    <a href="#">Reservations</a>
+                                    <a href="../clients/myfavorites.php">My Favorites</a>
+                                    <a href="../clients/onloanbook.php">On Loan Books</a>
+                                    <a href="../clients/reservation.php">Reservations</a>
                                 </div>
                             </div>
                         </div>
@@ -168,9 +168,9 @@ include('../clients/connect.php');
                             <div class="dropdown">
                                 <button class="dropbtn">ONLINE RESOURCES</button>
                                 <div class="dropdown-content">
-                                    <a href="#">Online Database</a>
-                                    <a href="#">Past Year Exam Papers</a>
-                                    <a href="#">Student's Project</a>
+                                    <a href="../admin/eonlinedblist.php">Online Database</a>
+                                    <a href="../admin/epyexampaper.php">Past Year Exam Papers</a>
+                                    <a href="../admin/estudentproject.php">Student's Project</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -207,9 +207,9 @@ include('../clients/connect.php');
                             <div class="dropdown">
                                 <button class="dropbtn">ONLINE RESOURCES</button>
                                 <div class="dropdown-content">
-                                    <a href="#">Online Database</a>
-                                    <a href="#">Past Year Exam Papers</a>
-                                    <a href="#">Student's Project</a>
+                                    <a href="../admin/eonlinedblist.php">Online Database</a>
+                                    <a href="../admin/epyexampaper.php">Past Year Exam Papers</a>
+                                    <a href="../admin/estudentproject.php">Student's Project</a>
                                 </div>
                             </div>
                             <div class="dropdown">

@@ -130,26 +130,7 @@ body {
 }
 
 /* pending user details */
-.add-admin {
-    width: 8em;
-    float: right;
-    padding: 0.4em;
-    margin-right: 4.6em;
-    margin-bottom: 1em;
-    border-radius: 0.2em;
-    background-color: var(--header-color);
-    text-align: center;
-    color: white;
-    font-size: 0.9em;
-}
-
-.add-admin:hover {
-    cursor: pointer;
-    background-color: #005e8d;
-    transition: .3s ease-in-out;
-}
-
-.user-detail-container {
+.user-detail-container, .admin-detail-container {
     display: none;
     position: absolute;
     top: 14em;
@@ -160,7 +141,7 @@ body {
     border: none;
 }
 
-.user-detail-form {
+.user-detail-form, .admin-detail-form {
     width: 90%;
     background-color: #f0f0f0;
     padding: 1.5em;
@@ -168,11 +149,11 @@ body {
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
 }
 
-.user-detail-container .wrap {
+.user-detail-container .wrap, .admin-detail-container .wrap {
     padding: 1.5em 4em;
 }
 
-.user-detail-container .wrap .InputText {
+.user-detail-container .wrap .InputText, .admin-detail-container .wrap .InputText {
     background: transparent;
     height: 2.2em;
     width: 100%;
@@ -180,7 +161,7 @@ body {
     margin-bottom: 3em;
 }
 
-.user-detail-container .wrap .InputText input {
+.user-detail-container .wrap .InputText input, .admin-detail-container .wrap .InputText input {
     height: 100%;
     width: 100%;
     background: transparent;
@@ -191,7 +172,7 @@ body {
     outline: none;
 }
 
-.user-detail-container .wrap .InputText label, .user-detail-container .wrap .show-stu-id label {
+.user-detail-container .wrap .InputText label, .user-detail-container .wrap .show-stu-id label, .admin-detail-container .wrap .InputText label {
     font-size: 0.9em;
     text-align: left;
     font-weight: bold;
@@ -200,7 +181,9 @@ body {
 }
 
 .user-detail-container .wrap .show-stu-id .center {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     margin: 0 auto;
 }
@@ -209,7 +192,7 @@ body {
     width: 35%;
 }
 
-.user-detail-container .header {
+.user-detail-container .header, .admin-detail-container .header {
     text-align: center;
     padding: 0 3em;
     color: var(--header-color);
@@ -282,16 +265,17 @@ body {
 
 /* search bar */
 .search-box {
-    width: 88%;
-    margin-top: 2em;
-    margin-bottom: 3.5em;
-    margin-left: 4.4em;
-    margin-right: 4.4em;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 1.5em 0;
     border: none;
+    background-color: var(--header-color);
 }
 
-.search-box .searchInput {
-    width: 100%;
+.search-box .searchInput, .search-box .searchInput2  {
+    width: 90%;
     padding: 1em;
     border: none;
     border-radius: 2.5em;
@@ -362,6 +346,55 @@ td {
 
 .adminlist-container table tbody td, .userlist-container table tbody td {
     color: var(--md-dark-color);
+}
+
+/* pagination */
+.pagination-container {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.pagination-container .pagination {
+    list-style: none;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 1.2em;
+}
+
+.pagination li:last-child {
+    margin-right: 0;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 6em;
+    padding: 0.3em;
+    text-decoration: none;
+    background-color: var(--button-color);
+    color: var(--dark-color);
+    border: none;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+}
+
+.pagination span {
+    display: inline-block;
+    width: 6em;
+    padding: 0.3em;
+    text-decoration: none;
+    background-color: #c6c6c6d1;
+    color: #969696bf;
+    border: none;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+}
+
+.pagination a:hover {
+    background-color: var(--button-hover-color);
+    color: #fff;
 }
 
 /* buttons */

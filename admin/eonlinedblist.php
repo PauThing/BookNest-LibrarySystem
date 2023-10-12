@@ -21,20 +21,12 @@ include('../clients/navbar.php');
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../clients/styles/userlist.css">
+    <link rel="stylesheet" href="../clients/styles/resources.css">
 
-    <title>Administrator List</title>
+    <title>Online Database</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function openForm() {
-            document.getElementById("new-admin-container").style.display = "block";
-        }
-
-        function closeForm() {
-            document.getElementById("new-admin-container").style.display = "none";
-        }
-
         function confirmDelete(userid) {
             const password = prompt("Please enter your password:");
             if (password !== null) {
@@ -47,55 +39,29 @@ include('../clients/navbar.php');
 <body>
     <div class="big-container">
         <div class="header">
-            <h3>Administrator List</h3>
+            <h3>Online Database</h3>
         </div>
 
-        <?php
-        if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == 'SuperAdmin') {
-        ?>
-
-            <div class="add-admin" onclick="openForm()">
-                <i class="fa fa-plus"></i> New Admin
-            </div>
-
-        <?php } ?>
-
-        <br />
-
-        <div class="adminlist-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="number">No.</th>
-                        <th>Admin ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Registered Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
+        <div class="onlinedb-container">
+            <table id="onlinedb">
                 <?php
-                $query = "SELECT * FROM [user] where [usertype] = 'SuperAdmin' OR [usertype] = 'Admin'";
+                $query = "SELECT * FROM [onlinedb]";
                 $statement = sqlsrv_query($conn, $query);
 
-                $i = 1;
                 while ($row = sqlsrv_fetch_array($statement)) {
                 ?>
+                    <thead>
+                        <tr>
+                            <th><?php echo $row['category']; ?></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
                     <tbody>
                         <tr>
-                            <td class="number"><?php echo $i++; ?></td>
-                            <td><?php echo $row['user_id']; ?></td>
-                            <td><?php echo $row['fullname']; ?></td>
-                            <td><?php echo $row['user_email']; ?></td>
-                            <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                            <td><a href="<?php echo $row['db_url']; ?>" target="_blank"><?php echo $row['title']; ?></a></td>
                             <td class="action">
-                                <a href="javascript:void(0);" class="view" onclick="openDetail('<?php echo $row['user_id']; ?>')"><i class="fa fa-eye"></i></a>
-                                <?php
-                                if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == 'SuperAdmin') {
-                                ?>
-                                    <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
-                                <?php } ?>
+                                <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['title']; ?>');"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -103,8 +69,6 @@ include('../clients/navbar.php');
             </table>
         </div>
     </div>
-
-    <div class="admin-detail-container" id="admin-detail-container"></div>
 
     <div id="new-admin-container" class="new-admin-container">
         <form id="new-admin-form" class="new-admin-form" method="post" action="../admin/backend/newadmindb.php" enctype="multipart/form-data">
@@ -140,29 +104,6 @@ include('../clients/navbar.php');
             </div>
         </form>
     </div>
-
-    <script>
-        function openDetail(userid) {
-            $.ajax({
-                type: 'GET',
-                url: '../admin/userdetail.php',
-                data: {
-                    uid: userid
-                },
-                success: function(response) {
-                    $('#admin-detail-container').html(response);
-                    document.getElementById("admin-detail-container").style.display = "block";
-                },
-                error: function() {
-                    alert('Failed to load user details.');
-                }
-            });
-        }
-
-        function closeDetail() {
-            document.getElementById("admin-detail-container").style.display = "none";
-        }
-    </script>
 
     <span>
         <?php
