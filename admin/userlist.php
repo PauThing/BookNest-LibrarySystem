@@ -58,7 +58,7 @@ include('../clients/navbar.php');
             if (storedTab) {
                 setActive(storedTab);
             } else {
-                setActive("user-accepted"); //set s default tab if none is stored
+                setActive("user-accepted"); //set as default tab if none is stored
             }
 
             const tabLinks = document.querySelectorAll(".tablinks");
@@ -86,16 +86,20 @@ include('../clients/navbar.php');
     <div class="big-container">
         <div class="tab-container">
             <div class="tabs">
-                <button class="tablinks active" data-target="user-accepted">User List</button>
-                <button class="tablinks" data-target="user-pending">User Pending</button>
+                <button id="accepted" class="tablinks active" data-target="user-accepted">User List</button>
+                <button id="pending" class="tablinks" data-target="user-pending">User Pending</button>
             </div>
 
             <div class="tab-content">
                 <div id="user-accepted" class="tabcontent">
-                    <div class="search-box">
-                        <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID">
-                    </div>
+                    <form method="post">
+                        <div class="search-box">
+                            <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID" onkeyup="searchApproved(event)">
+                            <button class="search-btn" name="search-btn" style="display: none;"></button>
+                        </div>
+                    </form>
 
+                    <!-- Approved List -->
                     <div class="userlist-container">
                         <table id="userlist">
                             <thead>
@@ -110,49 +114,123 @@ include('../clients/navbar.php');
                                 </tr>
                             </thead>
 
-                            <?php
-                            $itemsPerPage = 5;
-                            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-                            $offset = ($currentPage - 1) * $itemsPerPage;
+                            <tbody>
+                                <?php
+                                if (isset($_POST['searchInput'])) {
+                                    $search = $_POST['searchInput'];
 
-                            //check if offset is negative and adjust if necessary
-                            if ($offset < 0) {
-                                $offset = 0; //reset offset to 0 if it's negative
-                            }
+                                    $itemsPerPage = 1;
+                                    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                                    $offset = ($currentPage - 1) * $itemsPerPage;
 
-                            $query = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Approved' ORDER BY user_id OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
-                            $statement = sqlsrv_query($conn, $query);
+                                    //check if offset is negative and adjust if necessary
+                                    if ($offset < 0) {
+                                        $offset = 0; //reset offset to 0 if it's negative
+                                    }
 
-                            $i = 1;
-                            while ($row = sqlsrv_fetch_array($statement)) {
-                            ?>
-                                <tbody>
-                                    <tr>
-                                        <td class="number"><?php echo $i++; ?></td>
-                                        <td><?php echo $row['user_id']; ?></td>
-                                        <td><?php echo $row['fullname']; ?></td>
-                                        <td><?php echo $row['user_email']; ?></td>
-                                        <td><?php echo $row['acc_status']; ?></td>
-                                        <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
-                                        <td class="action">
-                                            <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')"><i class="fa fa-eye"></i></a>
-                                            <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            <?php } ?>
+                                    $cquery = "SELECT COUNT(*) AS ttlrecord FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved' AND ([user_id] LIKE ? OR [fullname] LIKE ?)";
+                                    $carray = ["%$search%", "%$search%"];
+                                    $cstatement = sqlsrv_query($conn, $cquery, $carray);
+                                    $ttlrecord = 0;
+
+                                    if ($cstatement) {
+                                        $crow = sqlsrv_fetch_array($cstatement);
+                                        $ttlrecord = $crow['ttlrecord'];
+                                    }
+
+                                    //calculate the total number of pages
+                                    $ttlpages = ceil($ttlrecord / $itemsPerPage);
+
+                                    if ($currentPage < 1) {
+                                        $currentPage = 1;
+                                    } elseif ($currentPage > $ttlpages) {
+                                        $currentPage = $ttlpages;
+                                    }
+
+                                    $query = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Approved' AND ([user_id] LIKE ? OR [fullname] LIKE ?) ORDER BY user_id OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+                                    $array = ["%$search%", "%$search%"];
+                                    $statement = sqlsrv_query($conn, $query, $array);
+
+                                    $i = 1;
+                                    $norecord = true;
+                                    while ($row = sqlsrv_fetch_array($statement)) {
+                                ?>
+
+                                        <tr>
+                                            <td class="number"><?php echo $i++; ?></td>
+                                            <td><?php echo $row['user_id']; ?></td>
+                                            <td><?php echo $row['fullname']; ?></td>
+                                            <td><?php echo $row['user_email']; ?></td>
+                                            <td><?php echo $row['acc_status']; ?></td>
+                                            <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                            <td class="action">
+                                                <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')" style="margin-right: 0.8em;"><i class="fa fa-eye"></i></a>
+                                                <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        $norecord = false;
+                                    }
+
+                                    if ($norecord) {
+                                        echo "<td colspan='7'>No records found.</td>";
+                                    }
+                                } else {
+                                    $itemsPerPage = 1;
+                                    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                                    $offset = ($currentPage - 1) * $itemsPerPage;
+
+                                    //check if offset is negative and adjust if necessary
+                                    if ($offset < 0) {
+                                        $offset = 0; //reset offset to 0 if it's negative
+                                    }
+
+                                    $cquery = "SELECT COUNT(*) AS ttlrecord FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved'";
+                                    $cstatement = sqlsrv_query($conn, $cquery);
+                                    $ttlrecord = 0;
+
+                                    if ($cstatement) {
+                                        $crow = sqlsrv_fetch_array($cstatement);
+                                        $ttlrecord = $crow['ttlrecord'];
+                                    }
+
+                                    //calculate the total number of pages
+                                    $ttlpages = ceil($ttlrecord / $itemsPerPage);
+
+                                    $query = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Approved' ORDER BY user_id OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+                                    $statement = sqlsrv_query($conn, $query);
+
+                                    $i = 1;
+                                    while ($row = sqlsrv_fetch_array($statement)) {
+                                    ?>
+                                        <tr>
+                                            <td class="number"><?php echo $i++; ?></td>
+                                            <td><?php echo $row['user_id']; ?></td>
+                                            <td><?php echo $row['fullname']; ?></td>
+                                            <td><?php echo $row['user_email']; ?></td>
+                                            <td><?php echo $row['acc_status']; ?></td>
+                                            <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                            <td class="action">
+                                                <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')" style="margin-right: 0.8em;"><i class="fa fa-eye"></i></a>
+                                                <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                <?php }
+                                } ?>
+                            </tbody>
                         </table>
                     </div>
 
+                    <!-- Pagination - page by page -->
                     <div class="pagination-container">
                         <ul class="pagination">
                             <?php if ($currentPage > 1) : ?>
-                                <li><a href="?page=<?php echo $currentPage - 1; ?>">Previous</a></li>
+                                <li><a href="?page=<?php echo $currentPage - 1 . (isset($_POST['searchInput']) ? '&searchInput=' . $_POST['searchInput'] : ''); ?>">Previous</a></li>
                             <?php else : ?>
                                 <li><span>Previous</span></li>
                             <?php endif;
-                            if ($currentPage <= 1) : ?>
-                                <li><a href="?page=<?php echo $currentPage + 1; ?>">Next</a></li>
+                            if ($currentPage < $ttlpages) : ?>
+                                <li><a href="?page=<?php echo $currentPage + 1 . (isset($_POST['searchInput']) ? '&searchInput=' . $_POST['searchInput'] : ''); ?>">Next</a></li>
                             <?php else : ?>
                                 <li><span>Next</span></li>
                             <?php endif; ?>
@@ -160,10 +238,14 @@ include('../clients/navbar.php');
                     </div>
                 </div>
 
+                <!-- Pending List -->
                 <div id="user-pending" class="tabcontent">
-                    <div class="search-box">
-                        <input type="text" name="searchInput2" id="searchInput2" class="searchInput2" placeholder="Search by student name or student ID">
-                    </div>
+                    <form method="post">
+                        <div class="search-box">
+                            <input type="text" name="searchInput2" id="searchInput2" class="searchInput2" placeholder="Search by student name or student ID" onkeyup="searchPending(event)">
+                            <button class="search2-btn" name="search2-btn" style="display: none;"></button>
+                        </div>
+                    </form>
 
                     <div class="userlist-container">
                         <table id="userpending">
@@ -179,60 +261,116 @@ include('../clients/navbar.php');
                                 </tr>
                             </thead>
 
-                            <?php
-                            $itemsPerPage2 = 2;
-                            $currentPage2 = isset($_GET['page']) ? $_GET['page'] : 1;
-                            $offset2 = ($currentPage2 - 1) * $itemsPerPage2;
+                            <tbody>
+                                <?php
+                                if (isset($_POST['searchInput2'])) {
+                                    $search2 = $_POST['searchInput2'];
 
-                            //check if offset is negative and adjust if necessary
-                            if ($offset2 < 0) {
-                                $offset2 = 0; //reset offset to 0 if it's negative
-                            }
+                                    $itemsPerPage2 = 1;
+                                    $currentPage2 = isset($_GET['page']) ? $_GET['page'] : 1;
+                                    $offset2 = ($currentPage2 - 1) * $itemsPerPage2;
 
-                            $cquery = "SELECT COUNT(*) AS totalRecords FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Pending'";
-                            $cstatement = sqlsrv_query($conn, $cquery);
-                            $totalRecords = 0;
+                                    //check if offset is negative and adjust if necessary
+                                    if ($offset2 < 0) {
+                                        $offset2 = 0; //reset offset to 0 if it's negative
+                                    }
 
-                            if ($cstatement) {
-                                $crow = sqlsrv_fetch_array($cstatement);
-                                $totalRecords = $crow['totalRecords'];
-                            }
+                                    $cquery2 = "SELECT COUNT(*) AS ttlrecord2 FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Pending' AND ([user_id] LIKE ? OR [fullname] LIKE ?)";
+                                    $carray2 = ["%$search2%", "%$search2%"];
+                                    $cstatement2 = sqlsrv_query($conn, $cquery2, $carray2);
+                                    $ttlrecord2 = 0;
 
-                            //calculate the total number of pages
-                            $totalPages = ceil($totalRecords / $itemsPerPage2);
+                                    if ($cstatement2) {
+                                        $crow2 = sqlsrv_fetch_array($cstatement2);
+                                        $ttlrecord2 = $crow2['ttlrecord2'];
+                                    }
 
-                            $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending' ORDER BY user_id OFFSET $offset2 ROWS FETCH NEXT $itemsPerPage2 ROWS ONLY";
-                            $statement2 = sqlsrv_query($conn, $query2);
+                                    //calculate the total number of pages
+                                    $ttlpages2 = ceil($ttlrecord2 / $itemsPerPage2);
 
-                            $i = 1;
-                            while ($row = sqlsrv_fetch_array($statement2)) {
-                            ?>
-                                <tbody>
-                                    <tr>
-                                        <td class="number"><?php echo $i++; ?></td>
-                                        <td><?php echo $row['user_id']; ?></td>
-                                        <td><?php echo $row['fullname']; ?></td>
-                                        <td><?php echo $row['user_email']; ?></td>
-                                        <td><?php echo $row['acc_status']; ?></td>
-                                        <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
-                                        <td class="action">
-                                            <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')"><i class="fa fa-eye"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            <?php } ?>
+                                    $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending' AND ([user_id] LIKE ? OR [fullname] LIKE ?) ORDER BY user_id OFFSET $offset2 ROWS FETCH NEXT $itemsPerPage2 ROWS ONLY";
+                                    $array2 = ["%$search2%", "%$search2%"];
+                                    $statement2 = sqlsrv_query($conn, $query2, $array2);
+
+                                    $i = 1;
+                                    $norecord = true;
+                                    while ($row2 = sqlsrv_fetch_array($statement2)) {
+                                ?>
+
+                                        <tr>
+                                            <td class="number"><?php echo $i++; ?></td>
+                                            <td><?php echo $row2['user_id']; ?></td>
+                                            <td><?php echo $row2['fullname']; ?></td>
+                                            <td><?php echo $row2['user_email']; ?></td>
+                                            <td><?php echo $row2['acc_status']; ?></td>
+                                            <td><?php echo $row2['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                            <td class="action">
+                                                <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row2['user_id']; ?>')" style="margin-right: 0.8em;"><i class="fa fa-eye"></i></a>
+                                                <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row2['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        $norecord = false;
+                                    }
+
+                                    if ($norecord) {
+                                        echo "<td colspan='7'>No records found.</td>";
+                                    }
+                                } else {
+                                    $itemsPerPage2 = 1;
+                                    $currentPage2 = isset($_GET['page']) ? $_GET['page'] : 1;
+                                    $offset2 = ($currentPage2 - 1) * $itemsPerPage2;
+
+                                    //check if offset is negative and adjust if necessary
+                                    if ($offset2 < 0) {
+                                        $offset2 = 0; //reset offset to 0 if it's negative
+                                    }
+
+                                    $cquery2 = "SELECT COUNT(*) AS ttlrecord FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Pending'";
+                                    $cstatement2 = sqlsrv_query($conn, $cquery2);
+                                    $ttlrecord2 = 0;
+
+                                    if ($cstatement2) {
+                                        $crow2 = sqlsrv_fetch_array($cstatement2);
+                                        $ttlrecord2 = $crow2['ttlrecord'];
+                                    }
+
+                                    //calculate the total number of pages
+                                    $ttlpages2 = ceil($ttlrecord2 / $itemsPerPage2);
+
+                                    $query2 = "SELECT * FROM [user] where [usertype] = 'Student' AND [acc_status] = 'Pending' ORDER BY user_id OFFSET $offset2 ROWS FETCH NEXT $itemsPerPage2 ROWS ONLY";
+                                    $statement2 = sqlsrv_query($conn, $query2);
+
+                                    $i = 1;
+                                    while ($row2 = sqlsrv_fetch_array($statement2)) {
+                                    ?>
+                                        <tr>
+                                            <td class="number"><?php echo $i++; ?></td>
+                                            <td><?php echo $row2['user_id']; ?></td>
+                                            <td><?php echo $row2['fullname']; ?></td>
+                                            <td><?php echo $row2['user_email']; ?></td>
+                                            <td><?php echo $row2['acc_status']; ?></td>
+                                            <td><?php echo $row2['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                            <td class="action">
+                                                <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row2['user_id']; ?>')"><i class="fa fa-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                <?php }
+                                } ?>
+                            </tbody>
                         </table>
                     </div>
 
+                    <!-- Pagination - page by page -->
                     <div class="pagination-container">
                         <ul class="pagination">
                             <?php if ($currentPage2 > 1) : ?>
-                                <li><a href="?page=<?php echo $currentPage - 1; ?>">Previous</a></li>
+                                <li><a href="?page=<?php echo $currentPage2 - 1 . (isset($_POST['searchInput2']) ? '&searchInput2=' . $_POST['searchInput2'] : ''); ?>">Previous</a></li>
                             <?php else : ?>
                                 <li><span>Previous</span></li>
                             <?php endif;
-                            if ($currentPage2 < $totalPages) : ?>
-                                <li><a href="?page=<?php echo $currentPage + 1; ?>">Next</a></li>
+                            if ($currentPage2 < $ttlpages2) : ?>
+                                <li><a href="?page=<?php echo $currentPage2 + 1 . (isset($_POST['searchInput2']) ? '&searchInput2=' . $_POST['searchInput2'] : ''); ?>">Next</a></li>
                             <?php else : ?>
                                 <li><span>Next</span></li>
                             <?php endif; ?>
@@ -259,102 +397,23 @@ include('../clients/navbar.php');
 
     <script>
         //search function for approved list
-        function filterApproved() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById("userlist");
-            const row = table.getElementsByTagName("tr");
-            let found = false;
-
-            for (let i = 1; i < row.length; i++) {
-                const idColumn = row[i].getElementsByTagName("td")[1];
-                const nameColumn = row[i].getElementsByTagName("td")[2];
-
-                if (idColumn || nameColumn) {
-                    const idText = idColumn.textContent || idColumn.innerText;
-                    const nameText = nameColumn.textContent || nameColumn.innerText;
-
-                    if (idText.toUpperCase().indexOf(filter) > -1 || nameText.toUpperCase().indexOf(filter) > -1) {
-                        row[i].style.display = "";
-                        found = true;
-                    } else {
-                        row[i].style.display = "none";
-                    }
-                }
-            }
-
-            //check if any matching rows were found
-            if (!found) {
-                const noRecordsRow = document.getElementById("noRecordsRow");
-                if (noRecordsRow) {
-                    table.removeChild(noRecordsRow);
-                }
-
-                const noRecords = document.createElement("tr");
-                noRecords.id = "noRecordsRow";
-                const noRecordsCell = document.createElement("td");
-                noRecordsCell.setAttribute("colspan", "7");
-                noRecordsCell.textContent = "No records found.";
-                noRecords.appendChild(noRecordsCell);
-                table.appendChild(noRecords);
-            } else {
-                const noRecordsRow = document.getElementById("noRecordsRow");
-                if (noRecordsRow) {
-                    table.removeChild(noRecordsRow);
-                }
+        function searchApproved(event) {
+            if (event.key === 'Enter') {
+                //prevent form submission (if within a form)
+                event.preventDefault();
+                document.getElementById('search-btn').click();
             }
         }
-        //attach an event listener to the search input field
-        document.getElementById("searchInput").addEventListener("keyup", filterApproved);
 
         //search function for pending list
-        function filterPending() {
-            const input = document.getElementById("searchInput2");
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById("userpending");
-            const row = table.getElementsByTagName("tr");
-            let found = false;
-
-            for (let i = 1; i < row.length; i++) {
-                const idColumn = row[i].getElementsByTagName("td")[1];
-                const nameColumn = row[i].getElementsByTagName("td")[2];
-
-                if (idColumn || nameColumn) {
-                    const idText = idColumn.textContent || idColumn.innerText;
-                    const nameText = nameColumn.textContent || nameColumn.innerText;
-
-                    if (idText.toUpperCase().indexOf(filter) > -1 || nameText.toUpperCase().indexOf(filter) > -1) {
-                        row[i].style.display = "";
-                        found = true;
-                    } else {
-                        row[i].style.display = "none";
-                    }
-                }
-            }
-
-            //check if any matching rows were found
-            if (!found) {
-                const noRecordsRow = document.getElementById("noRecordsRow");
-                if (noRecordsRow) {
-                    table.removeChild(noRecordsRow);
-                }
-
-                const noRecords = document.createElement("tr");
-                noRecords.id = "noRecordsRow";
-                const noRecordsCell = document.createElement("td");
-                noRecordsCell.setAttribute("colspan", "7");
-                noRecordsCell.textContent = "No records found.";
-                noRecords.appendChild(noRecordsCell);
-                table.appendChild(noRecords);
-            } else {
-                const noRecordsRow = document.getElementById("noRecordsRow");
-                if (noRecordsRow) {
-                    table.removeChild(noRecordsRow);
-                }
+        function searchPending(event) {
+            if (event.key === 'Enter') {
+                //prevent form submission (if within a form)
+                event.preventDefault();
+                document.getElementById('search2-btn').click();
             }
         }
-        //attach an event listener to the search input field
-        document.getElementById("searchInput2").addEventListener("keyup", filterPending);
+
 
         function openForm(userid) {
             $.ajax({

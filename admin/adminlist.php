@@ -94,7 +94,7 @@ include('../clients/navbar.php');
                                 <?php
                                 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == 'SuperAdmin') {
                                 ?>
-                                    <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                    <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');" style="margin-left: 0.8em;"><i class="fa fa-trash"></i></a>
                                 <?php } ?>
                             </td>
                         </tr>
@@ -113,19 +113,21 @@ include('../clients/navbar.php');
                 <h3>NEW ADMIN</h3>
             </div>
 
+            <br />
+
             <div class="wrap">
                 <div class="InputText">
-                    <input type="text" name="fname" id="fname" required>
+                    <input type="text" name="fname" id="fname" autocomplete="off" required>
                     <label for="fname">Full Name</label>
                 </div>
 
                 <div class="InputText">
-                    <input type="email" name="uEmail" id="uEmail" required>
+                    <input type="email" name="uEmail" id="uEmail" autocomplete="off" required>
                     <label for="uEmail">Email</label>
                 </div>
 
                 <div class="InputText">
-                    <input type="text" name="uID" id="uID" required>
+                    <input type="text" name="uID" id="uID" autocomplete="off" required>
                     <label for="uID">Admin ID</label>
                 </div>
 

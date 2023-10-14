@@ -10,7 +10,7 @@ if (isset($_POST["new-admin"])) {
 	$statement = sqlsrv_query($conn, $query, $array);
 
 	if (sqlsrv_num_rows($statement) == 1) {
-		$_SESSION['message'] = "<script>alert('The user ID already exists!')</script>";
+		$_SESSION['message'] = "The user ID already exists!";
 		header("location: ../../admin/adminlist.php");
 	} else {
 		$fullname = $_POST['fname'];

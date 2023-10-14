@@ -10,7 +10,7 @@ if (isset($_POST["signup"])) {
 	$statement = sqlsrv_query($conn, $query, $array);
 
 	if (sqlsrv_num_rows($statement) == 1) {
-		$_SESSION['message'] = "<script>alert('The user ID already exists!')</script>";
+		$_SESSION['message'] = "The user ID already exists!";
 		header("location: ../../clients/signup.php");
 	} else {
 		$fullname = $_POST['fname'];

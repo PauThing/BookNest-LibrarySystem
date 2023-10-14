@@ -26,9 +26,9 @@ body {
     text-align: center;
 }
 
-/* add admin */
-.add-admin {
-    width: 8em;
+/* add new online database */
+.add-db {
+    width: 10em;
     float: right;
     padding: 0.4em;
     margin-right: 4.6em;
@@ -40,13 +40,13 @@ body {
     font-size: 0.9em;
 }
 
-.add-admin:hover {
+.add-db:hover {
     cursor: pointer;
     background-color: #005e8d;
     transition: .3s ease-in-out;
 }
 
-.new-admin-container {
+.new-db-container {
     display: none;
     position: absolute;
     top: 12em;
@@ -58,7 +58,7 @@ body {
     
 }
 
-.new-admin-form {
+.new-db-form {
     width: 90%;
     background-color: #f0f0f0;
     padding: 1.5em;
@@ -66,11 +66,11 @@ body {
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
 }
 
-.new-admin-container .wrap {
+.new-db-container .wrap {
     padding: 1.5em 4em;
 }
 
-.new-admin-container .wrap .InputText {
+.new-db-container .wrap .InputText {
     background: transparent;
     text-align: center;
     height: 2.2em;
@@ -79,7 +79,7 @@ body {
     margin-bottom: 3em;
 }
 
-.new-admin-container .wrap .InputText input {
+.new-db-container .wrap .InputText input {
     height: 100%;
     width: 100%;
     background: transparent;
@@ -90,15 +90,15 @@ body {
     outline: none;
 }
 
-.new-admin-container .wrap .InputText input:focus~label,
-.new-admin-container .wrap .InputText input:valid~label {
+.new-db-container .wrap .InputText input:focus~label,
+.new-db-container .wrap .InputText input:valid~label {
     transform: translateY(-1.5em);
     transition: all 0.3s ease;
     color: #f0f0f0;
     outline: none;
 }
 
-.new-admin-container .wrap .InputText label {
+.new-db-container .wrap .InputText label {
     font-size: 0.9em;
     position: absolute;
     bottom: 0.5em;
@@ -107,7 +107,28 @@ body {
     pointer-events: none;
 }
 
-.new-admin-container .header {
+.new-db-container .wrap .SelectInput {
+    width: 100%;
+}
+
+.new-db-container .wrap .SelectInput label {
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.new-db-container .wrap .SelectInput .dbcat {
+    width: 100%;
+    border: none;
+    border-radius: 0.2em;
+    outline: none;
+    padding: 0.5em;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8em;
+}
+
+.new-db-container .header {
     text-align: center;
     padding: 0 3em;
     color: var(--header-color);
@@ -149,21 +170,18 @@ body {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
-    border-radius: 0.5em;
     background-color: white;
     overflow: hidden;
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
-    font-size: 0.9em;
 }
 
 .action {
-    width: 5em;
+    width: 4em;
     text-align: center;
 }
 
-th,
-td {
-    padding: 0.8em;
+.onlinedb-container table th, td {
+    padding: 0.6em;
     white-space: nowrap;
     width: fit-content;
 }
@@ -172,23 +190,26 @@ td {
     text-align: center;
     background-color: var(--header-color);
     color: white;
+    font-size: 0.9em;
 }
 
 .onlinedb-container table tbody tr:hover {
     background-color: #f2f5f7;
 }
 
-.online-container table tbody td {
+.onlinedb-container table tbody td a {
     color: var(--md-dark-color);
+    font-size: 0.8em;
+    padding: 0 1.4em;
 }
 
 /* buttons */
-.new-admin-btn, .user-detail-btn {
+.new-db-btn, .user-detail-btn {
     padding-top: 1em;
     text-align: center;
 }
 
-.new-admin-btn .new-admin, .user-detail-btn .user-approve, .user-detail-btn .user-reject {
+.new-db-btn .new-db, .user-detail-btn .user-approve, .user-detail-btn .user-reject {
     width: 8em;
     outline: none;
     border-radius: 0.1rem;
@@ -206,7 +227,7 @@ td {
     transition: all 0.2s;
 }
 
-.new-admin-btn .new-admin:hover, .user-detail-btn .user-approve:hover, .user-detail-btn .user-reject:hover {
+.new-db-btn .new-db:hover, .user-detail-btn .user-approve:hover, .user-detail-btn .user-reject:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
 

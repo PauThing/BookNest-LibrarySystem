@@ -27,6 +27,14 @@ include('../clients/navbar.php');
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function openForm() {
+            document.getElementById("new-db-container").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("new-db-container").style.display = "none";
+        }
+
         function confirmDelete(userid) {
             const password = prompt("Please enter your password:");
             if (password !== null) {
@@ -42,64 +50,83 @@ include('../clients/navbar.php');
             <h3>Online Database</h3>
         </div>
 
+        <div class="add-db" onclick="openForm()">
+            <i class="fa fa-plus"></i> New Database
+        </div>
+
         <div class="onlinedb-container">
             <table id="onlinedb">
                 <?php
                 $query = "SELECT * FROM [onlinedb]";
                 $statement = sqlsrv_query($conn, $query);
 
-                while ($row = sqlsrv_fetch_array($statement)) {
-                ?>
-                    <thead>
-                        <tr>
-                            <th><?php echo $row['category']; ?></th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+                $previousCategory = null;
 
-                    <tbody>
-                        <tr>
-                            <td><a href="<?php echo $row['db_url']; ?>" target="_blank"><?php echo $row['title']; ?></a></td>
-                            <td class="action">
-                                <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['title']; ?>');"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                <?php } ?>
+                while ($row = sqlsrv_fetch_array($statement)) {
+                    //check if the current category is different from the previous category
+                    if ($row['category'] != $previousCategory) {
+                        if ($previousCategory !== null) {
+                ?>
             </table>
+        <?php } ?>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2"><?php echo $row['category']; ?></th>
+                </tr>
+            </thead>
+        <?php } ?>
+        <tbody>
+            <tr>
+                <td><a href="<?php echo $row['db_url']; ?>" target="_blank"><?php echo $row['title']; ?></a></td>
+                <td class="action">
+                    <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['title']; ?>');"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    <?php $previousCategory = $row['category'];
+                } ?>
+        </table>
         </div>
     </div>
 
-    <div id="new-admin-container" class="new-admin-container">
-        <form id="new-admin-form" class="new-admin-form" method="post" action="../admin/backend/newadmindb.php" enctype="multipart/form-data">
+    <div id="new-db-container" class="new-db-container">
+        <form id="new-db-form" class="new-db-form" method="post" action="../admin/backend/newdbdb.php" enctype="multipart/form-data">
             <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
-                <h3>NEW ADMIN</h3>
+                <h3>NEW DATABASE</h3>
             </div>
+
+            <br />
 
             <div class="wrap">
                 <div class="InputText">
-                    <input type="text" name="fname" id="fname" required>
-                    <label for="fname">Full Name</label>
+                    <input type="text" name="dbtitle" id="dbtitle" autocomplete="off" required>
+                    <label for="dbtitle">Database Title</label>
                 </div>
 
                 <div class="InputText">
-                    <input type="email" name="uEmail" id="uEmail" required>
-                    <label for="uEmail">Email</label>
+                    <input type="url" name="dburl" id="dburl" pattern="https://.*" autocomplete="off" required />
+                    <label for="dburl">URLs</label>
                 </div>
 
-                <div class="InputText">
-                    <input type="text" name="uID" id="uID" required>
-                    <label for="uID">Admin ID</label>
+                <div class="SelectInput" data-mate-select="active">
+                    <label for="dbcat">Database Category</label> <br />
+                    <select name="dbcat" id="dbcat" class="dbcat">
+                        <option value="">Select an option </option>
+                        <option value="Arts">Arts</option>
+                        <option value="Business and Communication">Business and Communication</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Hospitality and Tourism">Hospitality and Tourism</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Others">Others</option>
+                    </select>
                 </div>
 
-                <div class="InputText">
-                    <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 8 or more characters" required>
-                    <label for="password">Password</label>
-                </div>
+                <br /><br />
 
-                <div class="new-admin-btn">
-                    <input type="submit" name="new-admin" id="new-admin" class="new-admin" value="Register">
+                <div class="new-db-btn">
+                    <input type="submit" name="new-db" id="new-db" class="new-db" value="Proceed">
                 </div>
             </div>
         </form>

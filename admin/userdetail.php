@@ -84,11 +84,12 @@ if (isset($_GET['uid'])) {
                         <input type="email" name="uEmail" id="uEmail" value="<?php echo $row2['user_email']; ?>" disabled>
                     </div>
 
-                    <div class="user-detail-btn">
-                        <input type="submit" name="user-approve" id="user-approve" class="user-approve" value="Approve">
-                        <input type="submit" name="user-reject" id="user-reject" class="user-reject" value="Reject">
-                    </div>
-                <?php } ?>
+                    <?php if ($row2['acc_status'] == "Pending") { ?>
+                        <div class="user-detail-btn">
+                            <input type="submit" name="user-approve" id="user-approve" class="user-approve" value="Approve">
+                            <input type="submit" name="user-reject" id="user-reject" class="user-reject" value="Reject">
+                        </div>
+                <?php }} ?>
             </div>
         </form>
 
@@ -116,7 +117,7 @@ if (isset($_GET['uid'])) {
                 ?>
 
                     <div class="InputText">
-                        <label for="uID">Student ID</label>
+                        <label for="uID">Admin ID</label>
                         <input type="text" name="uID" id="uID" value="<?php echo $row2['user_id']; ?>" disabled>
                     </div>
 
