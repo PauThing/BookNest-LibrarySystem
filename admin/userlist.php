@@ -46,7 +46,7 @@ include('../clients/navbar.php');
 
             <div class="tab-content">
                 <div id="user-accepted" class="tabcontent">
-                    <form method="post" action="../admin/user">
+                    <form method="post" action="../admin/userlist.php">
                         <div class="search-box">
                             <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID" onkeyup="searchApproved(event)">
                             <input type="hidden" name="currentPage" id="currentPage" value="1">
