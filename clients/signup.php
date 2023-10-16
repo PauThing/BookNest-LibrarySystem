@@ -41,6 +41,8 @@ include('../clients/navbar.php');
                     <h2>SIGN UP</h2>
                 </div>
 
+                <br />
+
                 <div class="wrap">
                     <div class="InputText">
                         <input type="text" name="fname" id="fname" autocomplete="off" required>
@@ -67,7 +69,7 @@ include('../clients/navbar.php');
                     <br /><br />
 
                     <div class="InputText">
-                        <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 10 or more characters" required>
+                        <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}$" title="Must contain at least one number, one uppercase letter, one lowercase letter, and at least 10 or more characters" required>
                         <label for="password">Password</label>
                     </div>
 

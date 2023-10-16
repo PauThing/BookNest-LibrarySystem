@@ -21,9 +21,9 @@ body {
 }
 
 .signin-container, .signup-container {
-    width: 70%;
+    width: 60%;
     margin: auto;
-    padding: 2em;
+    padding: 1em;
     background-color: white;
     border: none;
 }
@@ -35,7 +35,7 @@ body {
 }
 
 .wrap {
-    padding: 2em 6em;
+    padding: 2em 5em;
 }
 
 .wrap .InputText {
@@ -58,11 +58,16 @@ body {
     outline: none;
 }
 
+.wrap .InputText input:invalid~label {
+    transform: translateY(-1.4em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
 .wrap .InputText input:focus~label,
 .wrap .InputText input:valid~label {
-    transform: translateY(-1.5em);
+    transform: translateY(-1.6em);
     transition: all 0.3s ease;
-    color: #fff;
     outline: none;
 }
 

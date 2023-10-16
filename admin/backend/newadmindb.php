@@ -57,7 +57,7 @@ if (isset($_POST["new-admin"])) {
 		}
 	}
 } else {
-	$_SESSION['message'] = "Failed to register new admin. Please make sure every input is correct.";
+	$_SESSION['message'] = "Failed to register new admin. Please ensure every input is correct.";
 	header("location: ../../admin/adminlist.php?st=error");
 }
 ?>

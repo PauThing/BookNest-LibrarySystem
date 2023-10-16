@@ -54,7 +54,7 @@ if (isset($_POST["editprofile"])) {
         }
     }
 } else {
-	$_SESSION['message'] = "Failed to update the details. Please make sure every input is correct.";
+	$_SESSION['message'] = "Failed to update the details. Please ensure every input is correct.";
 	header("location: ../../clients/editprofile.php?st=error");
 }
 ?>

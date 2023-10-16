@@ -1,0 +1,122 @@
+:root {
+    --background-color: #F6F4EB;
+    --navbar-color: #4682A9;
+    --container-color: #91C8E4;
+    --header-color: #003753;
+    --button-color: #749BC2;
+    --button-hover-color: #4980b6;
+    --md-dark-color: #262626;
+    --dark-color: #171717;
+    --light-dark-color: #2d2f30;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.big-container {
+    background-color: var(--container-color);
+    margin: 3.5em 2em;
+    padding: 3.5em;
+}
+
+.chgpass-container {
+    width: 50%;
+    margin: auto;
+    padding: 1em;
+    background-color: white;
+    border: none;
+}
+
+.header h3 {
+    font-weight: bold;
+    color: var(--header-color);
+    text-align: center;
+}
+
+.wrap {
+    padding: 1em 5em;
+}
+
+.wrap .InputText {
+    background: transparent;
+    text-align: center;
+    height: 2.2em;
+    width: 100%;
+    position: relative;
+}
+
+.wrap .InputText input {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding-bottom: 0;
+    border-bottom: 0.1em solid var(--md-dark-color);
+    font-size: 0.9em;
+    outline: none;
+}
+
+.wrap .InputText input:invalid~label {
+    transform: translateY(-1.4em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.wrap .InputText input:focus~label,
+.wrap .InputText input:valid~label {
+    transform: translateY(-1.6em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.wrap .InputText label {
+    font-size: 0.9em;
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.wrap .ShowPass {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.wrap .ShowPass .showpass, .wrap .ShowPass span {
+    margin: 0;
+    margin-right: 0.4em;
+    padding: 0;
+    color: gray;
+    font-size: 0.8em;
+}
+
+/* button */
+.chgpass-btn {
+    padding-top: 1.6em;
+    text-align: center;
+}
+
+.chgpass {
+    width: 18em;
+    outline: none;
+    border-radius: 0.1rem;
+    border: none;
+    background-color: var(--button-color);
+    color: #0f0c30;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.6rem 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.chgpass:hover {
+    box-shadow: inset -10.2em 0 0 0 var(--button-hover-color), inset 10.2em 0 0 0 var(--button-hover-color);
+}

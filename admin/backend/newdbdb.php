@@ -41,7 +41,7 @@ if (isset($_POST["new-db"])) {
 		}
 	}
 } else {
-	$_SESSION['message'] = "Failed to add new online database. Please make sure every input is correct.";
+	$_SESSION['message'] = "Failed to add new online database. Please ensure every input is correct.";
 	header("location: ../../admin/eonlinedblist.php?st=error");
 }
 ?>

@@ -8,11 +8,6 @@
     --md-dark-color: #262626;
     --dark-color: #171717;
     --light-dark-color: #2d2f30;
-
-    --circleSize: 165px;
-    --radius: 100px;
-    --shadow: 0 0 10px 0 rgba(255, 255, 255, .35);
-    --fontColor: rgb(250, 250, 250);
 }
 
 body {
@@ -147,6 +142,7 @@ body {
 }
 
 .editprofile {
+    width: 18em;
     outline: none;
     border-radius: 0.1rem;
     border: none;
@@ -155,7 +151,7 @@ body {
     text-align: center;
     font-size: 0.9rem;
     font-weight: bold;
-    padding: 0.6rem 6rem;
+    padding: 0.6rem 0;
     cursor: pointer;
     text-transform: uppercase;
     -webkit-transition: all 0.2s;
@@ -165,4 +161,24 @@ body {
 
 .editprofile:hover {
     box-shadow: inset -10.2em 0 0 0 var(--button-hover-color), inset 10.2em 0 0 0 var(--button-hover-color);
+}
+
+.chgpass-btn {
+    width: 100%;
+    text-align: center;
+}
+
+.chgpass-btn a{
+    color: #0f0c30;
+    font-size: 0.7em;
+    text-decoration: underline;
+    cursor: pointer;
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.chgpass-btn a:hover {
+    color: #91C8E4;
 }

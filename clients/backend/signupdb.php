@@ -66,7 +66,7 @@ if (isset($_POST["signup"])) {
 		}
 	}
 } else {
-	$_SESSION['message'] = "Failed to register. Please make sure every input is correct.";
+	$_SESSION['message'] = "Failed to register. Please ensure every input is correct.";
 	header("location: ../../clients/signup.php?st=error");
 }
 ?>

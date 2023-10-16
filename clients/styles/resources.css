@@ -90,11 +90,16 @@ body {
     outline: none;
 }
 
+.new-db-container .wrap .InputText input:invalid~label {
+    transform: translateY(-1.4em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
 .new-db-container .wrap .InputText input:focus~label,
 .new-db-container .wrap .InputText input:valid~label {
-    transform: translateY(-1.5em);
+    transform: translateY(-1.6em);
     transition: all 0.3s ease;
-    color: #f0f0f0;
     outline: none;
 }
 
@@ -203,7 +208,7 @@ body {
     padding: 0 1.4em;
 }
 
-/* buttons */
+/* button */
 .new-db-btn, .user-detail-btn {
     padding-top: 1em;
     text-align: center;
@@ -231,14 +236,14 @@ body {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
 
-/* Styles for screens with a maximum width of 768px */
+/* styles for screens with a maximum width of 768px */
 @media only screen and (max-width: 1280px) {
     .big-container {
-        width: 90%; /* Adjust width for smaller screens */
+        width: 90%; /* adjust width for smaller screens */
     }
 
     .new-admin-container {
-        width: 50%; /* Adjust position for smaller screens */
+        width: 50%; /* adjust position for smaller screens */
     }
 
     .adminlist-container {

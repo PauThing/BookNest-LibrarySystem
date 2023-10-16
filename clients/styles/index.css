@@ -73,7 +73,7 @@ body {
     background-color: #53799e;
 }
 
-/* Fading animation */
+/* fading animation */
 .slide-fade {
     animation-name: fade;
     animation-duration: 1.5s;
@@ -89,7 +89,7 @@ body {
     }
 }
 
-/* Announcement & Monthly Report */
+/* announcement & monthly report */
 .big-container h3 {
     font-weight: bold;
     color: var(--header-color);

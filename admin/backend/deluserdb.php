@@ -53,7 +53,7 @@
 		}
 	} else
 	{
-		$_SESSION['message'] = "Unauthorized Access: Password does not match.";
+		$_SESSION['message'] = "Password does not match.";
     	header("location: ../../admin/adminlist.php?st=error");
 	}
 ?>

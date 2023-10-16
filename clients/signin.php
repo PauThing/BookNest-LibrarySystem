@@ -30,6 +30,8 @@ include('../clients/navbar.php');
                     <h2>SIGN IN</h2>
                 </div>
 
+                <br />
+
                 <div class="wrap">
                     <div class="InputText">
                         <input type="text" name="uID" id="uID" required>

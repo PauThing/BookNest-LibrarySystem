@@ -93,9 +93,13 @@ include('../clients/navbar.php');
                         <br /><br />
 
                         <div class="editprofile-btn">
-                            <input type="submit" name="editprofile" id="editprofile" class="editprofile" value="Edit Profile">
+                            <button type="submit" name="editprofile" id="editprofile" class="editprofile" value="Edit Profile"><i class="fa fa-edit"></i> Edit Profile</button>
                         </div>
                     <?php } ?>
+
+                    <div class="chgpass-btn">
+                        <a href="../clients/changepassw.php" name="chgpass" id="chgpass" class="chgpass"><i class="fas fa-unlock-alt"></i> Change Password</a>
+                    </div>
                 </div>
             </form>
         </div>
