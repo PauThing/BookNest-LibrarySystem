@@ -55,7 +55,7 @@ body {
     animation: fade-in 0.5s;
     overflow-y: auto;
     border: none;
-    
+
 }
 
 .new-admin-form {
@@ -119,8 +119,13 @@ body {
 }
 
 @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .cancel {
@@ -135,7 +140,8 @@ body {
 }
 
 /* pending user details */
-.user-detail-container, .admin-detail-container {
+.user-detail-container,
+.admin-detail-container {
     display: none;
     position: absolute;
     top: 14em;
@@ -146,7 +152,8 @@ body {
     border: none;
 }
 
-.user-detail-form, .admin-detail-form {
+.user-detail-form,
+.admin-detail-form {
     width: 90%;
     background-color: #f0f0f0;
     padding: 1.5em;
@@ -154,11 +161,13 @@ body {
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
 }
 
-.user-detail-container .wrap, .admin-detail-container .wrap {
+.user-detail-container .wrap,
+.admin-detail-container .wrap {
     padding: 1.5em 4em;
 }
 
-.user-detail-container .wrap .InputText, .admin-detail-container .wrap .InputText {
+.user-detail-container .wrap .InputText,
+.admin-detail-container .wrap .InputText {
     background: transparent;
     height: 2.2em;
     width: 100%;
@@ -166,7 +175,8 @@ body {
     margin-bottom: 3em;
 }
 
-.user-detail-container .wrap .InputText input, .admin-detail-container .wrap .InputText input {
+.user-detail-container .wrap .InputText input,
+.admin-detail-container .wrap .InputText input {
     height: 100%;
     width: 100%;
     background: transparent;
@@ -177,7 +187,9 @@ body {
     outline: none;
 }
 
-.user-detail-container .wrap .InputText label, .user-detail-container .wrap .show-stu-id label, .admin-detail-container .wrap .InputText label {
+.user-detail-container .wrap .InputText label,
+.user-detail-container .wrap .show-stu-id label,
+.admin-detail-container .wrap .InputText label {
     font-size: 0.9em;
     text-align: left;
     font-weight: bold;
@@ -197,15 +209,21 @@ body {
     width: 35%;
 }
 
-.user-detail-container .header, .admin-detail-container .header {
+.user-detail-container .header,
+.admin-detail-container .header {
     text-align: center;
     padding: 0 3em;
     color: var(--header-color);
 }
 
 @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .cancel {
@@ -217,7 +235,9 @@ body {
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     transition: all 0.2s;
-} */
+}
+
+*/
 
 /* user list tab */
 .tab-container {
@@ -262,8 +282,13 @@ body {
 }
 
 @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* search bar */
@@ -277,7 +302,8 @@ body {
     background-color: var(--header-color);
 }
 
-.search-box .searchInput, .search-box .searchInput2  {
+.search-box .searchInput,
+.search-box .searchInput2 {
     width: 90%;
     padding: 1em;
     border: none;
@@ -286,16 +312,19 @@ body {
 }
 
 /* delete admin and view user details buttons */
-.del, .view {
+.del,
+.view {
     color: var(--dark-color);
 }
 
-.del:hover, .view:hover {
+.del:hover,
+.view:hover {
     color: var(--button-hover-color);
 }
 
 /* table list */
-.adminlist-container, .userlist-container {
+.adminlist-container,
+.userlist-container {
     width: 90%;
     margin: 0 auto;
     border: none;
@@ -324,28 +353,33 @@ body {
     font-size: 0.9em;
 }
 
-.number, .action {
+.number,
+.action {
     width: 5em;
     text-align: center;
 }
 
-th, td {
+th,
+td {
     padding: 0.8em;
     white-space: nowrap;
     width: fit-content;
 }
 
-.adminlist-container table thead th, .userlist-container table thead th {
+.adminlist-container table thead th,
+.userlist-container table thead th {
     text-align: center;
     background-color: var(--header-color);
     color: white;
 }
 
-.adminlist-container table tbody tr:hover, .userlist-container table tbody tr:hover {
+.adminlist-container table tbody tr:hover,
+.userlist-container table tbody tr:hover {
     background-color: #f2f5f7;
 }
 
-.adminlist-container table tbody td, .userlist-container table tbody td {
+.adminlist-container table tbody td,
+.userlist-container table tbody td {
     color: var(--md-dark-color);
 }
 
@@ -399,12 +433,15 @@ th, td {
 }
 
 /* button */
-.new-admin-btn, .user-detail-btn {
+.new-admin-btn,
+.user-detail-btn {
     padding-top: 1em;
     text-align: center;
 }
 
-.new-admin-btn .new-admin, .user-detail-btn .user-approve, .user-detail-btn .user-reject {
+.new-admin-btn .new-admin,
+.user-detail-btn .user-approve,
+.user-detail-btn .user-reject {
     width: 8em;
     outline: none;
     border-radius: 0.1rem;
@@ -422,18 +459,22 @@ th, td {
     transition: all 0.2s;
 }
 
-.new-admin-btn .new-admin:hover, .user-detail-btn .user-approve:hover, .user-detail-btn .user-reject:hover {
+.new-admin-btn .new-admin:hover,
+.user-detail-btn .user-approve:hover,
+.user-detail-btn .user-reject:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
 
 /* Styles for screens with a maximum width of 768px */
 @media only screen and (max-width: 1280px) {
     .big-container {
-        width: 90%; /* Adjust width for smaller screens */
+        width: 90%;
+        /* Adjust width for smaller screens */
     }
 
     .new-admin-container {
-        width: 50%; /* Adjust position for smaller screens */
+        width: 50%;
+        /* Adjust position for smaller screens */
     }
 
     .adminlist-container {

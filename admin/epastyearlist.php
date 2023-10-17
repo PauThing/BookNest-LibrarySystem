@@ -34,6 +34,13 @@ include('../clients/navbar.php');
         function closeForm() {
             document.getElementById("new-db-container").style.display = "none";
         }
+
+        function confirmDelete(userid) {
+            const password = prompt("Please enter your password:");
+            if (password !== null) {
+                window.location.href = `../admin/backend/deluserdb.php?userid=${userid}&password=${password}`;
+            }
+        }
     </script>
 </head>
 
@@ -53,46 +60,38 @@ include('../clients/navbar.php');
                 $query = "SELECT * FROM [onlinedb]";
                 $statement = sqlsrv_query($conn, $query);
 
-                $categories = array(); //create an array to store the unique categories
+                $previousCategory = null;
 
                 while ($row = sqlsrv_fetch_array($statement)) {
-                    $category = $row['category'];
-                    $title = $row['title'];
-                    $url = $row['db_url'];
-
-                    //if the category is not in the categories array, add it
-                    if (!array_key_exists($category, $categories)) {
-                        $categories[$category] = array();
-                    }
-
-                    //add the title and url to the corresponding category
-                    $categories[$category][] = array('title' => $title, 'url' => $url);
-                }
-
-                foreach ($categories as $category => $titles) {
+                    //check if the current category is different from the previous category
+                    if ($row['category'] != $previousCategory) {
+                        if ($previousCategory !== null) {
                 ?>
-                    <thead>
-                        <tr>
-                            <th colspan="2"><?php echo $category; ?></th>
-                        </tr>
-                    </thead>
-                    <?php foreach ($titles as $entry) { ?>
-                        <tbody>
-                            <tr>
-                                <td><a href="<?php echo $entry['url']; ?>" target="_blank"><?php echo $entry['title']; ?></a></td>
-                                <td class="action">
-                                    <a href="../admin/backend/delonlinedbdb.php?title=<?php echo $entry['title']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                <?php }
-                } ?>
             </table>
+        <?php } ?>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2"><?php echo $row['category']; ?></th>
+                </tr>
+            </thead>
+        <?php } ?>
+        <tbody>
+            <tr>
+                <td><a href="<?php echo $row['db_url']; ?>" target="_blank"><?php echo $row['title']; ?></a></td>
+                <td class="action">
+                    <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['title']; ?>');"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    <?php $previousCategory = $row['category'];
+                } ?>
+        </table>
         </div>
     </div>
 
     <div id="new-db-container" class="new-db-container">
-        <form id="new-db-form" class="new-db-form" method="post" action="../admin/backend/newresourcedb.php" enctype="multipart/form-data">
+        <form id="new-db-form" class="new-db-form" method="post" action="../admin/backend/newdbdb.php" enctype="multipart/form-data">
             <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
                 <h3>NEW DATABASE</h3>
@@ -113,11 +112,10 @@ include('../clients/navbar.php');
 
                 <div class="SelectInput" data-mate-select="active">
                     <label for="dbcat">Database Category</label> <br />
-                    <select name="dbcat" id="dbcat" class="dbcat" required>
-                        <option value="">Select a category </option>
+                    <select name="dbcat" id="dbcat" class="dbcat">
+                        <option value="">Select an option </option>
                         <option value="Arts">Arts</option>
                         <option value="Business and Communication">Business and Communication</option>
-                        <option value="Education">Education</option>
                         <option value="Engineering">Engineering</option>
                         <option value="Hospitality and Tourism">Hospitality and Tourism</option>
                         <option value="Information Technology">Information Technology</option>

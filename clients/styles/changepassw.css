@@ -85,7 +85,8 @@ body {
     justify-content: flex-start;
 }
 
-.wrap .ShowPass .showpass, .wrap .ShowPass span {
+.wrap .ShowPass .showpass,
+.wrap .ShowPass span {
     margin: 0;
     margin-right: 0.4em;
     padding: 0;

@@ -1,4 +1,4 @@
-<?php
+	<?php
 	session_start();
 	include('../../clients/connect.php');
 
@@ -12,8 +12,7 @@
 
 	$hashedPassword = $row['user_password'];
 
-	if (password_verify($inputpass, $hashedPassword)) 
-	{
+	if (password_verify($inputpass, $hashedPassword)) {
 		$uid = $_GET['userid'];
 		$query2 = "SELECT * FROM [user] WHERE [user_id] = ?";
 		$array2 = [$uid];
@@ -23,37 +22,30 @@
 		$usertype = $row2['usertype'];
 
 		if ($usertype == "Admin") {
-			$query3 = "DELETE FROM [user] where [user_id] = '$uid'";	
-							
-			if(sqlsrv_query($conn, $query3))
-			{
-				$_SESSION['message'] = "This admin has been deleted.";
+			$query3 = "DELETE FROM [user] where [user_id] = '$uid'";
 
+			if (sqlsrv_query($conn, $query3)) {
+				$_SESSION['message'] = "This admin has been deleted.";
 				header("location: ../../admin/adminlist.php?st=success");
-			} else
-			{
+			} else {
+				//die(print_r(sqlsrv_errors(), true));
 				$_SESSION['message'] = "Failed to delete this admin.";
-					
 				header("location: ../../admin/adminlist.php?st=error");
 			}
 		} else if ($usertype == "Student") {
-			$query4 = "DELETE FROM [user] where [user_id] = '$uid'";	
-							
-			if(sqlsrv_query($conn, $query4))
-			{
-				$_SESSION['message'] = "This user has been deleted.";
+			$query4 = "DELETE FROM [user] where [user_id] = '$uid'";
 
+			if (sqlsrv_query($conn, $query4)) {
+				$_SESSION['message'] = "This user has been deleted.";
 				header("location: ../../admin/userlist.php?st=success");
-			} else
-			{
+			} else {
+				//die(print_r(sqlsrv_errors(), true));
 				$_SESSION['message'] = "Failed to delete this user.";
-					
 				header("location: ../../admin/userlist.php?st=error");
 			}
 		}
-	} else
-	{
+	} else {
 		$_SESSION['message'] = "Password does not match.";
-    	header("location: ../../admin/adminlist.php?st=error");
+		header("location: ../../admin/adminlist.php?st=error");
 	}
 ?>

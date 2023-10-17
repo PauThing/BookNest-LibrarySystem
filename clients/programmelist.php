@@ -1,0 +1,88 @@
+<?php
+//set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
+ini_set('session.gc_maxlifetime', 4 * 60 * 60);
+session_start();
+if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
+    header('location: ../clients/signin.php');
+    exit();
+}
+
+include('../clients/navbar.php');
+?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../clients/styles/resources.css">
+
+    <title>Course List</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="big-container">
+        <div class="header">
+            <h3>Programme List</h3>
+        </div>
+
+        <div class="programme-container">
+            <table id="programme">
+                <?php
+                $query = "SELECT * FROM [programme]";
+                $statement = sqlsrv_query($conn, $query);
+
+                $schools = array(); //create an array to store the unique school names
+
+                while ($row = sqlsrv_fetch_array($statement)) {
+                    $school = $row['school'];
+                    $programme = $row['programme'];
+
+                    //if the school is not in the schools array, add it
+                    if (!array_key_exists($school, $schools)) {
+                        $schools[$school] = array();
+                    }
+
+                    //add the programme to the corresponding school
+                    $schools[$school][] = $programme;
+                }
+
+                foreach ($schools as $school => $programmes) {
+                ?>
+                    <thead>
+                        <tr>
+                            <th colspan="2"><?php echo $school; ?></th>
+                        </tr>
+                    </thead>
+                    <?php foreach ($programmes as $programme) { ?>
+                        <tbody>
+                            <tr>
+                                <td><a href="../admin/epastyearlist.php?course=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
+                            </tr>
+                        </tbody>
+                <?php }
+                } ?>
+            </table>
+        </div>
+    </div>
+
+    <span>
+        <?php
+        if (isset($_SESSION['message'])) {
+            echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+        }
+
+        unset($_SESSION['message']);
+        ?>
+    </span>
+</body>
+
+</html>

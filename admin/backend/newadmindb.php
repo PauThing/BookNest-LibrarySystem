@@ -51,12 +51,14 @@ if (isset($_POST["new-admin"])) {
 				$_SESSION['message'] = "Successfully registered a new admin.";
 				header("location: ../../admin/adminlist.php?st=success");
 			} else {
+				//die(print_r(sqlsrv_errors(), true));
 				$_SESSION['message'] = "Failed to register new admin. Please try again.";
 				header("location: ../../admin/adminlist.php?st=error");
 			}
 		}
 	}
 } else {
+	//die(print_r(sqlsrv_errors(), true));
 	$_SESSION['message'] = "Failed to register new admin. Please ensure every input is correct.";
 	header("location: ../../admin/adminlist.php?st=error");
 }

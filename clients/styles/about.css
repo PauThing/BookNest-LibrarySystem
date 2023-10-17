@@ -26,7 +26,11 @@ body {
     text-align: center;
 }
 
-.librarian-container, .membership-container, .ophours-container, .rules-container, .fines-container {
+.librarian-container,
+.membership-container,
+.ophours-container,
+.rules-container,
+.fines-container {
     width: 80%;
     margin: 0 auto;
     padding: 1.5em;
@@ -34,7 +38,8 @@ body {
     border: none;
 }
 
-.tox-promotion, svg {
+.tox-promotion,
+svg {
     display: none;
 }
 
@@ -61,18 +66,30 @@ body {
 }
 
 /* edit content */
-.wrap .edit-librarian-text, .edit-member-text, .edit-ophour-text, .edit-rules-text, .edit-fines-text {
+.wrap .edit-librarian-text,
+.edit-member-text,
+.edit-ophour-text,
+.edit-rules-text,
+.edit-fines-text {
     width: 100%;
     background: transparent;
     text-align: center;
 }
 
-.wrap .edit-librarian-text textarea, .edit-member-text textarea, .edit-ophour-text textarea, .edit-rules-text textarea, .edit-fines-text textarea {
+.wrap .edit-librarian-text textarea,
+.edit-member-text textarea,
+.edit-ophour-text textarea,
+.edit-rules-text textarea,
+.edit-fines-text textarea {
     width: 100%;
 }
 
 /* show content */
-.wrap .show-librarian-text, .show-member-text, .show-ophour-text, .show-rules-text, .show-fines-text {
+.wrap .show-librarian-text,
+.show-member-text,
+.show-ophour-text,
+.show-rules-text,
+.show-fines-text {
     height: 100%;
     width: 100%;
     background-color: #eaf2f8;
@@ -85,12 +102,20 @@ body {
 }
 
 /* button */
-.editlibrarian-btn, .editmember-btn, .editophour-btn, .editrules-btn, .editfines-btn {
+.editlibrarian-btn,
+.editmember-btn,
+.editophour-btn,
+.editrules-btn,
+.editfines-btn {
     padding-top: 1.6rem;
     text-align: center;
 }
 
-.editlibrarian, .editmember, .editophour, .editrules, .editfines {
+.editlibrarian,
+.editmember,
+.editophour,
+.editrules,
+.editfines {
     outline: none;
     border-radius: 0.1rem;
     border: none;
@@ -107,6 +132,10 @@ body {
     transition: all 0.2s;
 }
 
-.editlibrarian:hover, .editmember:hover, .editophour:hover, .editrules:hover, .editfines:hover {
+.editlibrarian:hover,
+.editmember:hover,
+.editophour:hover,
+.editrules:hover,
+.editfines:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }

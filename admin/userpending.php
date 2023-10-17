@@ -80,6 +80,7 @@ include('../clients/navbar.php');
                                 $statement2 = sqlsrv_query($conn, $query2);
 
                                 $i = 1;
+                                $norecord = true;
                                 while ($row2 = sqlsrv_fetch_array($statement2)) {
                                 ?>
                                     <tr>
@@ -93,7 +94,12 @@ include('../clients/navbar.php');
                                             <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row2['user_id']; ?>')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
-                                <?php } ?>
+                                <?php $norecord = false;
+                                }
+
+                                if ($norecord) {
+                                    echo "<tbody><tr><td colspan='7'>No pending request.</td></tr></tbody>";
+                                } ?>
                             </tbody>
                         </table>
                     </div>

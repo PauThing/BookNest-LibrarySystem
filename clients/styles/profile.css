@@ -36,12 +36,12 @@ body {
     align-items: center;
 
     .show-profile {
-    object-fit: cover;
-    width: 10em;
-    height: 10em;
-    box-shadow: 0 0 1em 0 rgba(255, 255, 255, .35);
-    border-radius: 5em;
-    z-index: 0;
+        object-fit: cover;
+        width: 10em;
+        height: 10em;
+        box-shadow: 0 0 1em 0 rgba(255, 255, 255, .35);
+        border-radius: 5em;
+        z-index: 0;
     }
 }
 
@@ -168,7 +168,7 @@ body {
     text-align: center;
 }
 
-.chgpass-btn a{
+.chgpass-btn a {
     color: #0f0c30;
     font-size: 0.7em;
     text-decoration: underline;

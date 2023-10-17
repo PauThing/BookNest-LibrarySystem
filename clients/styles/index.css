@@ -96,7 +96,8 @@ body {
     text-align: center;
 }
 
-.announcement-container, .monthr-container {
+.announcement-container,
+.monthr-container {
     width: 70%;
     margin: auto auto;
     padding: 2em;

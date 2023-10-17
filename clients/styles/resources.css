@@ -31,7 +31,7 @@ body {
     width: 10em;
     float: right;
     padding: 0.4em;
-    margin-right: 4.6em;
+    margin-right: 9.2em;
     margin-bottom: 1em;
     border-radius: 0.2em;
     background-color: var(--header-color);
@@ -55,7 +55,6 @@ body {
     animation: fade-in 0.5s;
     overflow-y: auto;
     border: none;
-    
 }
 
 .new-db-form {
@@ -140,8 +139,13 @@ body {
 }
 
 @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .cancel {
@@ -164,14 +168,128 @@ body {
     color: var(--button-hover-color);
 }
 
-/* table list */
-.onlinedb-container {
+/* add new programme */
+.add-programme {
+    width: 10em;
+    float: right;
+    padding: 0.4em;
+    margin-right: 9.2em;
+    margin-bottom: 1em;
+    border-radius: 0.2em;
+    background-color: var(--header-color);
+    text-align: center;
+    color: white;
+    font-size: 0.9em;
+}
+
+.add-programme:hover {
+    cursor: pointer;
+    background-color: #005e8d;
+    transition: .3s ease-in-out;
+}
+
+.new-programme-container {
+    display: none;
+    position: absolute;
+    top: 12em;
+    margin-left: 22em;
+    width: 55%;
+    animation: fade-in 0.5s;
+    overflow-y: auto;
+    border: none;
+}
+
+.new-programme-form {
     width: 90%;
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    margin-bottom: 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+}
+
+.new-programme-container .wrap {
+    padding: 1.5em 4em;
+}
+
+.new-programme-container .wrap .InputText {
+    background: transparent;
+    text-align: center;
+    height: 2.2em;
+    width: 100%;
+    position: relative;
+    margin-bottom: 3em;
+}
+
+.new-programme-container .wrap .InputText input {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding-bottom: 0;
+    border-bottom: 0.1em solid var(--md-dark-color);
+    font-size: 0.9em;
+    outline: none;
+}
+
+.new-programme-container .wrap .InputText input:invalid~label {
+    transform: translateY(-1.4em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.new-programme-container .wrap .InputText input:focus~label,
+.new-programme-container .wrap .InputText input:valid~label {
+    transform: translateY(-1.6em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.new-programme-container .wrap .InputText label {
+    font-size: 0.9em;
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.new-programme-container .wrap .SelectInput {
+    width: 100%;
+}
+
+.new-programme-container .wrap .SelectInput label {
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.new-programme-container .wrap .SelectInput .school {
+    width: 100%;
+    border: none;
+    border-radius: 0.2em;
+    outline: none;
+    padding: 0.5em;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8em;
+}
+
+.new-programme-container .header {
+    text-align: center;
+    padding: 0 3em;
+    color: var(--header-color);
+}
+
+/* table list */
+.onlinedb-container,
+.programme-container {
+    width: 80%;
     margin: 0 auto;
     border: none;
 }
 
-.onlinedb-container table {
+.onlinedb-container table,
+.programme-container table {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
@@ -185,36 +303,43 @@ body {
     text-align: center;
 }
 
-.onlinedb-container table th, td {
+.onlinedb-container table td,
+.programme-container table td {
     padding: 0.6em;
     white-space: nowrap;
-    width: fit-content;
 }
 
-.onlinedb-container table thead th {
+.onlinedb-container table thead th,
+.programme-container table thead th {
+    padding: 0.6em;
+    white-space: nowrap;
     text-align: center;
     background-color: var(--header-color);
     color: white;
     font-size: 0.9em;
 }
 
-.onlinedb-container table tbody tr:hover {
+.onlinedb-container table tbody tr:hover,
+.programme-container table tbody tr:hover {
     background-color: #f2f5f7;
 }
 
-.onlinedb-container table tbody td a {
+.onlinedb-container table tbody td a,
+.programme-container table tbody td a {
     color: var(--md-dark-color);
     font-size: 0.8em;
     padding: 0 1.4em;
 }
 
 /* button */
-.new-db-btn, .user-detail-btn {
+.new-db-btn,
+.new-programme-btn {
     padding-top: 1em;
     text-align: center;
 }
 
-.new-db-btn .new-db, .user-detail-btn .user-approve, .user-detail-btn .user-reject {
+.new-db-btn .new-db,
+.new-programme-btn .new-programme {
     width: 8em;
     outline: none;
     border-radius: 0.1rem;
@@ -232,18 +357,21 @@ body {
     transition: all 0.2s;
 }
 
-.new-db-btn .new-db:hover, .user-detail-btn .user-approve:hover, .user-detail-btn .user-reject:hover {
+.new-db-btn .new-db:hover,
+.new-programme-btn .new-programme:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
 
 /* styles for screens with a maximum width of 768px */
 @media only screen and (max-width: 1280px) {
     .big-container {
-        width: 90%; /* adjust width for smaller screens */
+        width: 90%;
+        /* adjust width for smaller screens */
     }
 
     .new-admin-container {
-        width: 50%; /* adjust position for smaller screens */
+        width: 50%;
+        /* adjust position for smaller screens */
     }
 
     .adminlist-container {
