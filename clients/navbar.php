@@ -56,7 +56,7 @@ include('../clients/connect.php');
                     <div class="dropdown-content">
                         <a href="../clients/onlinedblist.php">Online Database</a>
                         <a href="../clients/programmelist.php">Past Year Exam Papers</a>
-                        <a href="../clients/programmelist.php">Student's Project</a>
+                        <a href="../clients/stuprojectlist.php">Student's Project</a>
                         <div class="dropdown-second">
                             <button class="dropbtn2">Online Magazine</button>
                             <div class="dropdown-third">
@@ -116,7 +116,7 @@ include('../clients/connect.php');
                                 <div class="dropdown-content">
                                     <a href="../clients/onlinedblist.php">Online Database</a>
                                     <a href="../clients/programmelist.php">Past Year Exam Papers</a>
-                                    <a href="../clients/programmelist.php">Student's Project</a>
+                                    <a href="../clients/stuprojectlist.php">Student's Project</a>
                                     <div class="dropdown-second">
                                         <button class="dropbtn2">Online Magazine</button>
                                         <div class="dropdown-third">
@@ -170,7 +170,7 @@ include('../clients/connect.php');
                                 <div class="dropdown-content">
                                     <a href="../admin/eonlinedblist.php">Online Database</a>
                                     <a href="../admin/eprogrammelist.php">Past Year Exam Papers</a>
-                                    <a href="../admin/eprogrammelist.php">Student's Project</a>
+                                    <a href="../admin/estuprojectlist.php">Student's Project</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -209,7 +209,7 @@ include('../clients/connect.php');
                                 <div class="dropdown-content">
                                     <a href="../admin/eonlinedblist.php">Online Database</a>
                                     <a href="../admin/eprogrammelist.php">Past Year Exam Papers</a>
-                                    <a href="../admin/eprogrammelist.php">Student's Project</a>
+                                    <a href="../admin/estuprojectlist.php">Student's Project</a>
                                 </div>
                             </div>
                             <div class="dropdown">

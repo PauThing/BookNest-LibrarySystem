@@ -23,7 +23,7 @@ include('../clients/navbar.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../clients/styles/resources.css">
 
-    <title>Course List</title>
+    <title>Programme List</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -47,46 +47,48 @@ include('../clients/navbar.php');
             <i class="fa fa-plus"></i> New Programme
         </div>
 
+        <?php
+        $query = "SELECT * FROM [programme]";
+        $statement = sqlsrv_query($conn, $query);
+
+        $schools = array(); //create an array to store the unique school names
+
+        while ($row = sqlsrv_fetch_array($statement)) {
+            $school = $row['department'];
+            $programme = $row['programme'];
+
+            //if the school is not in the schools array, add it
+            if (!array_key_exists($school, $schools)) {
+                $schools[$school] = array();
+            }
+
+            //add the programme to the corresponding school
+            $schools[$school][] = $programme;
+        }
+        ?>
         <div class="programme-container">
-            <table id="programme">
-                <?php
-                $query = "SELECT * FROM [programme]";
-                $statement = sqlsrv_query($conn, $query);
-
-                $schools = array(); //create an array to store the unique school names
-
-                while ($row = sqlsrv_fetch_array($statement)) {
-                    $school = $row['department'];
-                    $programme = $row['programme'];
-
-                    //if the school is not in the schools array, add it
-                    if (!array_key_exists($school, $schools)) {
-                        $schools[$school] = array();
-                    }
-
-                    //add the programme to the corresponding school
-                    $schools[$school][] = $programme;
-                }
-
-                foreach ($schools as $school => $programmes) {
-                ?>
-                    <thead>
-                        <tr>
-                            <th colspan="2"><?php echo $school; ?></th>
-                        </tr>
-                    </thead>
-                    <?php foreach ($programmes as $programme) { ?>
-                        <tbody>
-                            <tr>
-                                <td><a href="../admin/epastyearlist.php?programme=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
-                                <td class="action">
+            <?php $count = 0;
+            foreach ($schools as $school => $programmes) {
+                if ($count % 2 === 0) { ?>
+                    <div class="programme-row">
+                    <?php } ?>
+                    <div class="school">
+                        <h4><?php echo $school; ?></h4>
+                        <div class="programme">
+                            <?php foreach ($programmes as $programme) { ?>
+                                <div class="link">
+                                    <a href="../admin/epastyearlist.php?programme=<?php echo $programme; ?>" class="pgtitle"><?php echo $programme; ?></a></td>
                                     <a href="../admin/backend/delprogrammedb.php?programme=<?php echo $programme; ?>" class="del" onclick="return confirm('Are you sure you want to delete this programme?');"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                <?php }
+                                    <br />
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if ($count % 2 === 1 || $count === count($schools) - 1) { ?>
+                    </div>
+            <?php }
+                    $count++;
                 } ?>
-            </table>
         </div>
     </div>
 

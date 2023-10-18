@@ -23,7 +23,7 @@ include('../clients/navbar.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../clients/styles/resources.css">
 
-    <title>Course List</title>
+    <title>Programme List</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -43,7 +43,7 @@ include('../clients/navbar.php');
                 $schools = array(); //create an array to store the unique school names
 
                 while ($row = sqlsrv_fetch_array($statement)) {
-                    $school = $row['school'];
+                    $school = $row['department'];
                     $programme = $row['programme'];
 
                     //if the school is not in the schools array, add it
@@ -65,7 +65,7 @@ include('../clients/navbar.php');
                     <?php foreach ($programmes as $programme) { ?>
                         <tbody>
                             <tr>
-                                <td><a href="../admin/epastyearlist.php?course=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
+                                <td><a href="../clients/pastyearlist.php?programme=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
                             </tr>
                         </tbody>
                 <?php }

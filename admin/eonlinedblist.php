@@ -47,47 +47,49 @@ include('../clients/navbar.php');
             <i class="fa fa-plus"></i> New Database
         </div>
 
+        <?php
+        $query = "SELECT * FROM [onlinedb]";
+        $statement = sqlsrv_query($conn, $query);
+
+        $categories = array(); //create an array to store the unique categories
+
+        while ($row = sqlsrv_fetch_array($statement)) {
+            $category = $row['category'];
+            $title = $row['title'];
+            $url = $row['db_url'];
+
+            //if the category is not in the categories array, add it
+            if (!array_key_exists($category, $categories)) {
+                $categories[$category] = array();
+            }
+
+            //add the title and url to the corresponding category
+            $categories[$category][] = array('title' => $title, 'url' => $url);
+        }
+        ?>
         <div class="onlinedb-container">
-            <table id="onlinedb">
-                <?php
-                $query = "SELECT * FROM [onlinedb]";
-                $statement = sqlsrv_query($conn, $query);
-
-                $categories = array(); //create an array to store the unique categories
-
-                while ($row = sqlsrv_fetch_array($statement)) {
-                    $category = $row['category'];
-                    $title = $row['title'];
-                    $url = $row['db_url'];
-
-                    //if the category is not in the categories array, add it
-                    if (!array_key_exists($category, $categories)) {
-                        $categories[$category] = array();
-                    }
-
-                    //add the title and url to the corresponding category
-                    $categories[$category][] = array('title' => $title, 'url' => $url);
-                }
-
-                foreach ($categories as $category => $titles) {
-                ?>
-                    <thead>
-                        <tr>
-                            <th colspan="2"><?php echo $category; ?></th>
-                        </tr>
-                    </thead>
-                    <?php foreach ($titles as $entry) { ?>
-                        <tbody>
-                            <tr>
-                                <td><a href="<?php echo $entry['url']; ?>" target="_blank"><?php echo $entry['title']; ?></a></td>
-                                <td class="action">
-                                    <a href="../admin/backend/delonlinedbdb.php?title=<?php echo $entry['title']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this online database?');"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                <?php }
+            <?php $count = 0;
+            foreach ($categories as $category => $titles) {
+                if ($count % 2 === 0) { ?>
+                    <div class="onlinedb-row">
+                    <?php } ?>
+                    <div class="category">
+                        <h4><?php echo $category; ?></h4>
+                        <div class="onlinedb">
+                            <?php foreach ($titles as $entry) { ?>
+                                <div class="link">
+                                    <a href="<?php echo $entry['url']; ?>" class="dbtitle" target="_blank"><?php echo $entry['title']; ?></a>
+                                    <a href="../admin/backend/delexamppdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
+                                    <br />
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if ($count % 2 === 1 || $count === count($categories) - 1) { ?>
+                    </div>
+            <?php }
+                    $count++;
                 } ?>
-            </table>
         </div>
     </div>
 

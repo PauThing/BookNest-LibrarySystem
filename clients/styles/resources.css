@@ -50,6 +50,7 @@ body {
 /* delete button */
 .del {
     color: var(--dark-color);
+    float: right;
 }
 
 .del:hover {
@@ -80,15 +81,15 @@ body {
     display: none;
     position: absolute;
     top: 19em;
-    margin-left: 22em;
-    width: 55%;
+    margin-left: 26em;
+    width: 45%;
     animation: fade-in 0.5s;
     overflow-y: auto;
     border: none;
 }
 
 .new-db-form {
-    width: 90%;
+    width: 85%;
     background-color: #f0f0f0;
     padding: 1.5em;
     margin-bottom: 3em;
@@ -192,15 +193,15 @@ body {
     display: none;
     position: absolute;
     top: 19em;
-    margin-left: 22em;
-    width: 55%;
+    margin-left: 26em;
+    width: 45%;
     animation: fade-in 0.5s;
     overflow-y: auto;
     border: none;
 }
 
 .new-programme-form {
-    width: 90%;
+    width: 85%;
     background-color: #f0f0f0;
     padding: 1.5em;
     margin-bottom: 3em;
@@ -301,7 +302,7 @@ body {
 }
 
 .new-exampaper-container {
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
     border: none;
 }
@@ -365,6 +366,96 @@ body {
 }
 
 .new-exampaper-container .header {
+    text-align: center;
+    padding: 0 3em;
+    color: var(--header-color);
+}
+
+/* add new student project */
+.add-stuproject {
+    width: 10em;
+    float: right;
+    padding: 0.4em;
+    margin-right: 9.2em;
+    margin-bottom: 1em;
+    border-radius: 0.2em;
+    background-color: var(--header-color);
+    text-align: center;
+    color: white;
+    font-size: 0.9em;
+}
+
+.add-stuproject:hover {
+    cursor: pointer;
+    background-color: #005e8d;
+    transition: .3s ease-in-out;
+}
+
+.new-stuproject-container {
+    width: 50%;
+    margin: 0 auto;
+    border: none;
+}
+
+.new-stuproject-form {
+    width: 90%;
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+}
+
+.new-stuproject-container .wrap {
+    padding: 1.5em 4em;
+}
+
+.new-stuproject-container .wrap .InputText {
+    background: transparent;
+    text-align: center;
+    height: 2.2em;
+    width: 100%;
+    position: relative;
+    margin-bottom: 3em;
+}
+
+.new-stuproject-container .wrap .InputText input {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding-bottom: 0;
+    border-bottom: 0.1em solid var(--md-dark-color);
+    font-size: 0.9em;
+    outline: none;
+}
+
+.new-stuproject-container .wrap .InputText input:invalid~label {
+    transform: translateY(-1.4em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.new-stuproject-container .wrap .InputText input:focus~label,
+.new-stuproject-container .wrap .InputText input:valid~label {
+    transform: translateY(-1.6em);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.new-stuproject-container .wrap .InputText label {
+    font-size: 0.9em;
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.new-stuproject-container .wrap .InputText .date {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8em;
+}
+
+.new-stuproject-container .header {
     text-align: center;
     padding: 0 3em;
     color: var(--header-color);
@@ -439,91 +530,91 @@ body {
     }
 }
 
-/* table list */
+/* resources list */
 .onlinedb-container,
 .programme-container,
 .exampaper-container {
+    display: flex;
+    flex-wrap: wrap;
     width: 80%;
     margin: 0 auto;
     border: none;
-}
-
-.onlinedb-container table,
-.programme-container table,
-.exampaper-container table {
-    width: 100%;
-    table-layout: auto;
-    border-collapse: collapse;
     background-color: white;
-    overflow: hidden;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
 }
 
-.action {
-    width: 4em;
-    text-align: center;
-}
-
-.onlinedb-container table td,
-.programme-container table td,
-.exampaper-container table td {
-    padding: 0.6em;
-    white-space: nowrap;
-}
-
-.onlinedb-container table thead th,
-.programme-container table thead th {
-    padding: 0.6em;
-    white-space: nowrap;
-    text-align: center;
-    background-color: var(--header-color);
-    color: white;
-    font-size: 0.9em;
-}
-
-.exampaper-container table thead th {
-    padding: 0.6em;
-    white-space: nowrap;
-    text-align: center;
-    background-color: #ececec;
-    color: var(--md-dark-color);
-    font-size: 0.9em;
-}
-
-.exampaper-container table thead .header {
+.onlinedb-row,
+.programme-row,
+.exampaper-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     padding: 0.8em;
-    white-space: nowrap;
-    text-align: center;
-    background-color: var(--header-color);
-    color: white;
-    font-size: 1em;
 }
 
-.onlinedb-container table tbody tr:hover,
-.programme-container table tbody tr:hover,
-.exampaper-container table tbody tr:hover {
+.onlinedb-row .category,
+.programme-row .school,
+.exampaper-row .year {
+    justify-items: space-between;
+    flex: 1;
+    padding: 0.6em;
+}
+
+.onlinedb-row .category h4,
+.programme-row .school h4,
+.exampaper-row .year h4 {
+    background-color: var(--header-color);
+    margin: 0;
+    padding: 0.4em 0;
+    color: white;
+    text-align: center;
+}
+
+.onlinedb-row .onlinedb,
+.programme-row .programme,
+.exampaper-row .exampaper {
+    margin-top: 0;
+}
+
+.onlinedb-row .link,
+.programme-row .link,
+.exampaper-row .link {
+    border-bottom: 0.08em solid #bcbcbc;
+}
+
+.onlinedb-row .link:hover,
+.programme-row .link:hover,
+.exampaper-row .link:hover {
     background-color: #f2f5f7;
 }
 
-.onlinedb-container table tbody td a,
-.programme-container table tbody td a,
-.exampaper-container table tbody td a {
-    color: var(--md-dark-color);
+.onlinedb-row .onlinedb a,
+.programme-row .programme a,
+.exampaper-row .exampaper a {
+    display: inline-block;
+    padding: 0.6em;
     font-size: 0.8em;
-    padding: 0 1.4em;
+}
+
+.onlinedb-row .onlinedb .dbtitle,
+.programme-row .programme .pgtitle,
+.exampaper-row .exampaper .eptitle {
+    width: 85%;
+    color: var(--md-dark-color);
 }
 
 /* button */
 .new-db-btn,
 .new-programme-btn,
-.new-exampaper-btn {
+.new-exampaper-btn,
+.new-stuproject-btn {
     padding-top: 1em;
     text-align: center;
 }
 
 .new-db-btn .new-db,
 .new-programme-btn .new-programme,
-.new-exampaper-btn .new-exampaper {
+.new-exampaper-btn .new-exampaper,
+.new-stuproject-btn .new-stuproject {
     width: 8em;
     outline: none;
     border-radius: 0.1rem;
@@ -543,7 +634,8 @@ body {
 
 .new-db-btn .new-db:hover,
 .new-programme-btn .new-programme:hover,
-.new-exampaper-btn .new-exampaper:hover {
+.new-exampaper-btn .new-exampaper:hover,
+.new-stuproject-btn .new-stuproject:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
 
