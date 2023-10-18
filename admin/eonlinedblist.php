@@ -81,7 +81,7 @@ include('../clients/navbar.php');
                             <tr>
                                 <td><a href="<?php echo $entry['url']; ?>" target="_blank"><?php echo $entry['title']; ?></a></td>
                                 <td class="action">
-                                    <a href="../admin/backend/delonlinedbdb.php?title=<?php echo $entry['title']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                                    <a href="../admin/backend/delonlinedbdb.php?title=<?php echo $entry['title']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this online database?');"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -128,7 +128,7 @@ include('../clients/navbar.php');
                 <br /><br />
 
                 <div class="new-db-btn">
-                    <input type="submit" name="new-db" id="new-db" class="new-db" value="Proceed">
+                    <input type="submit" name="new-db" id="new-db" class="new-db" value="Create">
                 </div>
             </div>
         </form>

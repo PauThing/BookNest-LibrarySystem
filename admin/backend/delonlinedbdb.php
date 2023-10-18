@@ -8,7 +8,6 @@
 	$statement = sqlsrv_query($conn, $query);
 
 	if ($statement) {
-		$_SESSION['message'] = "This online database has been deleted.";
 		header("location: ../../admin/eonlinedblist.php?st=success");
 	} else {
 		//die(print_r(sqlsrv_errors(), true));

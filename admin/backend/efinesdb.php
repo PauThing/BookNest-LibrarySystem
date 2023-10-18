@@ -18,15 +18,15 @@
 
         //check if the statement executed successfully
         if ($statement) {
-            $_SESSION['message'] = "Successfully updated the fines and penalty.";
+            $_SESSION['message'] = "Successfully updated the details.";
             header("location: ../../admin/editfines.php?st=success");
         } else {
             //die(print_r(sqlsrv_errors(), true));
-            $_SESSION['message'] = "Failed to update the fines.";
+            $_SESSION['message'] = "Failed to update the details.";
             header("location: ../../admin/editfines.php?st=error");
         }
     } else {
-        $_SESSION['message'] = "Failed to update the fines.";
+        $_SESSION['message'] = "Failed to update the details.";
         header("location: ../../admin/editfines.php?st=error");
     }
 ?>

@@ -31,8 +31,7 @@
 
             //check if the statement executed successfully
             if ($statement) {
-                $_SESSION['message'] = "Successfully updated the profile picture and details.";
-                header("location: ../../clients/myprofile.php");
+                header("location: ../../clients/myprofile.php?st=success");
             } else {
                 //die(print_r(sqlsrv_errors(), true));
                 $_SESSION['message'] = "Failed to update the details. Please try again.";
@@ -45,8 +44,7 @@
             $statement2 = sqlsrv_query($conn, $query2, $array2);
 
             if ($statement2) {
-                $_SESSION['message'] = "Successfully updated the details.";
-                header("location: ../../clients/myprofile.php");
+                header("location: ../../clients/myprofile.php?st=success");
             } else {
                 //die(print_r(sqlsrv_errors(), true));
                 $_SESSION['message'] = "Failed to update the details. Please try again.";

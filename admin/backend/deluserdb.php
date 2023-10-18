@@ -25,7 +25,6 @@
 			$query3 = "DELETE FROM [user] where [user_id] = '$uid'";
 
 			if (sqlsrv_query($conn, $query3)) {
-				$_SESSION['message'] = "This admin has been deleted.";
 				header("location: ../../admin/adminlist.php?st=success");
 			} else {
 				//die(print_r(sqlsrv_errors(), true));
@@ -36,7 +35,6 @@
 			$query4 = "DELETE FROM [user] where [user_id] = '$uid'";
 
 			if (sqlsrv_query($conn, $query4)) {
-				$_SESSION['message'] = "This user has been deleted.";
 				header("location: ../../admin/userlist.php?st=success");
 			} else {
 				//die(print_r(sqlsrv_errors(), true));

@@ -20,15 +20,15 @@ body {
     padding: 2em;
 }
 
-/* Slideshow */
-/* Slideshow container */
+/* slideshow */
+/* slideshow container */
 .slideshow-container {
     width: 45%;
     position: relative;
     margin: auto;
 }
 
-/* Next & previous buttons */
+/* next & previous buttons */
 .prev,
 .next {
     cursor: pointer;
@@ -44,19 +44,19 @@ body {
     user-select: none;
 }
 
-/* Position the "next button" to the right */
+/* position the "next button" to the right */
 .next {
     right: 0;
     border-radius: 2em 0 0 2em;
 }
 
-/* On hover, add a black background color with a little bit see-through */
+/* on hover, add a black background color with a little bit see-through */
 .prev:hover,
 .next:hover {
     background-color: #53799ebc;
 }
 
-/* The dots/bullets/indicators */
+/* dots/bullets/indicators */
 .dot {
     cursor: pointer;
     height: 0.8em;

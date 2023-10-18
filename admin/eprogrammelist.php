@@ -78,9 +78,9 @@ include('../clients/navbar.php');
                     <?php foreach ($programmes as $programme) { ?>
                         <tbody>
                             <tr>
-                                <td><a href="../admin/epastyearlist.php?course=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
+                                <td><a href="../admin/epastyearlist.php?programme=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
                                 <td class="action">
-                                    <a href="../admin/backend/delprogrammedb.php?programme=<?php echo $programme; ?>" class="del" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                                    <a href="../admin/backend/delprogrammedb.php?programme=<?php echo $programme; ?>" class="del" onclick="return confirm('Are you sure you want to delete this programme?');"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         </tbody>

@@ -81,7 +81,7 @@ body {
     pointer-events: none;
 }
 
-/* Upload File */
+/* upload File */
 .wrap .InputFile label {
     font-size: 0.9em;
     color: var(--header-color);
@@ -150,7 +150,7 @@ body {
     }
 }
 
-/* Buttons */
+/* buttons */
 .signin-btn,
 .signup-btn {
     padding-top: 1.6em;

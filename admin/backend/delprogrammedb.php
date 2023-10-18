@@ -8,11 +8,10 @@
 	$statement = sqlsrv_query($conn, $query);
 
 	if ($statement) {
-		$_SESSION['message'] = "This programme has been deleted.";
-		header("location: ../../admin/eonlinedblist.php?st=success");
+		header("location: ../../admin/eprogrammelist.php?st=success");
 	} else {
 		//die(print_r(sqlsrv_errors(), true));
 		$_SESSION['message'] = "Failed to delete this programme.";
-		header("location: ../../admin/eonlinedblist.php?st=error");
+		header("location: ../../admin/eprogrammelist.php?st=error");
 	}
 ?>

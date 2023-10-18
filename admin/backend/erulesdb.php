@@ -22,11 +22,11 @@
             header("location: ../../admin/editrules.php?st=success");
         } else {
             //die(print_r(sqlsrv_errors(), true));
-            $_SESSION['message'] = "Failed to update the rules.";
+            $_SESSION['message'] = "Failed to update the rules and regulation.";
             header("location: ../../admin/editrules.php?st=error");
         }
     } else {
-        $_SESSION['message'] = "Failed to update the rules.";
+        $_SESSION['message'] = "Failed to update the rules and regulation.";
         header("location: ../../admin/editrules.php?st=error");
     }
 ?>

@@ -48,7 +48,6 @@ if (isset($_POST["new-admin"])) {
 
 			//check if the statement executed successfully
 			if ($statement) {
-				$_SESSION['message'] = "Successfully registered a new admin.";
 				header("location: ../../admin/adminlist.php?st=success");
 			} else {
 				//die(print_r(sqlsrv_errors(), true));

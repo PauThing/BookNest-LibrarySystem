@@ -23,113 +23,86 @@ include('../clients/navbar.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../clients/styles/resources.css">
 
-    <title>Online Database</title>
+    <title>Past Year Exam Paper</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function openForm() {
-            document.getElementById("new-db-container").style.display = "block";
+            window.location.href = '../admin/addpastyear.php?programme=<?php echo $_GET['programme']; ?>';
         }
 
-        function closeForm() {
-            document.getElementById("new-db-container").style.display = "none";
-        }
+        function updateDataText(input) {
+            // Get the file name from the input field
+            var fileName = input.value.replace(/.*(\/|\\)/, '');
 
-        function confirmDelete(userid) {
-            const password = prompt("Please enter your password:");
-            if (password !== null) {
-                window.location.href = `../admin/backend/deluserdb.php?userid=${userid}&password=${password}`;
-            }
+            // Update the data-text attribute of the parent element
+            $(input).closest(".file-upload-wrapper").attr("aria-placeholder", fileName);
         }
     </script>
 </head>
 
 <body>
     <div class="big-container">
-        <div class="header">
-            <h3>Online Database</h3>
+        <?php $pg = $_GET['programme']; ?>
+
+        <div class="add-exampaper" onclick="openForm()">
+            <i class="fa fa-plus"></i> New Exam Paper
         </div>
 
-        <div class="add-db" onclick="openForm()">
-            <i class="fa fa-plus"></i> New Database
-        </div>
+        <div class="exampaper-container">
+            <table id="exampaper">
+                <thead>
+                    <tr>
+                        <th class="header" colspan="2"><?php echo $pg; ?></th>
+                    </tr>
+                    <?php
+                    $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg'";
+                    $statement = sqlsrv_query($conn, $query);
 
-        <div class="onlinedb-container">
-            <table id="onlinedb">
-                <?php
-                $query = "SELECT * FROM [onlinedb]";
-                $statement = sqlsrv_query($conn, $query);
+                    $monthYears = array(); //create an array to store the years
 
-                $previousCategory = null;
+                    while ($row = sqlsrv_fetch_array($statement)) {
+                        $date = $row['created_at'];
+                        list($month, $year) = explode('-', $date);
 
-                while ($row = sqlsrv_fetch_array($statement)) {
-                    //check if the current category is different from the previous category
-                    if ($row['category'] != $previousCategory) {
-                        if ($previousCategory !== null) {
-                ?>
+                        //construct a DateTime object based on the year and month
+                        $dateTime = new DateTime();
+                        $dateTime->setDate($year, $month, 1);
+                        $formattedDate = $dateTime->format('F Y');
+
+                        $title = $row['title'];
+                        $docData = $row['filedata'];
+
+                        //if the year is not in the years array, add it
+                        if (!array_key_exists($formattedDate, $monthYears)) {
+                            $monthYears[$formattedDate] = array();
+                        }
+
+                        //add the exam paper title to the corresponding year
+                        $monthYears[$formattedDate][] = $title;
+                    }
+
+                    foreach ($monthYears as $monthYear => $titles) {
+                    ?>
+                        <tr>
+                            <th colspan="2"><?php echo $monthYear; ?></th>
+                        </tr>
+                </thead>
+                <?php foreach ($titles as $title) { ?>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="../admin/backend/viewdocdb.php?title=<?php echo $title; ?>" target="_blank"><?php echo $title; ?></a>
+                            </td>
+                            <td class="action">
+                                <a href="../admin/backend/delexamppdb.php?title=<?php echo $title; ?>&year=<?php echo $year; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+            <?php }
+                    } ?>
             </table>
-        <?php } ?>
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="2"><?php echo $row['category']; ?></th>
-                </tr>
-            </thead>
-        <?php } ?>
-        <tbody>
-            <tr>
-                <td><a href="<?php echo $row['db_url']; ?>" target="_blank"><?php echo $row['title']; ?></a></td>
-                <td class="action">
-                    <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['title']; ?>');"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-        </tbody>
-    <?php $previousCategory = $row['category'];
-                } ?>
-        </table>
         </div>
-    </div>
-
-    <div id="new-db-container" class="new-db-container">
-        <form id="new-db-form" class="new-db-form" method="post" action="../admin/backend/newdbdb.php" enctype="multipart/form-data">
-            <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
-            <div class="header">
-                <h3>NEW DATABASE</h3>
-            </div>
-
-            <br />
-
-            <div class="wrap">
-                <div class="InputText">
-                    <input type="text" name="dbtitle" id="dbtitle" autocomplete="off" required>
-                    <label for="dbtitle">Database Title</label>
-                </div>
-
-                <div class="InputText">
-                    <input type="url" name="dburl" id="dburl" pattern="https://.*" autocomplete="off" required />
-                    <label for="dburl">URLs</label>
-                </div>
-
-                <div class="SelectInput" data-mate-select="active">
-                    <label for="dbcat">Database Category</label> <br />
-                    <select name="dbcat" id="dbcat" class="dbcat">
-                        <option value="">Select an option </option>
-                        <option value="Arts">Arts</option>
-                        <option value="Business and Communication">Business and Communication</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Hospitality and Tourism">Hospitality and Tourism</option>
-                        <option value="Information Technology">Information Technology</option>
-                        <option value="Others">Others</option>
-                    </select>
-                </div>
-
-                <br /><br />
-
-                <div class="new-db-btn">
-                    <input type="submit" name="new-db" id="new-db" class="new-db" value="Proceed">
-                </div>
-            </div>
-        </form>
     </div>
 
     <span>

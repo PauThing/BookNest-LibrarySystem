@@ -26,12 +26,12 @@
 				header("location: ../../admin/eonlinedblist.php?st=error");
 			} else {
 				//insert the data into database
-				$query = "INSERT INTO [onlinedb] ([title], [db_url], [category], [created_at]) VALUES (?, ?, ?, ?)";
-				$array = [$title, $url, $category, $create];
-				$statement = sqlsrv_query($conn, $query, $array);
+				$query2 = "INSERT INTO [onlinedb] ([title], [db_url], [category], [created_at]) VALUES (?, ?, ?, ?)";
+				$array2 = [$title, $url, $category, $create];
+				$statement2 = sqlsrv_query($conn, $query2, $array2);
 
 				//check if the statement executed successfully
-				if ($statement) {
+				if ($statement2) {
 					$_SESSION['message'] = "Successfully added a new online database.";
 					header("location: ../../admin/eonlinedblist.php?st=success");
 				} else {
@@ -63,13 +63,12 @@
 				header("location: ../../admin/eprogrammelist.php?st=error");
 			} else {
 				//insert the data into database
-				$query = "INSERT INTO [programme] ([programme], [department]) VALUES (?, ?)";
-				$array = [$programme, $department];
-				$statement = sqlsrv_query($conn, $query, $array);
+				$query2 = "INSERT INTO [programme] ([programme], [department]) VALUES (?, ?)";
+				$array2 = [$programme, $department];
+				$statement2 = sqlsrv_query($conn, $query2, $array2);
 
 				//check if the statement executed successfully
-				if ($statement) {
-					$_SESSION['message'] = "Successfully added a new programme.";
+				if ($statement2) {
 					header("location: ../../admin/eprogrammelist.php?st=success");
 				} else {
 					//die(print_r(sqlsrv_errors(), true));
@@ -78,8 +77,50 @@
 				}
 			}
 		}
+	} else if (isset($_POST["new-exampaper"])) {
+		$programme = $_GET['programme'];
+
+		$modulecode = $_POST['modulecode'];
+		$module = $_POST['module'];
+		$semester = $_POST['date'];
+		$formattedSemester = date('m-Y', strtotime($semester));
+
+		$query = sqlsrv_query($conn, "SELECT * FROM [exampaper] WHERE [programme] = '$programme' AND [created_at] = ? AND ([ep_id] = ? OR [title] = ?)");
+		$array = [$formattedSemester, $modulecode, $module];
+		$statement = sqlsrv_query($conn, $query, $array);
+
+		if (sqlsrv_num_rows($statement) == 1) {
+			$_SESSION['message'] = "The exam paper already exists!";
+			header("location: ../../admin/addpastyear.php");
+		} else {
+			$docName = $_FILES['file-upload-field']['name'];
+			$docType = $_FILES['file-upload-field']['type'];
+			$docData = file_get_contents($_FILES['file-upload-field']['tmp_name']);
+
+			if (!preg_match("/^[a-zA-Z-' ]*$/", $module)) {
+				$_SESSION['message'] = "The module name can only contain letters.";
+				header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=error");
+			} else if (!preg_match("/^[A-Za-z0-9]+$/", $modulecode)) {
+				$_SESSION['message'] = "The module code can only contain letters and numbers.";
+				header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=error");
+			} else {
+				//insert the data into database
+				$query2 = "INSERT INTO [exampaper] ([ep_id], [title], [filename], [filetype], [filedata], [programme], [created_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, ?)";
+				$array2 = [$modulecode, $module, $docName, $docType, $docData, $programme, $formattedSemester];
+				$statement2 = sqlsrv_query($conn, $query2, $array2);
+
+				//check if the statement executed successfully
+				if ($statement2) {
+					header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=success");
+				} else {
+					//die(print_r(sqlsrv_errors(), true));
+					$_SESSION['message'] = "Failed to add new programme. Please try again.";
+					header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=error");
+				}
+			}
+		}
 	} else {
-		$_SESSION['message'] = "Failed to add new programme. Please ensure every input is correct.";
-		header("location: ../../admin/eprogrammelist.php?st=error");
+		$_SESSION['message'] = "Failed to do any action.";
+		header("location: ../../admin/index.php&st=error");
 	}
 ?>

@@ -22,11 +22,11 @@
             header("location: ../../admin/editlibrary.php?st=success");
         } else {
             //die(print_r(sqlsrv_errors(), true));
-            $_SESSION['message'] = "Failed to update the details.";
+            $_SESSION['message'] = "Failed to update the librarian details.";
             header("location: ../../admin/editlibrary.php?st=error");
         }
     } else {
-        $_SESSION['message'] = "Failed to update the details.";
+        $_SESSION['message'] = "Failed to update the librarian details.";
         header("location: ../../admin/editlibrary.php?st=error");
     }
 ?>

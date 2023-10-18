@@ -47,7 +47,7 @@ a {
   text-decoration: none;
 }
 
-/* navigation Bar */
+/* navigation bar */
 .navbar {
   margin: 0 2em;
   overflow: hidden;
@@ -114,7 +114,7 @@ a {
   display: block;
 }
 
-/* third Level Dropdown*/
+/* third Level dropdown*/
 .dropdown-content .dropbtn2 {
   width: 12em;
   font-size: 0.9em;
