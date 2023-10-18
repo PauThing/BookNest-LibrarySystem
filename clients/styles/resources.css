@@ -533,7 +533,8 @@ body {
 /* resources list */
 .onlinedb-container,
 .programme-container,
-.exampaper-container {
+.exampaper-container,
+.stuproject-container {
     display: flex;
     flex-wrap: wrap;
     width: 80%;
@@ -544,7 +545,8 @@ body {
 
 .onlinedb-row,
 .programme-row,
-.exampaper-row {
+.exampaper-row,
+.stuproject-row {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -553,7 +555,8 @@ body {
 
 .onlinedb-row .category,
 .programme-row .school,
-.exampaper-row .year {
+.exampaper-row .year,
+.stuproject-row .programme {
     justify-items: space-between;
     flex: 1;
     padding: 0.6em;
@@ -561,7 +564,8 @@ body {
 
 .onlinedb-row .category h4,
 .programme-row .school h4,
-.exampaper-row .year h4 {
+.exampaper-row .year h4,
+.stuproject-row .programme h4 {
     background-color: var(--header-color);
     margin: 0;
     padding: 0.4em 0;
@@ -569,27 +573,38 @@ body {
     text-align: center;
 }
 
+.stuproject-row .programme h5 {
+    background-color: #e9edf1;
+    margin: 0;
+    padding: 0.4em 0;
+    text-align: center;
+}
+
 .onlinedb-row .onlinedb,
 .programme-row .programme,
-.exampaper-row .exampaper {
+.exampaper-row .exampaper,
+.stuproject-row .year {
     margin-top: 0;
 }
 
 .onlinedb-row .link,
 .programme-row .link,
-.exampaper-row .link {
+.exampaper-row .link,
+.stuproject-row .link {
     border-bottom: 0.08em solid #bcbcbc;
 }
 
 .onlinedb-row .link:hover,
 .programme-row .link:hover,
-.exampaper-row .link:hover {
+.exampaper-row .link:hover,
+.stuproject-row .link:hover {
     background-color: #f2f5f7;
 }
 
 .onlinedb-row .onlinedb a,
 .programme-row .programme a,
-.exampaper-row .exampaper a {
+.exampaper-row .exampaper a,
+.stuproject-row .year a {
     display: inline-block;
     padding: 0.6em;
     font-size: 0.8em;
@@ -597,7 +612,8 @@ body {
 
 .onlinedb-row .onlinedb .dbtitle,
 .programme-row .programme .pgtitle,
-.exampaper-row .exampaper .eptitle {
+.exampaper-row .exampaper .eptitle,
+.stuproject-row .year .sptitle {
     width: 85%;
     color: var(--md-dark-color);
 }

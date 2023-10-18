@@ -23,40 +23,22 @@ include('../clients/navbar.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../clients/styles/resources.css">
 
-    <title>Past Year Exam Paper</title>
+    <title>Student's Project</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function openForm() {
-            window.location.href = '../admin/addpastyear.php?programme=<?php echo $_GET['programme']; ?>';
-        }
-
-        function updateDataText(input) {
-            // Get the file name from the input field
-            var fileName = input.value.replace(/.*(\/|\\)/, '');
-
-            // Update the data-text attribute of the parent element
-            $(input).closest(".file-upload-wrapper").attr("aria-placeholder", fileName);
-        }
-    </script>
 </head>
 
 <body>
     <div class="big-container">
-        <?php $pg = $_GET['programme']; ?>
-
         <div class="header">
-            <h3><?php echo $pg; ?></h3>
-        </div>
-
-        <div class="add-exampaper" onclick="openForm()">
-            <i class="fa fa-plus"></i> Upload
+            <h3>Student's Project</h3>
         </div>
 
         <?php
-        $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg'";
+        $query = "SELECT * FROM [studentproject]";
         $statement = sqlsrv_query($conn, $query);
 
+        $programmes = array(); //create an array to store the programmes
         $monthYears = array(); //create an array to store the years
 
         while ($row = sqlsrv_fetch_array($statement)) {
@@ -68,8 +50,14 @@ include('../clients/navbar.php');
             $dateTime->setDate($year, $month, 1);
             $formattedDate = $dateTime->format('F Y');
 
+            $programme = $row['programme'];
             $title = $row['title'];
             $docData = $row['filedata'];
+
+            //if the programme is not in the programmes array, add it
+            if (!array_key_exists($programme, $programmes)) {
+                $programmes[$programme] = array();
+            }
 
             //if the year is not in the years array, add it
             if (!array_key_exists($formattedDate, $monthYears)) {
@@ -77,28 +65,32 @@ include('../clients/navbar.php');
             }
 
             //add the exam paper title to the corresponding year
-            $monthYears[$formattedDate][] = $title;
+            $programmes[$programme][$formattedDate][] = $title;
         }
         ?>
-        <div class="exampaper-container">
+        <div class="stuproject-container">
             <?php $count = 0;
-            foreach ($monthYears as $monthYear => $titles) {
+            foreach ($programmes as $programme => $monthYears) {
                 if ($count % 2 === 0) { ?>
-                    <div class="exampaper-row">
+                    <div class="stuproject-row">
                     <?php } ?>
-                    <div class="year">
-                        <h4><?php echo $monthYear; ?></h4>
-                        <div class="exampaper">
-                            <?php foreach ($titles as $title) { ?>
-                                <div class="link">
-                                    <a href="../admin/backend/viewdocdb.php?eptitle=<?php echo $title; ?>" target="_blank" class="eptitle"><?php echo $title; ?></a>
-                                    <a href="../admin/backend/delexamppdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
-                                    <br />
+                    <div class="programme">
+                        <h4><?php echo $programme; ?></h4>
+                        <div class="year">
+                            <?php foreach ($monthYears as $monthYear => $titles) { ?>
+                                <h5><?php echo $monthYear; ?></h5>
+                                <div class="title">
+                                    <?php foreach ($titles as $title) { ?>
+                                        <div class="link">
+                                            <a href="../admin/backend/viewdocdb.php?sptitle=<?php echo $title; ?>" target="_blank" class="sptitle"><?php echo $title; ?></a>
+                                            <br />
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
-                    <?php if ($count % 2 === 1 || $count === count($monthYears) - 1) { ?>
+                    <?php if ($count % 2 === 1 || $count === count($programmes) - 1) { ?>
                     </div>
             <?php }
                     $count++;

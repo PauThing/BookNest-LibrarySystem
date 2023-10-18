@@ -54,7 +54,7 @@
             sqlsrv_free_stmt($statement);
         } else {
             $_SESSION['message'] = "No pdf found.";
-			header("location: ../../admin/epastyearlist.php?programme=<?php echo $pg; ?>&st=error");
+			header("location: ../../admin/estuprojectlist.php?st=error");
         }
     }
 ?>

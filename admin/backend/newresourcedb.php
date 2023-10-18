@@ -91,7 +91,7 @@
 
 		if (sqlsrv_num_rows($statement) == 1) {
 			$_SESSION['message'] = "The exam paper already exists!";
-			header("location: ../../admin/addpastyear.php");
+			header("location: ../../admin/addpastyear.php?programme=" . $programme);
 		} else {
 			$docName = $_FILES['file-upload-field']['name'];
 			$docType = $_FILES['file-upload-field']['type'];
@@ -99,10 +99,10 @@
 
 			if (!preg_match("/^[a-zA-Z-' ]*$/", $module)) {
 				$_SESSION['message'] = "The module name can only contain letters.";
-				header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=error");
+				header("location: ../../admin/addpastyear.php?programme=" . $programme . "&st=error");
 			} else if (!preg_match("/^[A-Za-z0-9]+$/", $modulecode)) {
 				$_SESSION['message'] = "The module code can only contain letters and numbers.";
-				header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=error");
+				header("location: ../../admin/addpastyear.php?programme=$programme&st=error");
 			} else {
 				//insert the data into database
 				$query2 = "INSERT INTO [exampaper] ([ep_id], [title], [filename], [filetype], [filedata], [programme], [created_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, ?)";
@@ -111,16 +111,58 @@
 
 				//check if the statement executed successfully
 				if ($statement2) {
-					header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=success");
+					header("location: ../../admin/addpastyear.php?programme=" . $programme . "&st=success");
 				} else {
 					//die(print_r(sqlsrv_errors(), true));
 					$_SESSION['message'] = "Failed to add new programme. Please try again.";
-					header("location: ../../admin/addpastyear.php?programme=<?php echo $pg; ?>&st=error");
+					header("location: ../../admin/addpastyear.php?programme=" . $programme . "&st=error");
+				}
+			}
+		}
+	} else if (isset($_POST["new-stuproject"])) {
+		$modulecode = $_POST['modulecode'];
+		$project = $_POST['project'];
+		$programme = $_POST['programme'];
+		$semester = $_POST['date'];
+		$formattedSemester = date('m-Y', strtotime($semester));
+
+		$query = sqlsrv_query($conn, "SELECT * FROM [studentproject] WHERE [title] = ? AND [programme] = ? AND [created_at] = ?");
+		$array = [$project, $programme, $formattedSemester];
+		$statement = sqlsrv_query($conn, $query, $array);
+
+		if (sqlsrv_num_rows($statement) == 1) {
+			$_SESSION['message'] = "The project already exists!";
+			header("location: ../../admin/addstuproject.php");
+		} else {
+			$docName = $_FILES['file-upload-field']['name'];
+			$docType = $_FILES['file-upload-field']['type'];
+			$docData = file_get_contents($_FILES['file-upload-field']['tmp_name']);
+
+			if (!preg_match("/^[a-zA-Z-_ ]+$/", $project)) {
+				$_SESSION['message'] = "The project name can only contain letters, dash and underscore.";
+				header("location: ../../admin/addstuproject.php?st=error");
+			} else if (!preg_match("/^[A-Za-z0-9]+$/", $modulecode)) {
+				$_SESSION['message'] = "The module code can only contain letters and numbers.";
+				header("location: ../../admin/addstuproject.php?st=error");
+			} else {
+				//insert the data into database
+				$query2 = "INSERT INTO [studentproject] ([sp_id], [title], [filename], [filetype], [filedata], [programme], [created_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, ?)";
+				$array2 = [$modulecode, $project, $docName, $docType, $docData, $programme, $formattedSemester];
+				$statement2 = sqlsrv_query($conn, $query2, $array2);
+
+				//check if the statement executed successfully
+				if ($statement2) {
+					header("location: ../../admin/addstuproject.php?st=success");
+				} else {
+					//die(print_r(sqlsrv_errors(), true));
+					$_SESSION['message'] = "Failed to add new project. Please try again.";
+					header("location: ../../admin/addstuproject.php?st=error");
 				}
 			}
 		}
 	} else {
-		$_SESSION['message'] = "Failed to do any action.";
-		header("location: ../../admin/index.php&st=error");
+		die(print_r(sqlsrv_errors(), true));
+		//$_SESSION['message'] = "Failed to do any action.";
+		header("location: ../../admin/index.php?st=error");
 	}
 ?>

@@ -34,43 +34,46 @@ include('../clients/navbar.php');
             <h3>Programme List</h3>
         </div>
 
+        <?php
+        $query = "SELECT * FROM [programme]";
+        $statement = sqlsrv_query($conn, $query);
+
+        $schools = array(); //create an array to store the unique school names
+
+        while ($row = sqlsrv_fetch_array($statement)) {
+            $school = $row['department'];
+            $programme = $row['programme'];
+
+            //if the school is not in the schools array, add it
+            if (!array_key_exists($school, $schools)) {
+                $schools[$school] = array();
+            }
+
+            //add the programme to the corresponding school
+            $schools[$school][] = $programme;
+        }
+        ?>
         <div class="programme-container">
-            <table id="programme">
-                <?php
-                $query = "SELECT * FROM [programme]";
-                $statement = sqlsrv_query($conn, $query);
-
-                $schools = array(); //create an array to store the unique school names
-
-                while ($row = sqlsrv_fetch_array($statement)) {
-                    $school = $row['department'];
-                    $programme = $row['programme'];
-
-                    //if the school is not in the schools array, add it
-                    if (!array_key_exists($school, $schools)) {
-                        $schools[$school] = array();
-                    }
-
-                    //add the programme to the corresponding school
-                    $schools[$school][] = $programme;
-                }
-
-                foreach ($schools as $school => $programmes) {
-                ?>
-                    <thead>
-                        <tr>
-                            <th colspan="2"><?php echo $school; ?></th>
-                        </tr>
-                    </thead>
-                    <?php foreach ($programmes as $programme) { ?>
-                        <tbody>
-                            <tr>
-                                <td><a href="../clients/pastyearlist.php?programme=<?php echo $programme; ?>"><?php echo $programme; ?></a></td>
-                            </tr>
-                        </tbody>
-                <?php }
+            <?php $count = 0;
+            foreach ($schools as $school => $programmes) {
+                if ($count % 2 === 0) { ?>
+                    <div class="programme-row">
+                    <?php } ?>
+                    <div class="school">
+                        <h4><?php echo $school; ?></h4>
+                        <div class="programme">
+                            <?php foreach ($programmes as $programme) { ?>
+                                <div class="link">
+                                    <a href="../admin/epastyearlist.php?programme=<?php echo $programme; ?>" class="pgtitle"><?php echo $programme; ?></a></td>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if ($count % 2 === 1 || $count === count($schools) - 1) { ?>
+                    </div>
+            <?php }
+                    $count++;
                 } ?>
-            </table>
         </div>
     </div>
 

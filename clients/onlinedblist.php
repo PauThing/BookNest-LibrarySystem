@@ -34,36 +34,48 @@ include('../clients/navbar.php');
             <h3>Online Database</h3>
         </div>
 
+        <?php
+        $query = "SELECT * FROM [onlinedb]";
+        $statement = sqlsrv_query($conn, $query);
+
+        $categories = array(); //create an array to store the unique categories
+
+        while ($row = sqlsrv_fetch_array($statement)) {
+            $category = $row['category'];
+            $title = $row['title'];
+            $url = $row['db_url'];
+
+            //if the category is not in the categories array, add it
+            if (!array_key_exists($category, $categories)) {
+                $categories[$category] = array();
+            }
+
+            //add the title and url to the corresponding category
+            $categories[$category][] = array('title' => $title, 'url' => $url);
+        }
+        ?>
         <div class="onlinedb-container">
-            <table id="onlinedb">
-                <?php
-                $query = "SELECT * FROM [onlinedb]";
-                $statement = sqlsrv_query($conn, $query);
-
-                $previousCategory = null;
-
-                while ($row = sqlsrv_fetch_array($statement)) {
-                    //check if the current category is different from the previous category
-                    if ($row['category'] != $previousCategory) {
-                        if ($previousCategory !== null) {
-                ?>
-            </table>
-        <?php } ?>
-        <table>
-            <thead>
-                <tr>
-                    <th><?php echo $row['category']; ?></th>
-                </tr>
-            </thead>
-        <?php } ?>
-        <tbody>
-            <tr>
-                <td><a href="<?php echo $row['db_url']; ?>" target="_blank"><?php echo $row['title']; ?></a></td>
-            </tr>
-        </tbody>
-    <?php $previousCategory = $row['category'];
+            <?php $count = 0;
+            foreach ($categories as $category => $titles) {
+                if ($count % 2 === 0) { ?>
+                    <div class="onlinedb-row">
+                    <?php } ?>
+                    <div class="category">
+                        <h4><?php echo $category; ?></h4>
+                        <div class="onlinedb">
+                            <?php foreach ($titles as $entry) { ?>
+                                <div class="link">
+                                    <a href="<?php echo $entry['url']; ?>" class="dbtitle" target="_blank" class="dbtitle"><?php echo $entry['title']; ?></a>
+                                    <br />
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if ($count % 2 === 1 || $count === count($categories) - 1) { ?>
+                    </div>
+            <?php }
+                    $count++;
                 } ?>
-        </table>
         </div>
     </div>
 

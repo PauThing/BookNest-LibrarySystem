@@ -43,78 +43,76 @@ include('../clients/navbar.php');
 
 <body>
     <div class="big-container">
+        <div class="header">
+            <h3>Student's Project</h3>
+        </div>
+
         <div class="add-stuproject" onclick="openForm()">
             <i class="fa fa-plus"></i> Upload
         </div>
 
+        <?php
+        $query = "SELECT * FROM [studentproject]";
+        $statement = sqlsrv_query($conn, $query);
+
+        $programmes = array(); //create an array to store the programmes
+        $monthYears = array(); //create an array to store the years
+
+        while ($row = sqlsrv_fetch_array($statement)) {
+            $date = $row['created_at'];
+            list($month, $year) = explode('-', $date);
+
+            //construct a DateTime object based on the year and month
+            $dateTime = new DateTime();
+            $dateTime->setDate($year, $month, 1);
+            $formattedDate = $dateTime->format('F Y');
+
+            $programme = $row['programme'];
+            $title = $row['title'];
+            $docData = $row['filedata'];
+
+            //if the programme is not in the programmes array, add it
+            if (!array_key_exists($programme, $programmes)) {
+                $programmes[$programme] = array();
+            }
+
+            //if the year is not in the years array, add it
+            if (!array_key_exists($formattedDate, $monthYears)) {
+                $monthYears[$formattedDate] = array();
+            }
+
+            //add the exam paper title to the corresponding year
+            $programmes[$programme][$formattedDate][] = $title;
+        }
+        ?>
         <div class="stuproject-container">
-            <table id="stuproject">
-                <thead>
-                    <?php
-                    $query = "SELECT * FROM [studentproject]";
-                    $statement = sqlsrv_query($conn, $query);
-
-                    $programmes = array(); //create an array to store the programmes
-                    $monthYears = array(); //create an array to store the years
-
-                    while ($row = sqlsrv_fetch_array($statement)) {
-                        $date = $row['created_at'];
-                        list($month, $year) = explode('-', $date);
-
-                        //construct a DateTime object based on the year and month
-                        $dateTime = new DateTime();
-                        $dateTime->setDate($year, $month, 1);
-                        $formattedDate = $dateTime->format('F Y');
-
-                        $programme = $row['programme'];
-                        $title = $row['title'];
-                        $docData = $row['filedata'];
-
-                        //if the programme is not in the programmes array, add it
-                        if (!array_key_exists($programme, $programmes)) {
-                            $programmes[$programme] = array();
-                        }
-
-                        //if the year is not in the years array, add it
-                        if (!array_key_exists($formattedDate, $monthYears)) {
-                            $monthYears[$formattedDate] = array();
-                        }
-
-                        //add the exam paper title to the corresponding year
-                        $programmes[$programme][] = $monthYears;
-
-                        //add the exam paper title to the corresponding year
-                        $monthYears[$formattedDate][] = $title;
-                    }
-
-                    foreach ($programmes as $programme => $monthYears) {
-                        ?>
-                        <tr>
-                        <th class="header" colspan="2"><?php echo $programme; ?></th>
-                    </tr>
-                    <?php
-
-                        foreach ($monthYears as $monthYear => $titles) {
-                    ?>
-                            <tr>
-                                <th colspan="2"><?php echo $monthYear; ?></th>
-                            </tr>
-                </thead>
-                <?php foreach ($titles as $title) { ?>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="../admin/backend/viewdocdb.php?sptitle=<?php echo $title; ?>" target="_blank"><?php echo $title; ?></a>
-                            </td>
-                            <td class="action">
-                                <a href="../admin/backend/delstuprojectdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                <?php }
-                }
-            } ?>
-            </table>
+            <?php $count = 0;
+            foreach ($programmes as $programme => $monthYears) {
+                if ($count % 2 === 0) { ?>
+                    <div class="stuproject-row">
+                    <?php } ?>
+                    <div class="programme">
+                        <h4><?php echo $programme; ?></h4>
+                        <div class="year">
+                            <?php foreach ($monthYears as $monthYear => $titles) { ?>
+                                <h5><?php echo $monthYear; ?></h5>
+                                <div class="title">
+                                    <?php foreach ($titles as $title) { ?>
+                                        <div class="link">
+                                            <a href="../admin/backend/viewdocdb.php?sptitle=<?php echo $title; ?>" target="_blank" class="sptitle"><?php echo $title; ?></a>
+                                            <a href="../admin/backend/delstuprojectdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
+                                            <br />
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if ($count % 2 === 1 || $count === count($programmes) - 1) { ?>
+                    </div>
+            <?php }
+                    $count++;
+                } ?>
         </div>
     </div>
 

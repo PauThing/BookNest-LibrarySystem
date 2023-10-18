@@ -40,7 +40,7 @@ include('../clients/navbar.php');
 <body>
     <div class="big-container">
         <div id="new-stuproject-container" class="new-stuproject-container">
-            <form id="new-stuproject-form" class="new-stuproject-form" method="post" action="../admin/backend/newresourcedb.php?programme=<?php echo $pg; ?>" enctype="multipart/form-data">
+            <form id="new-stuproject-form" class="new-stuproject-form" method="post" action="../admin/backend/newresourcedb.php" enctype="multipart/form-data">
                 <div class="header">
                     <h3>New Student Project</h3>
                 </div>

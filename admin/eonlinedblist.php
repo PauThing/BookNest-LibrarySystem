@@ -78,7 +78,7 @@ include('../clients/navbar.php');
                         <div class="onlinedb">
                             <?php foreach ($titles as $entry) { ?>
                                 <div class="link">
-                                    <a href="<?php echo $entry['url']; ?>" class="dbtitle" target="_blank"><?php echo $entry['title']; ?></a>
+                                    <a href="<?php echo $entry['url']; ?>" class="dbtitle" target="_blank" class="dbtitle"><?php echo $entry['title']; ?></a>
                                     <a href="../admin/backend/delexamppdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
                                     <br />
                                 </div>
