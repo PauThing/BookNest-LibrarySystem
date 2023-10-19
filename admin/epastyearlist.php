@@ -68,31 +68,31 @@ include('../clients/navbar.php');
             $dateTime->setDate($year, $month, 1);
             $formattedDate = $dateTime->format('F Y');
 
-            $title = $row['title'];
+            $docName = $row['filename'];
             $docData = $row['filedata'];
 
             //if the year is not in the years array, add it
-            if (!array_key_exists($year, $years)) {
-                $years[$year] = array();
+            if (!array_key_exists($formattedDate, $years)) {
+                $years[$formattedDate] = array();
             }
 
             //add the exam paper title to the corresponding year
-            $years[$year][] = $formattedDate;
+            $years[$formattedDate][] = $docName;
         }
         ?>
         <div class="exampaper-container">
             <?php $count = 0;
-            foreach ($years as $year => $formattedDates) {
+            foreach ($years as $formattedDate => $docNames) {
                 if ($count % 2 === 0) { ?>
                     <div class="exampaper-row">
                     <?php } ?>
                     <div class="year">
-                        <h4><?php echo $year; ?></h4>
+                        <h4><?php echo $formattedDate; ?></h4>
                         <div class="exampaper">
-                            <?php foreach ($formattedDates as $formattedDate) { ?>
+                            <?php foreach ($docNames as $docName) { ?>
                                 <div class="link">
-                                    <a href="../admin/backend/viewdocdb.php?eptitle=<?php echo $title; ?>" target="_blank" class="eptitle"><?php echo $formattedDate; ?></a>
-                                    <a href="../admin/backend/delresourcedb.php?eptitle=<?php echo $title; ?>&year=<?php echo $year; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper folder?');"><i class="fa fa-trash"></i></a>
+                                    <a href="../admin/backend/viewdocdb.php?eptitle=<?php echo $docName; ?>&epprogramme=<?php echo $pg; ?>" target="_blank" class="eptitle"><?php echo $docName; ?></a>
+                                    <a href="../admin/backend/delresourcedb.php?eptitle=<?php echo $docName; ?>&epprogramme=<?php echo $pg; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
                                     <br />
                                 </div>
                             <?php } ?>

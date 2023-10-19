@@ -28,11 +28,11 @@ include('../clients/navbar.php');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function updateDataText(input) {
-            // Get the file name from the input field
+            //get the file name from the input field
             var fileName = input.value.replace(/.*(\/|\\)/, '');
 
-            // Update the data-text attribute of the parent element
-            $(input).closest(".file-upload-wrapper").attr("aria-placeholder", fileName);
+            //update the data-text attribute of the parent element
+            $(input).closest(".file-upload-wrapper").attr("data-text", fileName);
         }
     </script>
 </head>
@@ -71,7 +71,7 @@ include('../clients/navbar.php');
                     <div class="InputFile">
                         <label for="file-upload-field">Document Upload</label>
                         <br />
-                        <div class="file-upload-wrapper" aria-placeholder="Choose File (PDF)">
+                        <div class="file-upload-wrapper" data-text="Select a PDF file">
                             <input type="file" name="file-upload-field" id="file-upload-field" class="file-upload-field" accept=".pdf" required onchange="updateDataText(this)">
                         </div>
                     </div>

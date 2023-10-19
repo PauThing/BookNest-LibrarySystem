@@ -28,11 +28,11 @@ include('../clients/navbar.php');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function updateDataText(input) {
-            // Get the file name from the input field
-            var fileName = input.value.replace(/.*(\/|\\)/, '');
-
-            // Update the data-text attribute of the parent element
-            $(input).closest(".file-upload-wrapper").attr("aria-placeholder", fileName);
+            //get the file name from the input field
+            var fileName = input.files && input.files.length > 0 ? input.files[0].name : input.value;
+            
+            //update the data-text attribute of the parent element
+            $(input).closest(".file-upload-wrapper").attr("data-text", fileName);
         }
     </script>
 </head>
@@ -42,7 +42,7 @@ include('../clients/navbar.php');
         <?php $pg = $_GET['programme']; ?>
 
         <div id="new-exampaper-container" class="new-exampaper-container">
-            <form id="new-exampaper-form" class="new-exampaper-form" method="post" action="../admin/backend/newresourcedb.php?programme=<?php echo $pg; ?>" enctype="multipart/form-data">
+            <form id="new-exampaper-form" class="new-exampaper-form" method="post" action="../admin/backend/newexamppdb.php?programme=<?php echo $pg; ?>" enctype="multipart/form-data">
                 <div class="header">
                     <h3><?php echo $pg; ?> • New Exam Paper</h3>
                 </div>
@@ -51,32 +51,22 @@ include('../clients/navbar.php');
 
                 <div class="wrap">
                     <div class="InputText">
-                        <input type="text" name="modulecode" id="modulecode" autocomplete="off" required>
-                        <label for="modulecode">Module Code</label>
-                    </div>
-
-                    <div class="InputText">
-                        <input type="text" name="module" id="module" autocomplete="off" required>
-                        <label for="module">Module Name</label>
-                    </div>
-
-                    <div class="InputText">
                         <input type="month" name="date" id="date" class="date" required>
                         <label for="date">Semester</label>
                     </div>
 
                     <div class="InputFile">
-                        <label for="file-upload-field">Document Upload</label>
+                        <label for="file-upload-field">Folder Upload</label>
                         <br />
-                        <div class="file-upload-wrapper" aria-placeholder="Choose File (PDF)">
-                            <input type="file" name="file-upload-field" id="file-upload-field" class="file-upload-field" accept=".pdf" required onchange="updateDataText(this)">
+                        <div class="file-upload-wrapper" data-text="Select multiple PDF files">
+                            <input type="file" name="file-upload-field[]" id="file-upload-field" class="file-upload-field" accept=".pdf" multiple required onchange="updateDataText(this)">
                         </div>
                     </div>
 
                     <br /><br />
 
                     <div class="new-exampaper-btn">
-                        <input type="submit" name="new-exampaper" id="new-exampaper" class="new-exampaper" value="Create">
+                        <input type="submit" name="new-exampaper" id="new-exampaper" class="new-exampaper" value="Upload">
                     </div>
                 </div>
             </form>

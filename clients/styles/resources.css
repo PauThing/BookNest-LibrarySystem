@@ -472,9 +472,10 @@ body {
     position: relative;
     width: 100%;
     height: 2em;
+    font-size: 0.8em;
 
     &:after {
-        content: attr(aria-placeholder);
+        content: attr(data-text);
         position: absolute;
         top: 0;
         left: 0;
