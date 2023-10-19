@@ -4,7 +4,6 @@
 
     if (isset($_POST["editophour"])) {
         $infotype = "openinghour";
-
         $infotext = $_POST['ophour-info'];
 
         //set time zone

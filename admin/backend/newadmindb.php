@@ -5,12 +5,12 @@ include('../../clients/connect.php');
 if (isset($_POST["new-admin"])) {
 	$adminid = $_POST['uID'];
 
-	$query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = ? AND [usertype] = 'Admin'");
+	$query = "SELECT * FROM [user] WHERE [user_id] = ? AND [usertype] = 'Admin'";
 	$array = [$adminid];
 	$statement = sqlsrv_query($conn, $query, $array);
 
-	if (sqlsrv_num_rows($statement) == 1) {
-		$_SESSION['message'] = "The user ID already exists!";
+	if (sqlsrv_has_rows($statement)) {
+		$_SESSION['message'] = "The admin ID already exists!";
 		header("location: ../../admin/adminlist.php");
 	} else {
 		$fullname = $_POST['fname'];

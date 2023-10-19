@@ -4,18 +4,17 @@
 
 	if (isset($_POST["new-db"])) {
 		$title = $_POST['dbtitle'];
+		$category = $_POST['dbcat'];
 
-		$query = sqlsrv_query($conn, "SELECT * FROM [onlinedb] WHERE [title] = ?");
-		$array = [$title];
+		$query = "SELECT * FROM [onlinedb] WHERE [title] = ? AND [category] = ?";
+		$array = [$title, $category];
 		$statement = sqlsrv_query($conn, $query, $array);
 
-		if (sqlsrv_num_rows($statement) == 1) {
+		if (sqlsrv_has_rows($statement)) {
 			$_SESSION['message'] = "The title already exists!";
 			header("location: ../../admin/eonlinedblist.php");
 		} else {
-			$title = $_POST['dbtitle'];
 			$url = $_POST['dburl'];
-			$category = $_POST['dbcat'];
 
 			//set time zone
 			date_default_timezone_set('Asia/Kuala_Lumpur');
@@ -32,7 +31,6 @@
 
 				//check if the statement executed successfully
 				if ($statement2) {
-					$_SESSION['message'] = "Successfully added a new online database.";
 					header("location: ../../admin/eonlinedblist.php?st=success");
 				} else {
 					//die(print_r(sqlsrv_errors(), true));
@@ -44,11 +42,11 @@
 	} else if (isset($_POST["new-programme"])) {
 		$programme = $_POST['programme'];
 
-		$query = sqlsrv_query($conn, "SELECT * FROM [programme] WHERE [programme] = ?");
+		$query = "SELECT * FROM [programme] WHERE [programme] = ?";
 		$array = [$programme];
 		$statement = sqlsrv_query($conn, $query, $array);
 
-		if (sqlsrv_num_rows($statement) == 1) {
+		if (sqlsrv_has_rows($statement)) {
 			$_SESSION['message'] = "The programme already exists!";
 			header("location: ../../admin/eprogrammelist.php");
 		} else {
@@ -85,12 +83,12 @@
 		$semester = $_POST['date'];
 		$formattedSemester = date('m-Y', strtotime($semester));
 
-		$query = sqlsrv_query($conn, "SELECT * FROM [exampaper] WHERE [programme] = '$programme' AND [created_at] = ? AND ([ep_id] = ? OR [title] = ?)");
-		$array = [$formattedSemester, $modulecode, $module];
+		$query = "SELECT * FROM [exampaper] WHERE [programme] = ? AND [created_at] = ? AND ([ep_id] = ? OR [title] = ?)";
+		$array = [$programme, $formattedSemester, $modulecode, $module];
 		$statement = sqlsrv_query($conn, $query, $array);
 
-		if (sqlsrv_num_rows($statement) == 1) {
-			$_SESSION['message'] = "The exam paper already exists!";
+		if (sqlsrv_has_rows($statement)) {
+			$_SESSION['message'] = "The exam paper folder already exists!";
 			header("location: ../../admin/addpastyear.php?programme=" . $programme);
 		} else {
 			$docName = $_FILES['file-upload-field']['name'];
@@ -126,11 +124,11 @@
 		$semester = $_POST['date'];
 		$formattedSemester = date('m-Y', strtotime($semester));
 
-		$query = sqlsrv_query($conn, "SELECT * FROM [studentproject] WHERE [title] = ? AND [programme] = ? AND [created_at] = ?");
+		$query = "SELECT * FROM [studentproject] WHERE [title] = ? AND [programme] = ? AND [created_at] = ?";
 		$array = [$project, $programme, $formattedSemester];
 		$statement = sqlsrv_query($conn, $query, $array);
 
-		if (sqlsrv_num_rows($statement) == 1) {
+		if (sqlsrv_has_rows($statement)) {
 			$_SESSION['message'] = "The project already exists!";
 			header("location: ../../admin/addstuproject.php");
 		} else {

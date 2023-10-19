@@ -57,7 +57,7 @@ include('../clients/navbar.php');
         $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg'";
         $statement = sqlsrv_query($conn, $query);
 
-        $monthYears = array(); //create an array to store the years
+        $years = array(); //create an array to store the years
 
         while ($row = sqlsrv_fetch_array($statement)) {
             $date = $row['created_at'];
@@ -72,33 +72,33 @@ include('../clients/navbar.php');
             $docData = $row['filedata'];
 
             //if the year is not in the years array, add it
-            if (!array_key_exists($formattedDate, $monthYears)) {
-                $monthYears[$formattedDate] = array();
+            if (!array_key_exists($year, $years)) {
+                $years[$year] = array();
             }
 
             //add the exam paper title to the corresponding year
-            $monthYears[$formattedDate][] = $title;
+            $years[$year][] = $formattedDate;
         }
         ?>
         <div class="exampaper-container">
             <?php $count = 0;
-            foreach ($monthYears as $monthYear => $titles) {
+            foreach ($years as $year => $formattedDates) {
                 if ($count % 2 === 0) { ?>
                     <div class="exampaper-row">
                     <?php } ?>
                     <div class="year">
-                        <h4><?php echo $monthYear; ?></h4>
+                        <h4><?php echo $year; ?></h4>
                         <div class="exampaper">
-                            <?php foreach ($titles as $title) { ?>
+                            <?php foreach ($formattedDates as $formattedDate) { ?>
                                 <div class="link">
-                                    <a href="../admin/backend/viewdocdb.php?eptitle=<?php echo $title; ?>" target="_blank" class="eptitle"><?php echo $title; ?></a>
-                                    <a href="../admin/backend/delexamppdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
+                                    <a href="../admin/backend/viewdocdb.php?eptitle=<?php echo $title; ?>" target="_blank" class="eptitle"><?php echo $formattedDate; ?></a>
+                                    <a href="../admin/backend/delresourcedb.php?eptitle=<?php echo $title; ?>&year=<?php echo $year; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper folder?');"><i class="fa fa-trash"></i></a>
                                     <br />
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
-                    <?php if ($count % 2 === 1 || $count === count($monthYears) - 1) { ?>
+                    <?php if ($count % 2 === 1 || $count === count($years) - 1) { ?>
                     </div>
             <?php }
                     $count++;

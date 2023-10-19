@@ -100,7 +100,7 @@ include('../clients/navbar.php');
                                     <?php foreach ($titles as $title) { ?>
                                         <div class="link">
                                             <a href="../admin/backend/viewdocdb.php?sptitle=<?php echo $title; ?>" target="_blank" class="sptitle"><?php echo $title; ?></a>
-                                            <a href="../admin/backend/delstuprojectdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
+                                            <a href="../admin/backend/delresourcedb.php?sptitle=<?php echo $title; ?>&spprogramme=<?php echo $programme; ?>" class="del" onclick="return confirm('Are you sure you want to delete this project?');"><i class="fa fa-trash"></i></a>
                                             <br />
                                         </div>
                                     <?php } ?>

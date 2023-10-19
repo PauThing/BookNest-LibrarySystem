@@ -23,7 +23,6 @@
 
     if (isset($_POST["user-approve"])) {
         $userid = $_SESSION['uid'];
-
         $status = "Approved";
 
         //set time zone
@@ -71,7 +70,6 @@
         }
     } else if (isset($_POST["user-reject"])) {
         $userid = $_SESSION['uid'];
-
         $status = "Rejected";
 
         //set time zone

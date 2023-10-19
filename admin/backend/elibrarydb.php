@@ -4,7 +4,6 @@
 
     if (isset($_POST["editlibrarian"])) {
         $infotype = "librarian";
-
         $infotext = $_POST['librarian-info'];
 
         //set time zone

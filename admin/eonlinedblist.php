@@ -79,7 +79,7 @@ include('../clients/navbar.php');
                             <?php foreach ($titles as $entry) { ?>
                                 <div class="link">
                                     <a href="<?php echo $entry['url']; ?>" class="dbtitle" target="_blank" class="dbtitle"><?php echo $entry['title']; ?></a>
-                                    <a href="../admin/backend/delexamppdb.php?title=<?php echo $title; ?>&monthYear=<?php echo $monthYear; ?>" class="del" onclick="return confirm('Are you sure you want to delete this exam paper?');"><i class="fa fa-trash"></i></a>
+                                    <a href="../admin/backend/delresourcedb.php?dbtitle=<?php echo $title; ?>" class="del" onclick="return confirm('Are you sure you want to delete this online database?');"><i class="fa fa-trash"></i></a>
                                     <br />
                                 </div>
                             <?php } ?>

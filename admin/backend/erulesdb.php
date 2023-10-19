@@ -4,7 +4,6 @@
 
     if (isset($_POST["editrules"])) {
         $infotype = "rules";
-
         $infotext = $_POST['rules-info'];
 
         //set time zone

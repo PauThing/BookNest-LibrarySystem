@@ -5,11 +5,11 @@
 	if (isset($_POST["signup"])) {
 		$userid = $_POST['uID'];
 
-		$query = sqlsrv_query($conn, "SELECT * FROM [user] WHERE [user_id] = ?");
+		$query = "SELECT * FROM [user] WHERE [user_id] = ?";
 		$array = [$userid];
 		$statement = sqlsrv_query($conn, $query, $array);
 
-		if (sqlsrv_num_rows($statement) == 1) {
+		if (sqlsrv_has_rows($statement)) {
 			$_SESSION['message'] = "The user ID already exists!";
 			header("location: ../../clients/signup.php");
 		} else {

@@ -22,9 +22,11 @@
 		$usertype = $row2['usertype'];
 
 		if ($usertype == "Admin") {
-			$query3 = "DELETE FROM [user] where [user_id] = '$uid'";
+			$query3 = "DELETE FROM [user] where [user_id] = ?";
+			$array3 = [$uid];
+			$statement3 = sqlsrv_query($conn, $query3, $array3);
 
-			if (sqlsrv_query($conn, $query3)) {
+			if ($statement3) {
 				header("location: ../../admin/adminlist.php?st=success");
 			} else {
 				//die(print_r(sqlsrv_errors(), true));
@@ -32,9 +34,11 @@
 				header("location: ../../admin/adminlist.php?st=error");
 			}
 		} else if ($usertype == "Student") {
-			$query4 = "DELETE FROM [user] where [user_id] = '$uid'";
+			$query4 = "DELETE FROM [user] where [user_id] = ?";
+			$array4 = [$uid];
+			$statement4 = sqlsrv_query($conn, $query4, $array4);
 
-			if (sqlsrv_query($conn, $query4)) {
+			if ($statement4) {
 				header("location: ../../admin/userlist.php?st=success");
 			} else {
 				//die(print_r(sqlsrv_errors(), true));

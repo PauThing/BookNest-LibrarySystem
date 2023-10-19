@@ -78,7 +78,7 @@ include('../clients/navbar.php');
                             <?php foreach ($programmes as $programme) { ?>
                                 <div class="link">
                                     <a href="../admin/epastyearlist.php?programme=<?php echo $programme; ?>" class="pgtitle"><?php echo $programme; ?></a></td>
-                                    <a href="../admin/backend/delprogrammedb.php?programme=<?php echo $programme; ?>" class="del" onclick="return confirm('Are you sure you want to delete this programme?');"><i class="fa fa-trash"></i></a>
+                                    <a href="../admin/backend/delresourcedb.php?programme=<?php echo $programme; ?>" class="del" onclick="return confirm('Are you sure you want to delete this programme?');"><i class="fa fa-trash"></i></a>
                                     <br />
                                 </div>
                             <?php } ?>

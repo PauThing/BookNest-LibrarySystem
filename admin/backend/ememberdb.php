@@ -4,7 +4,6 @@
 
     if (isset($_POST["editmember"])) {
         $infotype = "membership";
-
         $infotext = $_POST['member-info'];
 
         //set time zone
