@@ -29,7 +29,7 @@
 
 					//check if the statement executed successfully
 					if ($statement2) {
-						header("location: ../../admin/addpastyear.php?programme=" . $programme . "&st=success");
+						header("location: ../../admin/epastyearlist.php?programme=" . $programme . "&st=success");
 					} else {
 						//die(print_r(sqlsrv_errors(), true));
 						$_SESSION['message'] = "Failed to add new exam papers. Please try again.";

@@ -153,7 +153,7 @@ include('../clients/connect.php');
 
                     <nav>
                         <div class="navbar">
-                            <a href="../admin/index.php">HOME</a>
+                            <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/catalog.php">BOOK CATALOG</a>
                             <a href="../admin/bookreturn.php">BOOK RETURN</a>
                             <a href="../admin/discussionroom.php">DISCUSSION ROOM</a>
@@ -163,6 +163,7 @@ include('../clients/connect.php');
                                     <a href="../admin/editlibrary.php">About Library</a>
                                     <a href="../admin/editrules.php">Rules & Regulation</a>
                                     <a href="../admin/editfines.php">Fines & Penalty</a>
+                                    <a href="../admin/editannouncement.php">Announcement</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -192,9 +193,9 @@ include('../clients/connect.php');
 
                     <nav>
                         <div class="navbar">
-                            <a href="../admin/index.php">HOME</a>
+                            <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/catalog.php">BOOK CATALOG</a>
-                            <a href="../admin/bookreturn.php">BOOK RETURN</a>
+                            <a href="../admin/bookreturn.php">BORROW &  RETURN</a>
                             <a href="../admin/discussionroom.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
@@ -202,6 +203,7 @@ include('../clients/connect.php');
                                     <a href="../admin/editlibrary.php">About Library</a>
                                     <a href="../admin/editrules.php">Rules & Regulation</a>
                                     <a href="../admin/editfines.php">Fines & Penalty</a>
+                                    <a href="../admin/editannouncement.php">Announcement</a>
                                 </div>
                             </div>
                             <div class="dropdown">
