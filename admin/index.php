@@ -24,47 +24,8 @@ include('../clients/navbar.php');
 
 <body>
     <div class="big-container">
-        <div class="slideshow-container">
-            <div class="slide-fade">
-                <img src="../clients/assets/Welcome.png" style="width:100%; height:20em;">
-            </div>
-
-            <div class="slide-fade">
-                <img src="../clients/assets/Library1.jpg" style="width:100%; height:20em;">
-            </div>
-
-            <div class="slide-fade">
-                <img src="../clients/assets/Library2.jpg" style="width:100%; height:20em;">
-            </div>
-
-            <a class="prev" onclick="pushSlides(-1)">❮</a>
-            <a class="next" onclick="pushSlides(1)">❯</a>
-
-        </div>
-
-        <div style="text-align:center">
-            <span class="dot" onclick="currSlide(1)"></span>
-            <span class="dot" onclick="currSlide(2)"></span>
-            <span class="dot" onclick="currSlide(3)"></span>
-        </div>
-
-        <br />
-
         <div class="header">
-            <h3>Announcement</h3>
-        </div>
-        <div class="announcement-container">
-            <form class="ann-form" id="ann-form" action="">
-                <div class="wrap">
-
-                </div>
-            </form>
-        </div>
-
-        <br /><br />
-
-        <div class="header">
-            <h3 style="visibility:hidden;">Monthly Report</h3>
+            <h3>Monthly Report</h3>
         </div>
         <div class="monthr-container">
             <form class="monthr-form" id="monthr-form" action="">
@@ -87,41 +48,7 @@ include('../clients/navbar.php');
 </body>
 
 <script>
-    let slideIndex = 1;
-    showSlides(slideIndex);
-
-    function pushSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    function currSlide(n) {
-        showSlides(slideIndex = n);
-    }
-
-    function showSlides(n) {
-        let i;
-        let slides = document.getElementsByClassName("slide-fade");
-        let dots = document.getElementsByClassName("dot");
-
-        if (n > slides.length) {
-            slideIndex = 1
-        }
-
-        if (n < 1) {
-            slideIndex = slides.length
-        }
-
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
-    }
+    
 </script>
 
 </html>

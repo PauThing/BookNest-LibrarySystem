@@ -48,7 +48,7 @@ include('../clients/navbar.php');
         </div>
 
         <?php
-        $query = "SELECT * FROM [programme]";
+        $query = "SELECT * FROM [programme] ORDER BY [department] ASC";
         $statement = sqlsrv_query($conn, $query);
 
         $schools = array(); //create an array to store the unique school names

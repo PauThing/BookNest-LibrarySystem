@@ -3,6 +3,21 @@
 	include('../../clients/connect.php');
 
 	if (isset($_POST["new-announcement"])) {
+		$query = "SELECT TOP 1 * FROM [announcement] ORDER BY [ann_id] DESC";
+		$statement = sqlsrv_query($conn, $query);
+		$row = sqlsrv_fetch_array($statement);
+		if ($row) {
+			$lastid = $row['ann_id'];
+
+			if ($lastid == NULL) {
+				$annid = "ANN1";
+			} else {
+				$annid = substr($lastid, 3);
+				$annid = intval($annid);
+				$annid = "ANN" . ($annid + 1);
+			}
+		}
+		
 		$anntitle = $_POST['anntitle'];
 		$anndetail = $_POST['announcement-info'];
 
@@ -10,13 +25,13 @@
 		date_default_timezone_set('Asia/Kuala_Lumpur');
 		$create = date('Y-m-d H:i:s');
 
-		if (!preg_match("/^[a-zA-Z-' ]*$/", $anntitle)) {
-			$_SESSION['message'] = "The announcement title can only contain letters and white space.";
+		if (!preg_match("/^[a-zA-Z0-9' -]+$/", $anntitle)) {
+			$_SESSION['message'] = "The announcement title can only contain letters, numbers and white space.";
 			header("location: ../../admin/addannouncement.php?st=error");
 		} else {
 			//insert the data into database
-			$query = "INSERT INTO [announcement] ([ann_title], [ann_detail], [created_at]) VALUES (?, ?, ?)";
-			$array = [$anntitle, $anndetail, $create];
+			$query = "INSERT INTO [announcement] ([ann_id], [ann_title], [ann_detail], [created_at]) VALUES (?, ?, ?, ?)";
+			$array = [$annid, $anntitle, $anndetail, $create];
 			$statement = sqlsrv_query($conn, $query, $array);
 
 			//check if the statement executed successfully

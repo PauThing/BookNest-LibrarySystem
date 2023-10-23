@@ -52,7 +52,7 @@ include('../clients/navbar.php');
         </div>
 
         <?php
-        $query = "SELECT * FROM [studentproject]";
+        $query = "SELECT * FROM [studentproject] ORDER BY [programme] ASC";
         $statement = sqlsrv_query($conn, $query);
 
         $programmes = array(); //create an array to store the programmes

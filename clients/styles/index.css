@@ -20,10 +20,48 @@ body {
     padding: 2em;
 }
 
+.big-container h3 {
+    text-align: center;
+    color: var(--header-color);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.cancel {
+    float: right;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.flex-wrap {
+    display: flex;
+}
+
+.slideshow-wrap {
+    width: 100%;
+}
+
+.ann-wrap {
+    width: 100%;
+}
+
 /* slideshow */
 /* slideshow container */
 .slideshow-container {
-    width: 45%;
+    width: 90%;
     position: relative;
     margin: auto;
 }
@@ -89,22 +127,103 @@ body {
     }
 }
 
-/* announcement & monthly report */
-.big-container h3 {
-    font-weight: bold;
-    color: var(--header-color);
-    text-align: center;
-}
-
-.announcement-container,
-.monthr-container {
-    width: 70%;
+/* announcement */
+.announcement-container {
+    width: 80%;
     margin: auto auto;
-    padding: 2em;
+    padding: 1.8em;
     background-color: white;
     border: none;
 }
 
-.wrap {
-    padding: 2rem 3rem;
+.announcement-container .view-all {
+    float: right;
+    text-decoration: underline;
+    font-size: 0.8em;
+}
+
+.ann-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0 auto;
+    border: none;
+    background-color: white;
+}
+
+.anntitle-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+}
+
+.anntitle-row .anntitle {
+    width: 100%;
+    margin: 0;
+}
+
+.anntitle-row .anntitle .link {
+    border-bottom: 0.08em solid #bcbcbc;
+}
+
+.anntitle-row .link:hover {
+    background-color: #f2f5f7;
+}
+
+.anntitle-row .anntitle a {
+    display: inline-block;
+    padding: 0.6em;
+    font-size: 0.8em;
+}
+
+.anntitle-row .anntitle .title {
+    width: 100%;
+    color: var(--md-dark-color);
+}
+
+/* show content */
+.ann-detail-container {
+    display: none;
+    position: absolute;
+    top: 19em;
+    margin-left: 26em;
+    width: 50%;
+    animation: fade-in 0.5s;
+    overflow-y: auto;
+    border: none;
+}
+
+.ann-detail-form {
+    width: 90%;
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    margin-bottom: 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+}
+
+.ann-detail-form .show-ann-text {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-bottom-right-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    padding: 1em 2em;
+    font-size: 0.9em;
+}
+
+.ann-detail-container .header {
+    text-align: center;
+    padding: 0 3em;
+    color: var(--header-color);
+}
+
+/* monthly report */
+.monthr-container {
+    width: 80%;
+    margin: auto auto;
+    padding: 2em;
+    background-color: white;
+    border: none;
 }

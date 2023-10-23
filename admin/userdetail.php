@@ -29,8 +29,9 @@ if (isset($_GET['uid'])) {
             <div class="wrap">
 
                 <?php
-                $query2 = "SELECT * FROM [user] WHERE [user_id] = '$userid'";
-                $statement2 = sqlsrv_query($conn, $query2);
+                $query2 = "SELECT * FROM [user] WHERE [user_id] = ?";
+                $array2 = [$userid];
+                $statement2 = sqlsrv_query($conn, $query2, $array2);
 
                 //check if the query was successful
                 if ($statement2 === false) {

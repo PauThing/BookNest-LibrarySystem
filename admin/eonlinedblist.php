@@ -48,7 +48,7 @@ include('../clients/navbar.php');
         </div>
 
         <?php
-        $query = "SELECT * FROM [onlinedb]";
+        $query = "SELECT * FROM [onlinedb] ORDER BY [category] ASC";
         $statement = sqlsrv_query($conn, $query);
 
         $categories = array(); //create an array to store the unique categories

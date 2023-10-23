@@ -54,7 +54,7 @@ include('../clients/navbar.php');
         </div>
 
         <?php
-        $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg'";
+        $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg' ORDER BY [created_at] DESC";
         $statement = sqlsrv_query($conn, $query);
 
         $years = array(); //create an array to store the years

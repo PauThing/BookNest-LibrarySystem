@@ -2,10 +2,6 @@
 //set the session timeout to 4 hours (4 hours * 60 minutes * 60 seconds)
 ini_set('session.gc_maxlifetime', 4 * 60 * 60);
 session_start();
-if (!isset($_SESSION['userid']) || trim($_SESSION['userid'] == '')) {
-    header('location: ../clients/signin.php');
-    exit();
-}
 
 include('../clients/navbar.php');
 ?>
@@ -26,21 +22,12 @@ include('../clients/navbar.php');
     <title>Announcement</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function openForm() {
-            window.location.href = '../admin/addannouncement.php';
-        }
-    </script>
 </head>
 
 <body>
     <div class="big-container">
         <div class="header">
             <h3>Announcement</h3>
-        </div>
-
-        <div class="add-announcement" onclick="openForm()">
-            <i class="fa fa-plus"></i> New Announcement
         </div>
 
         <?php
@@ -80,12 +67,12 @@ include('../clients/navbar.php');
             
             $anntitle = $row['ann_title'];
             
-            //if the school is not in the schools array, add it
+            //if the date is not in the dates array, add it
             if (!array_key_exists($formattedDate, $dates)) {
                 $dates[$formattedDate] = array();
             }
 
-            //add the programme to the corresponding school
+            //add the title, date, detail to the corresponding school
             $dates[$formattedDate][] = array('title' => $anntitle, 'date' => $showDate, 'id' => $annid);
         }
         ?>
@@ -101,7 +88,6 @@ include('../clients/navbar.php');
                             <?php foreach ($anntitles as $entry) { ?>
                                 <div class="link">
                                     <a href="javascript:void(0);" class="title" onclick="openDetail('<?php echo $entry['id']; ?>')"><?php echo $entry['title']; ?> • <span style="color: blue;"><?php echo $entry['date']; ?></span></a>
-                                    <a href="../admin/backend/delannouncementdb.php?annID=<?php echo $entry['id']; ?>" class="del" onclick="return confirm('Are you sure you want to delete this announcement?');"><i class="fa fa-trash"></i></a>
                                     <br />
                                 </div>
                             <?php } ?>
@@ -150,7 +136,7 @@ include('../clients/navbar.php');
         function openDetail(id) {
             $.ajax({
                 type: 'GET',
-                url: '../admin/announcementdetail.php',
+                url: '../clients/announcementdetail.php',
                 data: {
                     annid: id
                 },
