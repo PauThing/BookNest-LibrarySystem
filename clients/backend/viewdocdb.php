@@ -3,10 +3,11 @@
 	include('../../clients/connect.php');
 
     if (isset($_GET['eptitle'])) {
+        $programme = $_GET['epprogramme'];
         $eptitle = $_GET['eptitle'];
 
         //retrieve the PDF data from the database based on the title
-        $query = "SELECT * FROM [exampaper] WHERE [title] = ?";
+        $query = "SELECT * FROM [exampaper] WHERE [filename] = ?";
         $array = [$eptitle];
         $statement = sqlsrv_query($conn, $query, $array);
 
@@ -22,13 +23,13 @@
 
             //set appropriate headers for serving a PDF
             header("Content-Type: " . $docType);
-            header("Content-Disposition: inline; filename=" . $title . ".pdf");
+            header("Content-Disposition: inline; filename=" . $eptitle . ".pdf");
             echo $docData; //output the PDF data
 
             sqlsrv_free_stmt($statement);
         } else {
-            $_SESSION['message'] = "No pdf found.";
-			header("location: ../../admin/epastyearlist.php?programme=<?php echo $pg; ?>&st=error");
+            $_SESSION['message'] = "No PDF found.";
+			header("location: ../../clients/pastyearlist.php?programme=" . $programme . "&st=error");
         }
     } else if (isset($_GET['sptitle'])) {
         $sptitle = $_GET['sptitle'];
@@ -50,13 +51,13 @@
 
             //set appropriate headers for serving a PDF
             header("Content-Type: " . $docType);
-            header("Content-Disposition: inline; filename=" . $title . ".pdf");
+            header("Content-Disposition: inline; filename=" . $sptitle . ".pdf");
             echo $docData; //output the PDF data
 
             sqlsrv_free_stmt($statement);
         } else {
-            $_SESSION['message'] = "No pdf found.";
-			header("location: ../../admin/estuprojectlist.php?st=error");
+            $_SESSION['message'] = "No PDF found.";
+			header("location: ../../clients/stuprojectlist.php?st=error");
         }
     }
 ?>

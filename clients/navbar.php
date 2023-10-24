@@ -79,7 +79,7 @@ include('../clients/connect.php');
                         <a href="../clients/myprofile.php">My Profile</a>
                         <a href="../clients/myfavorites.php">My Favorites</a>
                         <a href="../clients/onloanbook.php">On Loan Books</a>
-                        <a href="../clients/reservation.php">Reservations</a>
+                        <a href="../clients/discussionr.php">Reservations</a>
                     </div>
                 </div>
             </div>
@@ -139,7 +139,7 @@ include('../clients/connect.php');
                                     <a href="../clients/myprofile.php">My Profile</a>
                                     <a href="../clients/myfavorites.php">My Favorites</a>
                                     <a href="../clients/onloanbook.php">On Loan Books</a>
-                                    <a href="../clients/reservation.php">Reservations</a>
+                                    <a href="../clients/discussionr.php">Reservations</a>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@ include('../clients/connect.php');
                             <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/catalog.php">BOOK CATALOG</a>
                             <a href="../admin/bookreturn.php">BOOK RETURN</a>
-                            <a href="../admin/discussionroom.php">DISCUSSION ROOM</a>
+                            <a href="../admin/ediscussionr.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
                                 <div class="dropdown-content">
@@ -196,7 +196,7 @@ include('../clients/connect.php');
                             <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/catalog.php">BOOK CATALOG</a>
                             <a href="../admin/bookreturn.php">BORROW &  RETURN</a>
-                            <a href="../admin/discussionroom.php">DISCUSSION ROOM</a>
+                            <a href="../admin/ediscussionr.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
                                 <div class="dropdown-content">

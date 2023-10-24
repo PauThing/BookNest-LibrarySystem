@@ -173,6 +173,8 @@ include('../clients/navbar.php');
         </div>
     </div>
 
+    <div class="overlay-bg" id="overlay-bg"></div>
+
     <div class="user-detail-container" id="user-detail-container"></div>
 
     <br /><br />
@@ -217,6 +219,7 @@ include('../clients/navbar.php');
                 success: function(response) {
                     $('#user-detail-container').html(response);
                     document.getElementById("user-detail-container").style.display = "block";
+                    document.getElementById("overlay-bg").style.display = "block";
                 },
                 error: function() {
                     alert('Failed to load user details.');
@@ -226,6 +229,7 @@ include('../clients/navbar.php');
 
         function closeForm() {
             document.getElementById("user-detail-container").style.display = "none";
+            document.getElementById("overlay-bg").style.display = "none";
         }
     </script>
 </body>

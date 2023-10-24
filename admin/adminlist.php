@@ -29,10 +29,12 @@ include('../clients/navbar.php');
     <script>
         function openForm() {
             document.getElementById("new-admin-container").style.display = "block";
+            document.getElementById("overlay-bg").style.display = "block";
         }
 
         function closeForm() {
             document.getElementById("new-admin-container").style.display = "none";
+            document.getElementById("overlay-bg").style.display = "none";
         }
 
         function confirmDelete(userid) {
@@ -104,6 +106,8 @@ include('../clients/navbar.php');
         </div>
     </div>
 
+    <div class="overlay-bg" id="overlay-bg"></div>
+
     <div class="admin-detail-container" id="admin-detail-container"></div>
 
     <div id="new-admin-container" class="new-admin-container">
@@ -154,6 +158,7 @@ include('../clients/navbar.php');
                 success: function(response) {
                     $('#admin-detail-container').html(response);
                     document.getElementById("admin-detail-container").style.display = "block";
+                    document.getElementById("overlay-bg").style.display = "block";
                 },
                 error: function() {
                     alert('Failed to load user details.');
@@ -163,6 +168,7 @@ include('../clients/navbar.php');
 
         function closeDetail() {
             document.getElementById("admin-detail-container").style.display = "none";
+            document.getElementById("overlay-bg").style.display = "none";
         }
     </script>
 

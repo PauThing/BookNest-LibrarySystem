@@ -464,20 +464,3 @@ td {
 .user-detail-btn .user-reject:hover {
     box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
 }
-
-/* Styles for screens with a maximum width of 768px */
-@media only screen and (max-width: 1280px) {
-    .big-container {
-        width: 90%;
-        /* Adjust width for smaller screens */
-    }
-
-    .new-admin-container {
-        width: 50%;
-        /* Adjust position for smaller screens */
-    }
-
-    .adminlist-container {
-        width: 80%;
-    }
-}

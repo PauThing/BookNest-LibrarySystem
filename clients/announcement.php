@@ -120,6 +120,8 @@ include('../clients/navbar.php');
         </div>
     </div>
 
+    <div class="overlay-bg" id="overlay-bg"></div>
+
     <div id="ann-detail-container" class="ann-detail-container"></div>
 
     <span>
@@ -143,6 +145,8 @@ include('../clients/navbar.php');
                 success: function(response) {
                     $('#ann-detail-container').html(response);
                     document.getElementById("ann-detail-container").style.display = "block";
+                    document.getElementById("overlay-bg").style.display = "block";
+                    
                 },
                 error: function() {
                     console.log("AJAX Error: " + status + " - " + error);
@@ -153,6 +157,7 @@ include('../clients/navbar.php');
 
         function closeDetail() {
             document.getElementById("ann-detail-container").style.display = "none";
+            document.getElementById("overlay-bg").style.display = "none";
         }
     </script>
 </body>

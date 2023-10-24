@@ -29,10 +29,12 @@ include('../clients/navbar.php');
     <script>
         function openForm() {
             document.getElementById("new-db-container").style.display = "block";
+            document.getElementById("overlay-bg").style.display = "block";
         }
 
         function closeForm() {
             document.getElementById("new-db-container").style.display = "none";
+            document.getElementById("overlay-bg").style.display = "none";
         }
     </script>
 </head>
@@ -92,6 +94,8 @@ include('../clients/navbar.php');
                 } ?>
         </div>
     </div>
+
+    <div class="overlay-bg" id="overlay-bg"></div>
 
     <div id="new-db-container" class="new-db-container">
         <form id="new-db-form" class="new-db-form" method="post" action="../admin/backend/newresourcedb.php" enctype="multipart/form-data">

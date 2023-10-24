@@ -64,7 +64,7 @@ include('../clients/navbar.php');
                         <div class="programme">
                             <?php foreach ($programmes as $programme) { ?>
                                 <div class="link">
-                                    <a href="../admin/epastyearlist.php?programme=<?php echo $programme; ?>" class="pgtitle"><?php echo $programme; ?></a></td>
+                                    <a href="../clients/pastyearlist.php?programme=<?php echo $programme; ?>" class="pgtitle"><?php echo $programme; ?></a></td>
                                 </div>
                             <?php } ?>
                         </div>

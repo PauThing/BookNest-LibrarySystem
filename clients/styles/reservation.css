@@ -1,0 +1,332 @@
+:root {
+    --background-color: #F6F4EB;
+    --navbar-color: #4682A9;
+    --container-color: #91C8E4;
+    --header-color: #003753;
+    --button-color: #749BC2;
+    --button-hover-color: #4980b6;
+    --md-dark-color: #262626;
+    --dark-color: #171717;
+    --light-dark-color: #2d2f30;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.big-container {
+    background-color: var(--container-color);
+    margin: 3.5em 2em;
+    padding: 2em;
+}
+
+.big-container h3 {
+    font-weight: bold;
+    color: var(--header-color);
+    text-align: center;
+}
+
+.overlay-bg {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 0;
+}
+
+/* view reservation records and setting */
+.view-reservation {
+    width: 12em;
+    float: right;
+    padding: 0.4em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    border-radius: 0.2em;
+    background-color: var(--header-color);
+    text-align: center;
+    color: white;
+    font-size: 0.8em;
+}
+
+.reserve-room {
+    width: 12em;
+    float: right;
+    padding: 0.4em;
+    margin-right: 9.2em;
+    margin-bottom: 1em;
+    border-radius: 0.2em;
+    background-color: var(--header-color);
+    text-align: center;
+    color: white;
+    font-size: 0.8em;
+}
+
+.view-reservation:hover,
+.reserve-room:hover {
+    cursor: pointer;
+    background-color: #005e8d;
+    transition: .3s ease-in-out;
+}
+
+.setting-container {
+    display: none;
+    position: absolute;
+    top: 19em;
+    margin-left: 26em;
+    width: 45%;
+    animation: fade-in 0.5s;
+    overflow-y: auto;
+    border: none;
+
+}
+
+.setting-form {
+    width: 85%;
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    margin-bottom: 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+}
+
+.setting-container .wrap {
+    padding: 1.5em 4em;
+}
+
+.setting-container .wrap .SelectInput {
+    width: 100%;
+}
+
+.setting-container .wrap .SelectInput label {
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
+    color: var(--header-color);
+    pointer-events: none;
+}
+
+.setting-container .wrap .SelectInput .status,
+.setting-container .wrap .SelectInput .droom {
+    width: 100%;
+    border: none;
+    border-radius: 0.2em;
+    outline: none;
+    padding: 0.5em;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8em;
+}
+
+.setting-container .header {
+    text-align: center;
+    padding: 0 3em;
+    color: var(--header-color);
+}
+
+.setting-container table {
+    width: 80%;
+    margin: auto;
+    table-layout: auto;
+    border-collapse: collapse;
+    border-radius: 0.5em;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+    font-size: 0.8em;
+}
+
+th,
+td {
+    padding: 0.8em;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+.setting-container table thead th {
+    text-align: center;
+    background-color: var(--header-color);
+    color: white;
+}
+
+.setting-container table tbody td {
+    border: 0.1em solid #e7e7e7;
+    color: var(--md-dark-color);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.cancel {
+    float: right;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.reservation-list {
+    padding-top: 2em;
+}
+
+/* search bar */
+.search-box {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 1.5em 0;
+    border: none;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    background-color: var(--header-color);
+}
+
+.search-box .searchInput {
+    width: 90%;
+    padding: 1em;
+    border: none;
+    border-radius: 2.5em;
+    outline: none;
+}
+
+/* table list */
+.reservation-container,
+.personal-reservation-container {
+    width: 90%;
+    margin: 0 auto;
+    border: none;
+}
+
+.reservation-container table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
+th,
+td {
+    padding: 0.8em;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+.reservation-container table thead th,
+.personal-reservation-container table thead th {
+    text-align: center;
+    background-color: var(--header-color);
+    color: white;
+}
+
+.reservation-container table tbody tr:hover,
+.personal-reservation-container table tbody tr:hover {
+    background-color: #f2f5f7;
+}
+
+.reservation-container table tbody td,
+.personal-reservation-container table tbody td {
+    color: var(--md-dark-color);
+}
+
+.personal-reservation-container table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    border-radius: 0.5em;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
+/* pagination */
+.pagination-container {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.pagination-container .pagination {
+    list-style: none;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 1.2em;
+}
+
+.pagination li:last-child {
+    margin-right: 0;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 6em;
+    padding: 0.3em;
+    text-decoration: none;
+    background-color: var(--button-color);
+    color: var(--dark-color);
+    border: none;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+}
+
+.pagination span {
+    display: inline-block;
+    width: 6em;
+    padding: 0.3em;
+    text-decoration: none;
+    background-color: #c6c6c6d1;
+    color: #969696bf;
+    border: none;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+}
+
+.pagination a:hover {
+    background-color: var(--button-hover-color);
+    color: #fff;
+}
+
+/* button */
+.setting-btn {
+    padding-top: 1em;
+    text-align: center;
+}
+
+.setting-btn .setting {
+    width: 8em;
+    outline: none;
+    border-radius: 0.1rem;
+    border: none;
+    background-color: var(--button-color);
+    color: #0f0c30;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.setting-btn .setting:hover {
+    box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
+}

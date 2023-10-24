@@ -32,56 +32,54 @@ include('../clients/navbar.php');
     <div class="big-container">
         <?php $pg = $_GET['programme']; ?>
 
+        <?php
+        $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg' ORDER BY [created_at] DESC";
+        $statement = sqlsrv_query($conn, $query);
+
+        $years = array(); //create an array to store the years
+
+        while ($row = sqlsrv_fetch_array($statement)) {
+            $date = $row['created_at'];
+            list($month, $year) = explode('-', $date);
+
+            //construct a DateTime object based on the year and month
+            $dateTime = new DateTime();
+            $dateTime->setDate($year, $month, 1);
+            $formattedDate = $dateTime->format('F Y');
+
+            $docName = $row['filename'];
+            $docData = $row['filedata'];
+
+            //if the year is not in the years array, add it
+            if (!array_key_exists($formattedDate, $years)) {
+                $years[$formattedDate] = array();
+            }
+
+            //add the exam paper title to the corresponding year
+            $years[$formattedDate][] = $docName;
+        }
+        ?>
         <div class="exampaper-container">
-            <table id="exampaper">
-                <thead>
-                    <tr>
-                        <th class="header" colspan="2"><?php echo $pg; ?></th>
-                    </tr>
-                    <?php
-                    $query = "SELECT * FROM [exampaper] WHERE [programme] = '$pg'";
-                    $statement = sqlsrv_query($conn, $query);
-
-                    $monthYears = array(); //create an array to store the years
-
-                    while ($row = sqlsrv_fetch_array($statement)) {
-                        $date = $row['created_at'];
-                        list($month, $year) = explode('-', $date);
-
-                        //construct a DateTime object based on the year and month
-                        $dateTime = new DateTime();
-                        $dateTime->setDate($year, $month, 1);
-                        $formattedDate = $dateTime->format('F Y');
-
-                        $title = $row['title'];
-                        $docData = $row['filedata'];
-
-                        //if the year is not in the years array, add it
-                        if (!array_key_exists($formattedDate, $monthYears)) {
-                            $monthYears[$formattedDate] = array();
-                        }
-
-                        //add the exam paper title to the corresponding year
-                        $monthYears[$formattedDate][] = $title;
-                    }
-
-                    foreach ($monthYears as $monthYear => $titles) {
-                    ?>
-                        <tr>
-                            <th colspan="2"><?php echo $monthYear; ?></th>
-                        </tr>
-                </thead>
-                <?php foreach ($titles as $title) { ?>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="../clients/backend/viewdocdb.php?title=<?php echo $title; ?>" target="_blank"><?php echo $title; ?></a>
-                            </td>
-                        </tr>
-                    </tbody>
+            <?php $count = 0;
+            foreach ($years as $formattedDate => $docNames) {
+                if ($count % 2 === 0) { ?>
+                    <div class="exampaper-row">
+                    <?php } ?>
+                    <div class="year">
+                        <h4><?php echo $formattedDate; ?></h4>
+                        <div class="exampaper">
+                            <?php foreach ($docNames as $docName) { ?>
+                                <div class="link">
+                                    <a href="../clients/backend/viewdocdb.php?eptitle=<?php echo $docName; ?>&epprogramme=<?php echo $pg; ?>" target="_blank" class="eptitle"><?php echo $docName; ?></a>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if ($count % 2 === 1 || $count === count($years) - 1) { ?>
+                    </div>
             <?php }
-                    } ?>
-            </table>
+                    $count++;
+                } ?>
         </div>
     </div>
 
