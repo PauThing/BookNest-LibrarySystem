@@ -48,12 +48,13 @@ include('../clients/navbar.php');
                     </thead>
 
                     <?php
+                    $userid = $_SESSION['userid'];
+
                     $itemsPerPage = 20;
                     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     $offset = ($currentPage - 1) * $itemsPerPage;
 
-
-                    $cquery = "SELECT COUNT(*) AS ttlrecord FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved'";
+                    $cquery = "SELECT COUNT(*) AS ttlrecord FROM [reservation]";
                     $cstatement = sqlsrv_query($conn, $cquery);
                     $ttlrecord = 0;
 
@@ -68,13 +69,12 @@ include('../clients/navbar.php');
                             r.*,
                             u.fullname,
                             dr.droom_num
-                        FROM
-                            [reservation] r
-                        LEFT JOIN
-                            [user] u ON r.user_id = u.user_id
-                        LEFT JOIN
-                            [discussionroom] dr ON r.droom_id = dr.droom_id
+                        FROM [reservation] r
+                        LEFT JOIN [user] u ON r.user_id = u.user_id
+                        LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
+                        WHERE r.user_id = '$userid'
                         ORDER BY [created_at] OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+
                     $statement = sqlsrv_query($conn, $query);
 
                     if ($statement === false) {
@@ -105,27 +105,23 @@ include('../clients/navbar.php');
             </div>
 
             <!-- Pagination - page by page -->
-            <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['searchInput']) && !empty($_POST['searchInput'])) { ?>
-                <div class="pagination-container" style="display: none;"></div>
-            <?php } else { ?>
-                <div class="pagination-container">
-                    <ul class="pagination">
-                        <?php
-                        if ($currentPage > 1) {
-                            echo "<li><a href='?page=" . ($currentPage - 1) . "'>Previous</a></li>";
-                        } else {
-                            echo "<li><span>Previous</span></li>";
-                        }
+            <div class="pagination-container">
+                <ul class="pagination">
+                    <?php
+                    if ($currentPage > 1) {
+                        echo "<li><a href='?page=" . ($currentPage - 1) . "'>Previous</a></li>";
+                    } else {
+                        echo "<li><span>Previous</span></li>";
+                    }
 
-                        if ($currentPage < $ttlpages) {
-                            echo "<li><a href='?page=" . ($currentPage + 1) . "'>Next</a></li>";
-                        } else {
-                            echo "<li><span>Next</span></li>";
-                        }
-                        ?>
-                    </ul>
-                </div>
-            <?php } ?>
+                    if ($currentPage < $ttlpages) {
+                        echo "<li><a href='?page=" . ($currentPage + 1) . "'>Next</a></li>";
+                    } else {
+                        echo "<li><span>Next</span></li>";
+                    }
+                    ?>
+                </ul>
+            </div>
         </div>
     </div>
 

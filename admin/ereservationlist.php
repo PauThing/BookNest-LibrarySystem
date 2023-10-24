@@ -69,16 +69,14 @@ include('../clients/navbar.php');
                             r.*,
                             u.fullname,
                             dr.droom_num
-                        FROM
-                            [reservation] r
-                        LEFT JOIN
-                            [user] u ON r.user_id = u.user_id
-                        LEFT JOIN
-                            [discussionroom] dr ON r.droom_id = dr.droom_id
+                        FROM [reservation] r
+                        LEFT JOIN [user] u ON r.user_id = u.user_id
+                        LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
                         WHERE
                             r.user_id LIKE ?
                             OR u.fullname LIKE ?
                             OR dr.droom_num LIKE ?";
+                            
                         $statement = sqlsrv_query($conn, $query, $array);
 
                         if ($statement === false) {
@@ -102,7 +100,7 @@ include('../clients/navbar.php');
                             $norecord = false;
                         }
                     } else {
-                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved'";
+                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [reservation]";
                         $cstatement = sqlsrv_query($conn, $cquery);
                         $ttlrecord = 0;
 
@@ -114,16 +112,14 @@ include('../clients/navbar.php');
                         $ttlpages = ceil($ttlrecord / $itemsPerPage);
 
                         $query = "SELECT
-                            r.*,
-                            u.fullname,
-                            dr.droom_num
-                        FROM
-                            [reservation] r
-                        LEFT JOIN
-                            [user] u ON r.user_id = u.user_id
-                        LEFT JOIN
-                            [discussionroom] dr ON r.droom_id = dr.droom_id
-                        ORDER BY [created_at] OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+                                r.*,
+                                u.fullname,
+                                dr.droom_num
+                            FROM [reservation] r
+                            LEFT JOIN [user] u ON r.user_id = u.user_id
+                            LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
+                            ORDER BY [created_at] OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+
                         $statement = sqlsrv_query($conn, $query);
 
                         if ($statement === false) {

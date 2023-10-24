@@ -27,13 +27,13 @@ include('../clients/navbar.php');
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function openSetting() {
-            document.getElementById("setting-container").style.display = "block";
+        function openForm() {
+            document.getElementById("reserve-room-container").style.display = "block";
             document.getElementById("overlay-bg").style.display = "block";
         }
 
-        function closeSetting() {
-            document.getElementById("setting-container").style.display = "none";
+        function closeForm() {
+            document.getElementById("reserve-room-container").style.display = "none";
             document.getElementById("overlay-bg").style.display = "none";
         }
 
@@ -49,7 +49,7 @@ include('../clients/navbar.php');
             <h3>Discussion Room Daily Schedule</h3>
         </div>
 
-        <div class="reserve-room" onclick="openSetting()">
+        <div class="reserve-room" onclick="openForm()">
             <i class="fas fa-door-open"></i> Reserve a Room
         </div>
 
@@ -62,69 +62,57 @@ include('../clients/navbar.php');
 
     <div class="overlay-bg" id="overlay-bg"></div>
 
-    <div id="setting-container" class="setting-container">
-        <form id="setting-form" class="setting-form" method="post" action="../admin/backend/eroomsettingdb.php" enctype="multipart/form-data">
-            <button type="button" class="cancel" onclick="closeSetting()"><i class="fa fa-remove"></i></button>
+    <div id="reserve-room-container" class="reserve-room-container">
+        <form id="reserve-room-form" class="reserve-room-form" method="post" action="../clients/backend/addreservationdb.php" enctype="multipart/form-data">
+            <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
-                <h3>Configuration Settings</h3>
+                <h3>Reserve Your Discussion Room</h3>
             </div>
 
-            <table id="room-setting">
-                <thead>
-                    <tr>
-                        <th>Discussion Room ID</th>
-                        <th>Discussion Room</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <?php
-                $query = "SELECT * FROM [discussionroom]";
-                $statement = sqlsrv_query($conn, $query);
-
-                if ($statement === false) {
-                    die(print_r(sqlsrv_errors(), true)); //print and handle the error
-                }
-
-                while ($row = sqlsrv_fetch_array($statement)) {
-                ?>
-                    <tbody>
-                        <tr>
-                            <td><?php echo $row['droom_id']; ?></td>
-                            <td><?php echo $row['droom_num']; ?></td>
-                            <td><?php echo $row['status']; ?></td>
-                        </tr>
-                    </tbody>
-                <?php } ?>
-            </table>
-
             <div class="wrap">
+                <div class="InputSlide">
+                    <label for="member">Number of Members: <b><span id="num" class="num"></span></b></label><br />
+                    <input type="range" name="member" id="member" class="member" value="" min="2" max="6" required>
+                </div>
+
+                <br />
+
                 <div class="SelectInput" data-mate-select="active">
                     <label for="droom">Discussion Room</label> <br />
                     <select name="droom" id="droom" class="droom" required>
                         <option value="">Select a room </option>
-                        <option value="Room 1">Room 1</option>
-                        <option value="Room 2">Room 2</option>
-                        <option value="Room 3">Room 3</option>
-                        <option value="Room 4">Room 4</option>
+                        <?php
+                        $query = "SELECT * FROM [discussionroom] WHERE [status] = 'Available'";
+                        $statement = sqlsrv_query($conn, $query);
+
+                        while ($row = sqlsrv_fetch_array($statement)) {
+                        ?>
+                            <option value="<?php echo $row['droom_id']; ?>"><?php echo $row['droom_num']; ?></option>
+                        <?php } ?>
                     </select>
                 </div>
 
                 <br />
 
                 <div class="SelectInput" data-mate-select="active">
-                    <label for="status">Status</label> <br />
-                    <select name="status" id="status" class="status" required>
-                        <option value="">Select an option </option>
-                        <option value="Available">Available</option>
-                        <option value="Unavailable">Unavailable</option>
+                    <label for="slot">Time Slot</label> <br />
+                    <select name="slot" id="slot" class="slot" required>
+                        <option value="">Select a slot </option>
+                        <option value="9.00 AM - 10.00 AM">9.00 AM - 10.00 AM</option>
+                        <option value="10.00 AM - 11.00 AM">10.00 AM - 11.00 AM</option>
+                        <option value="10.00 AM - 11.00 AM">10.00 AM - 11.00 AM</option>
+                        <option value="12.00 PM - 1.00 PM">12.00 PM - 1.00 PM</option>
+                        <option value="1.00 PM - 2.00 PM">1.00 PM - 2.00 PM</option>
+                        <option value="2.00 PM - 3.00 PM">2.00 PM - 3.00 PM</option>
+                        <option value="3.00 PM - 4.00 PM">3.00 PM - 4.00 PM</option>
+                        <option value="4.00 PM - 5.00 PM">4.00 PM - 5.00 PM</option>
                     </select>
                 </div>
 
                 <br />
 
-                <div class="setting-btn">
-                    <input type="submit" name="setting" id="setting" class="setting" value="Save">
+                <div class="reserve-btn">
+                    <input type="submit" name="reserve" id="reserve" class="reserve" value="Reserve">
                 </div>
             </div>
         </form>
@@ -143,7 +131,14 @@ include('../clients/navbar.php');
     </span>
 
     <script>
+        var slider = document.getElementById("member");
+        var num = document.getElementById("num");
+        num.innerHTML = slider.value; //display the default slider value
 
+        //update the current slider value (each time you drag the slider handle)
+        slider.oninput = function() {
+            num.innerHTML = this.value;
+        }
     </script>
 </body>
 
