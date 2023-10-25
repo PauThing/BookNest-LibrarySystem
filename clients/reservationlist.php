@@ -73,7 +73,7 @@ include('../clients/navbar.php');
                         LEFT JOIN [user] u ON r.user_id = u.user_id
                         LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
                         WHERE r.user_id = '$userid'
-                        ORDER BY [created_at] OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+                        ORDER BY [created_at] DESC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
 
                     $statement = sqlsrv_query($conn, $query);
 

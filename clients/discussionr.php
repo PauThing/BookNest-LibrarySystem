@@ -45,9 +45,33 @@ include('../clients/navbar.php');
 
 <body>
     <div class="big-container">
+        <?php
+        $query = "SELECT
+                    r.*,
+                    u.fullname,
+                    dr.*
+                FROM [reservation] r
+                LEFT JOIN [user] u ON r.user_id = u.user_id
+                LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
+                WHERE [created_at] = CONVERT(DATE, GETDATE())";
+        $statement = sqlsrv_query($conn, $query);
+
+        $reservationData = array();
+
+        if ($statement) {
+            while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
+                $reservationData[] = $row;
+            }
+        }
+        ?>
+
         <div class="header">
             <h3>Discussion Room Daily Schedule</h3>
+            <h4><?php $currentDate = date('Y-m-d');
+                echo $currentDate; ?></h4>
         </div>
+
+        <br />
 
         <div class="reserve-room" onclick="openForm()">
             <i class="fas fa-door-open"></i> Reserve a Room
@@ -57,7 +81,85 @@ include('../clients/navbar.php');
             <i class="fa fa-eye"></i> Reservation History
         </div>
 
-        <div class="reservation-schedule"></div>
+        <div class="reservation-schedule">
+            <table id="schedule">
+                <thead>
+                    <tr>
+                        <th>Time Slot</th>
+                        <th>Room 1</th>
+                        <th>Room 2</th>
+                        <th>Room 3</th>
+                        <th>Room 4</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr id="9.00 AM - 10.00 AM">
+                        <td><b>9.00 AM - 10.00 AM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="10.00 AM - 11.00 AM">
+                        <td><b>10.00 AM - 11.00 AM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="11.00 AM - 12.00 PM">
+                        <td><b>11.00 AM - 12.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="12.00 PM - 1.00 PM">
+                        <td><b>12.00 PM - 1.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="1.00 PM - 2.00 PM">
+                        <td><b>1.00 PM - 2.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="2.00 PM - 3.00 PM">
+                        <td><b>2.00 PM - 3.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="3.00 PM - 4.00 PM">
+                        <td><b>3.00 PM - 4.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="4.00 PM - 5.00 PM">
+                        <td><b>4.00 PM - 5.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="overlay-bg" id="overlay-bg"></div>
@@ -67,6 +169,7 @@ include('../clients/navbar.php');
             <button type="button" class="cancel" onclick="closeForm()"><i class="fa fa-remove"></i></button>
             <div class="header">
                 <h3>Reserve Your Discussion Room</h3>
+                <label class="instruction">You are only allow to reserve the discussion room on this day.</label>
             </div>
 
             <div class="wrap">
@@ -90,6 +193,15 @@ include('../clients/navbar.php');
                             <option value="<?php echo $row['droom_id']; ?>"><?php echo $row['droom_num']; ?></option>
                         <?php } ?>
                     </select>
+
+                    <label class="explanation">
+                        Note: Unavailable Room Today - 
+                        <?php
+                        $query = "SELECT * FROM [discussionroom] WHERE [status] = 'Unavailable'";
+                        $statement = sqlsrv_query($conn, $query);
+                        while($row = sqlsrv_fetch_array($statement)) {
+                         echo $row['droom_num'] . " . "; } ?>
+                    </label>
                 </div>
 
                 <br />
@@ -100,7 +212,7 @@ include('../clients/navbar.php');
                         <option value="">Select a slot </option>
                         <option value="9.00 AM - 10.00 AM">9.00 AM - 10.00 AM</option>
                         <option value="10.00 AM - 11.00 AM">10.00 AM - 11.00 AM</option>
-                        <option value="10.00 AM - 11.00 AM">10.00 AM - 11.00 AM</option>
+                        <option value="11.00 AM - 12.00 PM">11.00 AM - 12.00 PM</option>
                         <option value="12.00 PM - 1.00 PM">12.00 PM - 1.00 PM</option>
                         <option value="1.00 PM - 2.00 PM">1.00 PM - 2.00 PM</option>
                         <option value="2.00 PM - 3.00 PM">2.00 PM - 3.00 PM</option>
@@ -131,6 +243,7 @@ include('../clients/navbar.php');
     </span>
 
     <script>
+        //for slider in reservation form
         var slider = document.getElementById("member");
         var num = document.getElementById("num");
         num.innerHTML = slider.value; //display the default slider value
@@ -138,6 +251,80 @@ include('../clients/navbar.php');
         //update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
             num.innerHTML = this.value;
+        }
+
+        //disable the past time slot
+        document.addEventListener("DOMContentLoaded", function() {
+            var slotSelect = document.getElementById("slot");
+            var now = new Date();
+            var currentHour = now.getHours();
+            var currentMinute = now.getMinutes();
+
+            for (var i = 1; i < slotSelect.options.length; i++) {
+                var slotValue = slotSelect.options[i].value;
+                var startHour = parseInt(slotValue.split(" - ")[0]);
+
+                for (var i = 1; i < slotSelect.options.length; i++) {
+                    var slotValue = slotSelect.options[i].value;
+                    var startHour = parseInt(slotValue.split(" - ")[0].split(".")[0]);
+                    var isAM = slotValue.indexOf("AM") !== -1;
+
+                    //convert AM/PM to 24-hour format
+                    if (!isAM && startHour === 12) {
+                        startHour = 12;
+                    } else if (!isAM) {
+                        startHour += 12;
+                    }
+
+                    //compare the current time with the start time of the slot
+                    if (currentHour > startHour || (currentHour === startHour && currentMinute >= 0)) {
+                        slotSelect.options[i].disabled = true;
+                    }
+                }
+            }
+        });
+
+        //for displaying data in timetable form
+        document.addEventListener("DOMContentLoaded", function() {
+            <?php foreach ($reservationData as $reservation) { ?>
+                var roomNum = "<?php echo $reservation['droom_num']; ?>";
+                var timeSlot = "<?php echo $reservation['time_slot']; ?>";
+                var name = "<?php echo $reservation['fullname']; ?>";
+                var member = "<?php echo $reservation['member']; ?>";
+
+                var timeSlot = findSlotWithText("<?php echo $reservation['time_slot']; ?>");
+                var room = findRoomWithText("<?php echo $reservation['droom_num']; ?>");
+
+                if (timeSlot && room) {
+                    var columnIndex = room.cellIndex; //get the column index of the room
+                    var row = timeSlot.parentElement;
+                    var cell = row.cells[columnIndex];
+
+                    //populate the cell with the user's name
+                    cell.innerHTML = "<b>" + name + "</b><br>Members: " + member;
+                    cell.style.backgroundColor = "#fee7e7";
+                }
+            <?php } ?>
+        });
+
+        function findSlotWithText(text) {
+            var cells = document.getElementsByTagName("td");
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i].textContent === text) {
+                    return cells[i];
+                }
+            }
+            return null;
+        }
+
+        function findRoomWithText(text) {
+            var cells = document.getElementsByTagName("th");
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i].textContent === text) {
+                    return cells[i];
+                }
+            }
+            return null;
         }
     </script>
 </body>

@@ -41,8 +41,8 @@ include('../clients/connect.php');
     ?>
         <nav>
             <div class="navbar">
-                <a href="index.php">HOME</a>
-                <a href="catalog.php">BOOK CATALOG</a>
+                <a href="../clients/index.php">HOME</a>
+                <a href="../clients/bookcatalog.php">BOOK CATALOG</a>
                 <div class="dropdown">
                     <button class="dropbtn">USING THE LIBRARY</button>
                     <div class="dropdown-content">
@@ -101,8 +101,8 @@ include('../clients/connect.php');
         ?>
                     <nav>
                         <div class="navbar">
-                            <a href="index.php">HOME</a>
-                            <a href="catalog.php">BOOK CATALOG</a>
+                            <a href="../clients/index.php">HOME</a>
+                            <a href="../clients/bookcatalog.php">BOOK CATALOG</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
                                 <div class="dropdown-content">
@@ -195,7 +195,7 @@ include('../clients/connect.php');
                         <div class="navbar">
                             <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/catalog.php">BOOK CATALOG</a>
-                            <a href="../admin/bookreturn.php">BORROW &  RETURN</a>
+                            <a href="../admin/bookreturn.php">BORROW & RETURN</a>
                             <a href="../admin/ediscussionr.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>

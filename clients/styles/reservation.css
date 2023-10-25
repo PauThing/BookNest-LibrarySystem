@@ -24,6 +24,14 @@ body {
     font-weight: bold;
     color: var(--header-color);
     text-align: center;
+    margin-bottom: 0;
+}
+
+.big-container h4 {
+    font-weight: bold;
+    color: var(--header-color);
+    text-align: center;
+    margin: 0 auto;
 }
 
 .overlay-bg {
@@ -55,7 +63,7 @@ body {
     width: 8em;
     float: right;
     padding: 0.4em;
-    margin-right: 9.2em;
+    margin-right: 10.4em;
     margin-bottom: 1em;
     border-radius: 0.2em;
     background-color: var(--header-color);
@@ -68,7 +76,7 @@ body {
     width: 12em;
     float: right;
     padding: 0.4em;
-    margin-right: 9.2em;
+    margin-right: 10.4em;
     margin-bottom: 1em;
     border-radius: 0.2em;
     background-color: var(--header-color);
@@ -169,11 +177,21 @@ body {
     font-size: 0.8em;
 }
 
+.reserve-room-container .wrap .SelectInput .explanation {
+    font-size: 0.8em;
+    color: #5c5d5f;
+}
+
 .setting-container .header,
 .reserve-room-container .header {
     text-align: center;
     padding: 0 3em;
     color: var(--header-color);
+}
+
+.reserve-room-container .header .instruction {
+    background-color: #cfdde4;
+    font-size: 0.8em;
 }
 
 @keyframes fade-in {
@@ -222,7 +240,40 @@ body {
     outline: none;
 }
 
-/* table list */
+/* reservation timetable */
+.reservation-schedule {
+    width: 80%;
+    margin: 0 auto;
+    border: none;
+}
+
+.reservation-schedule table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    border-radius: 0.5em;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
+.reservation-schedule table thead th {
+    width: 12em;
+    text-align: center;
+    border: 0.1em solid #d0d0d0;
+    background-color: var(--header-color);
+    color: white;
+}
+
+.reservation-schedule table tbody td {
+    width: 12em;
+    height: 3em;
+    border: 0.1em solid #c6c6c6;
+    color: var(--md-dark-color);
+}
+
+/* reservation table list */
 .reservation-container,
 .personal-reservation-container {
     width: 90%;
@@ -283,7 +334,7 @@ td {
     margin: auto;
     table-layout: auto;
     border-collapse: collapse;
-    border-radius: 0.5em;
+    border-radius: 0.3em;
     background-color: white;
     overflow: hidden;
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
@@ -304,6 +355,7 @@ td {
 }
 
 .setting-container table tbody td {
+    border: 0.1em solid #d0d0d0;
     color: var(--md-dark-color);
 }
 

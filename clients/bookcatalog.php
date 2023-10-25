@@ -21,38 +21,44 @@ include('../clients/navbar.php');
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" integrity="sha512-Z0kTB03S7BU+JFU0nw9mjSBcRnZm2Bvm0tzOX9/OuOuz01XQfOpa0w/N9u6Jf2f1OAdegdIPWZ9nIZZ+keEvBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../clients/styles/reservation.css">
+    <link rel="stylesheet" href="../clients/styles/userlist.css">
 
-    <title>Discussion Room Reservation</title>
+    <title>Book Catalog</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-
+        function confirmDelete(userid) {
+            const password = prompt("Please enter your password:");
+            if (password !== null) {
+                window.location.href = `../admin/backend/deluserdb.php?userid=${userid}&password=${password}`;
+            }
+        }
     </script>
 </head>
 
 <body>
     <div class="big-container">
-        <div id="reservation-list" class="reservation-list">
-            <form method="post" action="../admin/ereservationlist.php">
+        <div id="user-accepted" class="tabcontent">
+            <form method="post" action="../admin/userlist.php">
                 <div class="search-box">
-                    <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student ID, student name or discussion room" onkeyup="searchHistory(event)">
+                    <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by student name or student ID" onkeyup="searchApproved(event)">
                     <input type="hidden" name="currentPage" id="currentPage" value="1">
                     <button class="search-btn" name="search-btn" style="display: none;"></button>
                 </div>
             </form>
 
-            <!-- Reservation History -->
-            <div class="reservation-container">
-                <table id="reservation">
+            <!-- Approved List -->
+            <div class="userlist-container">
+                <table id="userlist">
                     <thead>
                         <tr>
-                            <th>Discussion Room</th>
-                            <th>Time Slot</th>
+                            <th class="number">No.</th>
                             <th>Student ID</th>
                             <th>Full Name</th>
-                            <th>No. of Member</th>
-                            <th>Reserved Date</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Registered Date</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -63,45 +69,34 @@ include('../clients/navbar.php');
 
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['searchInput']) && !empty($_POST['searchInput'])) {
                         $search = '%' . $_POST['searchInput'] . '%';
-                        $array = [$search, $search, $search];
+                        $array = [$search, $search];
 
-                        $query = "SELECT
-                            r.*,
-                            u.fullname,
-                            dr.droom_num
-                        FROM [reservation] r
-                        LEFT JOIN [user] u ON r.user_id = u.user_id
-                        LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
-                        WHERE
-                            r.user_id LIKE ?
-                            OR u.fullname LIKE ?
-                            OR dr.droom_num LIKE ?
-                        ORDER BY [created_at] DESC";
-                            
+                        $query = "SELECT * FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved' AND ([user_id] LIKE ? OR [fullname] LIKE ?)";
                         $statement = sqlsrv_query($conn, $query, $array);
 
-                        if ($statement === false) {
-                            die(print_r(sqlsrv_errors(), true)); //print and handle the error
-                        }
-
+                        $i = 1;
                         $norecord = true;
                         while ($row = sqlsrv_fetch_array($statement)) {
                     ?>
                             <tbody>
                                 <tr>
-                                    <td><?php echo $row['droom_num']; ?></td>
-                                    <td><?php echo $row['time_slot']; ?></td>
+                                    <td class="number"><?php echo $i++; ?></td>
                                     <td><?php echo $row['user_id']; ?></td>
                                     <td><?php echo $row['fullname']; ?></td>
-                                    <td><?php echo $row['member']; ?></td>
-                                    <td><?php echo $row['created_at']->format('Y-m-d');; ?></td>
+                                    <td><?php echo $row['user_email']; ?></td>
+                                    <td><?php echo $row['acc_status']; ?></td>
+                                    <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                    <td class="action">
+                                        <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')" style="margin-right: 0.8em;"><i class="fa fa-eye"></i></a>
+                                        <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                    </td>
                                 </tr>
                             </tbody>
                         <?php
                             $norecord = false;
                         }
                     } else {
-                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [reservation]";
+                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved'";
                         $cstatement = sqlsrv_query($conn, $cquery);
                         $ttlrecord = 0;
 
@@ -112,32 +107,25 @@ include('../clients/navbar.php');
                         //calculate the total number of pages
                         $ttlpages = ceil($ttlrecord / $itemsPerPage);
 
-                        $query = "SELECT
-                                r.*,
-                                u.fullname,
-                                dr.droom_num
-                            FROM [reservation] r
-                            LEFT JOIN [user] u ON r.user_id = u.user_id
-                            LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
-                            ORDER BY [created_at] DESC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
-
+                        $query = "SELECT * FROM [user] WHERE [usertype] = 'Student' AND [acc_status] = 'Approved' ORDER BY [user_id] OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
                         $statement = sqlsrv_query($conn, $query);
 
-                        if ($statement === false) {
-                            die(print_r(sqlsrv_errors(), true)); //print and handle the error
-                        }
-
+                        $i = 1;
                         $norecord = true;
                         while ($row = sqlsrv_fetch_array($statement)) {
                         ?>
                             <tbody>
                                 <tr>
-                                    <td><?php echo $row['droom_num']; ?></td>
-                                    <td><?php echo $row['time_slot']; ?></td>
+                                    <td class="number"><?php echo $i++; ?></td>
                                     <td><?php echo $row['user_id']; ?></td>
                                     <td><?php echo $row['fullname']; ?></td>
-                                    <td><?php echo $row['member']; ?></td>
-                                    <td><?php echo $row['created_at']->format('Y-m-d');; ?></td>
+                                    <td><?php echo $row['user_email']; ?></td>
+                                    <td><?php echo $row['acc_status']; ?></td>
+                                    <td><?php echo $row['registered_at']->format('Y-m-d H:i:s');; ?></td>
+                                    <td class="action">
+                                        <a href="javascript:void(0);" class="view" onclick="openForm('<?php echo $row['user_id']; ?>')" style="margin-right: 0.8em;"><i class="fa fa-eye"></i></a>
+                                        <a href="javascript:void(0);" class="del" onclick="confirmDelete('<?php echo $row['user_id']; ?>');"><i class="fa fa-trash"></i></a>
+                                    </td>
                                 </tr>
                             </tbody>
                     <?php
@@ -176,6 +164,10 @@ include('../clients/navbar.php');
         </div>
     </div>
 
+    <div class="overlay-bg" id="overlay-bg"></div>
+
+    <div class="user-detail-container" id="user-detail-container"></div>
+
     <br /><br />
 
     <span>
@@ -190,7 +182,7 @@ include('../clients/navbar.php');
 
     <script>
         //search function for approved list
-        function searchHistory(event) {
+        function searchApproved(event) {
             if (event.key === 'Enter') {
                 //prevent form submission (if within a form)
                 event.preventDefault();
@@ -206,6 +198,29 @@ include('../clients/navbar.php');
 
                 document.getElementById('search-btn').click();
             }
+        }
+
+        function openForm(userid) {
+            $.ajax({
+                type: 'GET',
+                url: '../admin/userdetail.php',
+                data: {
+                    uid: userid
+                },
+                success: function(response) {
+                    $('#user-detail-container').html(response);
+                    document.getElementById("user-detail-container").style.display = "block";
+                    document.getElementById("overlay-bg").style.display = "block";
+                },
+                error: function() {
+                    alert('Failed to load user details.');
+                }
+            });
+        }
+
+        function closeForm() {
+            document.getElementById("user-detail-container").style.display = "none";
+            document.getElementById("overlay-bg").style.display = "none";
         }
     </script>
 </body>

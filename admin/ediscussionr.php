@@ -45,9 +45,33 @@ include('../clients/navbar.php');
 
 <body>
     <div class="big-container">
+        <?php
+        $query = "SELECT
+                    r.*,
+                    u.fullname,
+                    dr.*
+                FROM [reservation] r
+                LEFT JOIN [user] u ON r.user_id = u.user_id
+                LEFT JOIN [discussionroom] dr ON r.droom_id = dr.droom_id
+                WHERE [created_at] = CONVERT(DATE, GETDATE())";
+        $statement = sqlsrv_query($conn, $query);
+
+        $reservationData = array();
+
+        if ($statement) {
+            while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
+                $reservationData[] = $row;
+            }
+        }
+        ?>
+
         <div class="header">
             <h3>Discussion Room Daily Schedule</h3>
+            <h4><?php $currentDate = date('Y-m-d');
+                echo $currentDate; ?></h4>
         </div>
+
+        <br />
 
         <div class="open-setting" onclick="openSetting()">
             <i class="fa fa-gear"></i> Settings
@@ -57,7 +81,85 @@ include('../clients/navbar.php');
             <i class="fa fa-eye"></i> Reservation History
         </div>
 
-        <div class="reservation-schedule"></div>
+        <div class="reservation-schedule">
+            <table id="schedule">
+                <thead>
+                    <tr>
+                        <th>Time Slot</th>
+                        <th>Room 1</th>
+                        <th>Room 2</th>
+                        <th>Room 3</th>
+                        <th>Room 4</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr id="9.00 AM - 10.00 AM">
+                        <td><b>9.00 AM - 10.00 AM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="10.00 AM - 11.00 AM">
+                        <td><b>10.00 AM - 11.00 AM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="11.00 AM - 12.00 PM">
+                        <td><b>11.00 AM - 12.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="12.00 PM - 1.00 PM">
+                        <td><b>12.00 PM - 1.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="1.00 PM - 2.00 PM">
+                        <td><b>1.00 PM - 2.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="2.00 PM - 3.00 PM">
+                        <td><b>2.00 PM - 3.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="3.00 PM - 4.00 PM">
+                        <td><b>3.00 PM - 4.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr id="4.00 PM - 5.00 PM">
+                        <td><b>4.00 PM - 5.00 PM</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="overlay-bg" id="overlay-bg"></div>
@@ -143,7 +245,51 @@ include('../clients/navbar.php');
     </span>
 
     <script>
+        //for displaying data in timetable form
+        document.addEventListener("DOMContentLoaded", function() {
+            var scheduleTable = document.getElementById("schedule");
+            var tbody = scheduleTable.getElementsByTagName('tbody')[0];
 
+            <?php foreach ($reservationData as $reservation) { ?>
+                var roomNum = "<?php echo $reservation['droom_num']; ?>";
+                var timeSlot = "<?php echo $reservation['time_slot']; ?>";
+                var name = "<?php echo $reservation['fullname']; ?>";
+                var member = "<?php echo $reservation['member']; ?>";
+
+                var timeSlot = findSlotWithText("<?php echo $reservation['time_slot']; ?>");
+                var room = findRoomWithText("<?php echo $reservation['droom_num']; ?>");
+
+                if (timeSlot && room) {
+                    var columnIndex = room.cellIndex; //get the column index of the room
+                    var row = timeSlot.parentElement;
+                    var cell = row.cells[columnIndex];
+
+                    //populate the cell with the user's name
+                    cell.innerHTML = "<b>" + name + "</b><br>Members: " + member;
+                    cell.style.backgroundColor = "#fee7e7";
+                }
+            <?php } ?>
+        });
+
+        function findSlotWithText(text) {
+            var cells = document.getElementsByTagName("td");
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i].textContent === text) {
+                    return cells[i];
+                }
+            }
+            return null;
+        }
+
+        function findRoomWithText(text) {
+            var cells = document.getElementsByTagName("th");
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i].textContent === text) {
+                    return cells[i];
+                }
+            }
+            return null;
+        }
     </script>
 </body>
 
