@@ -2,6 +2,25 @@
 	session_start();
 	include('../../clients/connect.php');
 
+	//import PHPMailer classes into global namespace
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+
+    //load composer's autoloader
+    require '../../vendor/autoload.php';
+
+    $mail = new PHPMailer(true);
+
+    //server settings
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'booknest.online@gmail.com';
+    $mail->Password = 'dqht hncw makb ktmj';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
+
 	if (isset($_POST["reserve"])) {
 		$userid = $_SESSION['userid'];
 		
@@ -28,6 +47,31 @@
 
 			//check if the statement executed successfully
 			if ($statement2) {
+				$query3 = "SELECT * FROM [user] WHERE [user_id] = '$userid'";
+				$statement3 = sqlsrv_query($conn, $query3);
+				$row3 = sqlsrv_fetch_array($statement3);
+
+				$fullname = $row3['fullname'];
+				$email = $row3['user_email'];
+
+				//sender and recipient
+				$mail->setFrom('booknest.online@gmail.com', 'BookNest Library');
+				$mail->addAddress($email);
+
+				//content
+				$mail->isHTML(true);
+				$mail->Subject = 'Discussion Room Reserved SUCCESS';
+				$mail->Body = "<span>Hello <b>" . $fullname . "</b>, </span><br /><br />
+				<span>You have successfully reserved a discussion room (<b>" . $droomid . "</b>). The time is " . $slot . ".</span>
+				<br />
+				<span>Have a nice day!</span>
+				<br /><br />
+				<span>Regards,</span><br />
+				<span><i>BookNest Library</i></span>";
+
+				//send email
+				$mail->send();
+
 				header("location: ../../clients/discussionr.php?st=success");
 			} else {
 				//die(print_r(sqlsrv_errors(), true));
