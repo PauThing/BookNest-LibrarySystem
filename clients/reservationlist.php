@@ -91,7 +91,7 @@ include('../clients/navbar.php');
                                 <td><?php echo $row['user_id']; ?></td>
                                 <td><?php echo $row['fullname']; ?></td>
                                 <td><?php echo $row['member']; ?></td>
-                                <td><?php echo $row['created_at']->format('Y-m-d');; ?></td>
+                                <td><?php echo $row['created_at']->format('Y-m-d'); ?></td>
                             </tr>
                         </tbody>
                     <?php

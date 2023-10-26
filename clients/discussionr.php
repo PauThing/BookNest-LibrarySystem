@@ -288,12 +288,13 @@ include('../clients/navbar.php');
         document.addEventListener("DOMContentLoaded", function() {
             <?php foreach ($reservationData as $reservation) { ?>
                 var roomNum = "<?php echo $reservation['droom_num']; ?>";
-                var timeSlot = "<?php echo $reservation['time_slot']; ?>";
+                var slot = "<?php echo $reservation['time_slot']; ?>";
                 var name = "<?php echo $reservation['fullname']; ?>";
                 var member = "<?php echo $reservation['member']; ?>";
+                var userid = "<?php echo $reservation['user_id']; ?>";
 
-                var timeSlot = findSlotWithText("<?php echo $reservation['time_slot']; ?>");
-                var room = findRoomWithText("<?php echo $reservation['droom_num']; ?>");
+                var timeSlot = findSlotWithText(slot);
+                var room = findRoomWithText(roomNum);
 
                 if (timeSlot && room) {
                     var columnIndex = room.cellIndex; //get the column index of the room
@@ -301,7 +302,7 @@ include('../clients/navbar.php');
                     var cell = row.cells[columnIndex];
 
                     //populate the cell with the user's name
-                    cell.innerHTML = "<b>" + name + "</b><br>Members: " + member;
+                    cell.innerHTML = "<b>" + name + "</b><br>Members: " + member + "<br><a href='../clients/backend/cancelreservedb.php?uid=" + userid + "&slot=" + slot + "&date=<?php echo date('Y-m-d'); ?>' class='del'>Cancel</a>";
                     cell.style.backgroundColor = "#fee7e7";
                 }
             <?php } ?>

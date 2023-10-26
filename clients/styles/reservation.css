@@ -45,6 +45,17 @@ body {
     z-index: 0;
 }
 
+/* cancel reservation button */
+.del {
+    color: var(--dark-color);
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.del:hover {
+    color: var(--button-hover-color);
+}
+
 /* view reservation records and setting */
 .view-reservation {
     width: 12em;

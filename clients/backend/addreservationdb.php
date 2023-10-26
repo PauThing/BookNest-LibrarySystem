@@ -62,7 +62,7 @@
 				$mail->isHTML(true);
 				$mail->Subject = 'Discussion Room Reserved SUCCESS';
 				$mail->Body = "<span>Hello <b>" . $fullname . "</b>, </span><br /><br />
-				<span>You have successfully reserved a discussion room (<b>" . $droomid . "</b>). The time is " . $slot . ".</span>
+				<span>You have successfully reserved a discussion room (<b>" . $droomid . "</b>). The time is <b>" . $slot . "</b>.</span>
 				<br />
 				<span>Have a nice day!</span>
 				<br /><br />
