@@ -27,6 +27,10 @@ include('../clients/navbar.php');
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function openNewBook() {
+            window.location.href = '../admin/addbook.php';
+        }
+
         function openDetail(isbn) {
             window.location.href = '../admin/bookdetails.php?ISBN=' + isbn;
         }
@@ -46,8 +50,12 @@ include('../clients/navbar.php');
 
 <body>
     <div class="big-container">
+        <div class="add-book" onclick="openNewBook()">
+            <i class="fa fa-plus"></i> New Book
+        </div>
+
         <div class="tab-container">
-            <form method="post" action="../clients/bookcatalog.php">
+            <form method="post" action="../admin/ebookcatalog.php">
                 <div class="search-box">
                     <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by book title or book category" onkeyup="searchApproved(event)">
                     <input type="hidden" name="currentPage" id="currentPage" value="1">

@@ -194,7 +194,7 @@ include('../clients/connect.php');
                     <nav>
                         <div class="navbar">
                             <a href="../admin/index.php">DASHBOARD</a>
-                            <a href="../admin/catalog.php">BOOK CATALOG</a>
+                            <a href="../admin/ebookcatalog.php">BOOK CATALOG</a>
                             <a href="../admin/bookreturn.php">BORROW & RETURN</a>
                             <a href="../admin/ediscussionr.php">DISCUSSION ROOM</a>
                             <div class="dropdown">

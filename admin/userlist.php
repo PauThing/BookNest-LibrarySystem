@@ -197,13 +197,6 @@ include('../clients/navbar.php');
                 event.preventDefault();
 
                 const searchInput = document.getElementById('searchInput').value;
-                const currentPage = document.getElementById('currentPage').value;
-
-                //create the query string
-                const urlstring = `?page=${currentPage}&searchInput=${searchInput}`;
-
-                //update the URL without reloading the page
-                history.pushState(null, '', urlstring);
 
                 document.getElementById('search-btn').click();
             }
