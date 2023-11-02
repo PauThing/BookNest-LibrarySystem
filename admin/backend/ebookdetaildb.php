@@ -16,11 +16,11 @@ if (isset($_POST["edit-book"])) {
     date_default_timezone_set('Asia/Kuala_Lumpur');
     $update = date('Y-m-d H:i:s');
 
-    if (!preg_match("/^[a-zA-Z\s,.]+$/", $bauthor)) {
+    if (!preg_match("/^[a-zA-Z\s,.']+$/", $bauthor)) {
         $_SESSION['message'] = "The author can only contain letters, comma, dot and white space.";
         header("location:" . $currentURL . "st=error");
-    } else if (!preg_match("/^[a-zA-Z\s,.:]+$/", $publication)) {
-        $_SESSION['message'] = "The author can only contain letters, comma, dot and white space.";
+    } else if (!preg_match("/^[a-zA-Z\s\-,.:'&]+$/", $publication)) {
+        $_SESSION['message'] = "The author can only contain letters, comma, dot, colon, & and white space.";
         header("location:" . $currentURL . "st=error");
     } else {
         //transaction - a sequence of one or more SQL statements that are executed as a single unit of work

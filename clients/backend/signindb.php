@@ -1,7 +1,7 @@
 <?php
     session_start();
     include('../../clients/connect.php');
-    
+
     if (isset($_POST['signin'])) {
         $userid = $_POST['uID'];
         $password = $_POST['password'];
@@ -31,6 +31,49 @@
                             $_SESSION['userid'] = $row['user_id'];
                             $_SESSION['usertype'] = $usertype;
                             $_SESSION['loggedin'] = true;
+
+                            date_default_timezone_set('Asia/Kuala_Lumpur');
+                            $currDate = date('Y-m-d');
+
+                            $status = "On Loan";
+
+                            // Query the database to get books that are overdue
+                            $query = "SELECT * FROM [borrowinghistory] WHERE [status] = ?";
+                            $array = [$status];
+                            $statement = sqlsrv_query($conn, $query, $array);
+
+                            if ($statement === false) {
+                                die(print_r(sqlsrv_errors(), true));
+                            }
+
+                            while ($row = sqlsrv_fetch_array($statement)) {
+                                $bisbn = $row['ISBN'];
+
+                                $dueDate = $row['due_at'];
+                                $due = $dueDate->format('Y-m-d');
+                                $dueD = date_create($due);
+
+                                $currD = date_create(date('Y-m-d'));
+
+                                if ($dueD < $currD) {
+                                    //calculate the fine based on the number of days overdue
+                                    $daysOverdue = date_diff($currD, $dueD)->format('%a');
+                                    $fineAmount = $daysOverdue * 0.50;
+
+                                    //format the fine amount to have 2 decimal places
+                                    $fineAmount = number_format($fineAmount, 2);
+
+                                    //update the database with the fine amount
+                                    $query2 = "UPDATE [borrowinghistory] SET [late_fees] = ? WHERE [ISBN] = ? AND [due_at] = ? AND [status] = ?";
+                                    $array2 = [$fineAmount, $bisbn, $due, $status];
+                                    $statement2 = sqlsrv_query($conn, $query2, $array2);
+
+                                    if ($statement2 === false) {
+                                        die(print_r(sqlsrv_errors(), true));
+                                    }
+                                }
+                            }
+
                             header('location: ../../admin/index.php');
                             break;
 
@@ -38,6 +81,49 @@
                             $_SESSION['userid'] = $row['user_id'];
                             $_SESSION['usertype'] = $usertype;
                             $_SESSION['loggedin'] = true;
+
+                            date_default_timezone_set('Asia/Kuala_Lumpur');
+                            $currDate = date('Y-m-d');
+
+                            $status = "On Loan";
+
+                            // Query the database to get books that are overdue
+                            $query = "SELECT * FROM [borrowinghistory] WHERE [status] = ?";
+                            $array = [$status];
+                            $statement = sqlsrv_query($conn, $query, $array);
+
+                            if ($statement === false) {
+                                die(print_r(sqlsrv_errors(), true));
+                            }
+
+                            while ($row = sqlsrv_fetch_array($statement)) {
+                                $bisbn = $row['ISBN'];
+
+                                $dueDate = $row['due_at'];
+                                $due = $dueDate->format('Y-m-d');
+                                $dueD = date_create($due);
+
+                                $currD = date_create(date('Y-m-d'));
+
+                                if ($dueD < $currD) {
+                                    //calculate the fine based on the number of days overdue
+                                    $daysOverdue = date_diff($currD, $dueD)->format('%a');
+                                    $fineAmount = $daysOverdue * 0.50;
+
+                                    //format the fine amount to have 2 decimal places
+                                    $fineAmount = number_format($fineAmount, 2);
+
+                                    //update the database with the fine amount
+                                    $query2 = "UPDATE [borrowinghistory] SET [late_fees] = ? WHERE [ISBN] = ? AND [due_at] = ? AND [status] = ?";
+                                    $array2 = [$fineAmount, $bisbn, $due, $status];
+                                    $statement2 = sqlsrv_query($conn, $query2, $array2);
+
+                                    if ($statement2 === false) {
+                                        die(print_r(sqlsrv_errors(), true));
+                                    }
+                                }
+                            }
+
                             header('location: ../../admin/index.php');
                             break;
                     }

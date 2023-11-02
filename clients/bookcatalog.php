@@ -28,7 +28,11 @@ include('../clients/navbar.php');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function openDetail(isbn) {
-            window.location.href = '../admin/bookdetails.php?ISBN=' + isbn;
+            window.location.href = '../clients/bookdetails.php?ISBN=' + isbn;
+        }
+
+        function openFav(isbn, url) {
+            window.location.href = '../clients/backend/bookfavoritedb.php?ISBN=' + isbn + '&currentURL=' + url;
         }
 
         function updateCategory(category) {
@@ -67,7 +71,7 @@ include('../clients/navbar.php');
             <div class="tab-content">
                 <div class="catalog-container">
                     <?php
-                    $itemsPerPage = 20;
+                    $itemsPerPage = 10;
                     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     $offset = ($currentPage - 1) * $itemsPerPage;
 
@@ -79,7 +83,14 @@ include('../clients/navbar.php');
                         $currentURL = $_SERVER['REQUEST_URI'];
 
                         //check if the current URL already contains query parameters
-                        $separator = (strpos($currentURL, '?') !== false) ? '&' : '?';
+                        $containsQuestionMark = (strpos($currentURL, '?') !== false);
+                        $containsAmpersand = (strrpos($currentURL, '&') !== false);
+
+                        if ($containsQuestionMark && $containsAmpersand) {
+                            $separator = '&'; // Both ? and & are present
+                        } else {
+                            $separator = ($containsQuestionMark) ? '&' : '?';
+                        }
 
                         $query = "SELECT
                                 bc.*,
@@ -96,7 +107,7 @@ include('../clients/navbar.php');
                     ?>
                             <div class="book">
                                 <div class="book-detail">
-                                    <div class="coverimage" onclick="openDetail(<?php echo $isbn; ?>)">
+                                    <div class="coverimage" onclick="openDetail('<?php echo $isbn; ?>')">
                                         <?php //check if there is image data in the row
                                         if ($row['cover_img']) {
                                             //get the image data from the row
@@ -120,19 +131,24 @@ include('../clients/navbar.php');
                                         ?>
                                     </div>
 
-                                    <div class="detail" onclick="openDetail(<?php echo $isbn; ?>)">
+                                    <div class="detail" onclick="openDetail('<?php echo $isbn; ?>')">
                                         <h4><?php echo $row['book_title']; ?></h4>
                                         <label id="author" class="author"><?php echo $row['author']; ?></label><br />
-                                        <label id="publiyear" class="publiyear">Published on <?php echo $row['publication_year']; ?></label><br />
                                         <label id="location" class="location"><?php echo $row['book_location']; ?></label>
                                     </div>
 
-                                    <div class="edit-action" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
-                                        <i class="fa fa-edit"></i>
-                                    </div>
+                                    <div class="fav-action" onclick="openFav('<?php echo $isbn; ?>', '<?php echo $currentURL; ?>')">
+                                        <?php
+                                        $query2 = "SELECT * FROM [bookmark] WHERE [user_id] = ? AND [ISBN] = ?";
+                                        $array2 = [$_SESSION['userid'], $isbn];
+                                        $statement2 = sqlsrv_query($conn, $query2, $array2);
 
-                                    <div class="del-action">
-                                        <a href="../admin/backend/delbookdb.php?bktitle=<?php echo $bktitle; ?>&ISBN=<?php echo $isbn; ?>&currentURL=<?php echo $currentURL . $separator; ?>" class="del" onclick="return confirm('Are you sure you want to delete this book?');"><i class="fa fa-trash"></i></a>
+                                        if (sqlsrv_has_rows($statement2)) {
+                                        ?>
+                                            <i class="fa fa-star" style="color: #c6c6c6d1;"></i>
+                                        <?php } else { ?>
+                                            <i class="fa fa-star"></i>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -163,31 +179,38 @@ include('../clients/navbar.php');
                         $currentURL = $_SERVER['REQUEST_URI'];
 
                         //check if the current URL already contains query parameters
-                        $separator = (strpos($currentURL, '?') !== false) ? '&' : '?';
+                        $containsQuestionMark = (strpos($currentURL, '?') !== false);
+                        $containsAmpersand = (strrpos($currentURL, '&') !== false);
 
-                        $query2 = "SELECT
+                        if ($containsQuestionMark && $containsAmpersand) {
+                            $separator = '&'; // Both ? and & are present
+                        } else {
+                            $separator = ($containsQuestionMark) ? '&' : '?';
+                        }
+
+                        $query3 = "SELECT
                                 bc.*,
                                 b.*
                             FROM [bookcatalog] bc
                             LEFT JOIN [book] b ON bc.ISBN = b.ISBN
                             WHERE b.category = ?
                             ORDER BY [book_title] ASC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
-                        $array2 = [$bcategory];
-                        $statement2 = sqlsrv_query($conn, $query2, $array2);
+                        $array3 = [$bcategory];
+                        $statement3 = sqlsrv_query($conn, $query3, $array3);
 
                         $norecord = true;
-                        while ($row2 = sqlsrv_fetch_array($statement2)) {
-                            $isbn = $row2['ISBN'];
-                            $bktitle = $row2['book_title'];
+                        while ($row3 = sqlsrv_fetch_array($statement3)) {
+                            $isbn = $row3['ISBN'];
+                            $bktitle = $row3['book_title'];
                         ?>
                             <div class="book">
                                 <div class="book-detail">
-                                    <div class="coverimage" onclick="openDetail(<?php echo $isbn; ?>)">
+                                    <div class="coverimage" onclick="openDetail('<?php echo $isbn; ?>')">
                                         <?php
                                         //check if there is image data in the row
-                                        if ($row2['cover_img']) {
+                                        if ($row3['cover_img']) {
                                             //get the image data from the row
-                                            $imageBinary = $row2['cover_img'];
+                                            $imageBinary = $row3['cover_img'];
 
                                             //detect the image format
                                             $image = getimagesizefromstring($imageBinary);
@@ -207,19 +230,24 @@ include('../clients/navbar.php');
                                         ?>
                                     </div>
 
-                                    <div class="detail" onclick="openDetail(<?php echo $isbn; ?>)">
-                                        <h4><?php echo $row2['book_title']; ?></h4>
-                                        <label id="author" class="author"><?php echo $row2['author']; ?></label><br />
-                                        <label id="publiyear" class="publiyear">Published on <?php echo $row2['publication_year']; ?></label><br />
-                                        <label id="location" class="location"><?php echo $row2['book_location']; ?></label>
+                                    <div class="detail" onclick="openDetail('<?php echo $isbn; ?>')">
+                                        <h4><?php echo $row3['book_title']; ?></h4>
+                                        <label id="author" class="author"><?php echo $row3['author']; ?></label><br />
+                                        <label id="location" class="location"><?php echo $row3['book_location']; ?></label>
                                     </div>
 
-                                    <div class="edit-action" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
-                                        <i class="fa fa-edit"></i>
-                                    </div>
+                                    <div class="fav-action" onclick="openFav('<?php echo $isbn; ?>', '<?php echo $currentURL; ?>')">
+                                        <?php
+                                        $query4 = "SELECT * FROM [bookmark] WHERE [user_id] = ? AND [ISBN] = ?";
+                                        $array4 = [$_SESSION['userid'], $isbn];
+                                        $statement4 = sqlsrv_query($conn, $query4, $array4);
 
-                                    <div class="del-action">
-                                        <a href="../admin/backend/delbookdb.php?bktitle=<?php echo $bktitle; ?>&ISBN=<?php echo $isbn; ?>&currentURL=<?php echo $currentURL . $separator; ?>" class="del" onclick="return confirm('Are you sure you want to delete this book?');"><i class="fa fa-trash"></i></a>
+                                        if (sqlsrv_has_rows($statement4)) {
+                                        ?>
+                                            <i class="fa fa-star" style="color: #c6c6c6d1;"></i>
+                                        <?php } else { ?>
+                                            <i class="fa fa-star"></i>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -246,29 +274,36 @@ include('../clients/navbar.php');
                         $currentURL = $_SERVER['REQUEST_URI'];
 
                         //check if the current URL already contains query parameters
-                        $separator = (strpos($currentURL, '?') !== false) ? '&' : '?';
+                        $containsQuestionMark = (strpos($currentURL, '?') !== false);
+                        $containsAmpersand = (strrpos($currentURL, '&') !== false);
 
-                        $query3 = "SELECT
+                        if ($containsQuestionMark && $containsAmpersand) {
+                            $separator = '&'; // Both ? and & are present
+                        } else {
+                            $separator = ($containsQuestionMark) ? '&' : '?';
+                        }
+
+                        $query5 = "SELECT
                                 bc.*,
                                 b.*
                             FROM [bookcatalog] bc
                             LEFT JOIN [book] b ON bc.ISBN = b.ISBN
                             ORDER BY [book_title] ASC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
-                        $statement3 = sqlsrv_query($conn, $query3);
+                        $statement5 = sqlsrv_query($conn, $query5);
 
                         $norecord = true;
-                        while ($row3 = sqlsrv_fetch_array($statement3, SQLSRV_FETCH_ASSOC)) {
-                            $isbn = $row3['ISBN'];
-                            $bktitle = $row3['book_title'];
+                        while ($row5 = sqlsrv_fetch_array($statement5)) {
+                            $isbn = $row5['ISBN'];
+                            $bktitle = $row5['book_title'];
                         ?>
                             <div class="book">
                                 <div class="book-detail">
-                                    <div class="coverimage" onclick="openDetail(<?php echo $isbn; ?>)">
+                                    <div class="coverimage" onclick="openDetail('<?php echo $isbn; ?>')">
                                         <?php
                                         //check if there is image data in the row
-                                        if ($row3['cover_img']) {
+                                        if ($row5['cover_img']) {
                                             //get the image data from the row
-                                            $imageBinary = $row3['cover_img'];
+                                            $imageBinary = $row5['cover_img'];
 
                                             //detect the image format
                                             $image = getimagesizefromstring($imageBinary);
@@ -288,19 +323,24 @@ include('../clients/navbar.php');
                                         ?>
                                     </div>
 
-                                    <div class="detail" onclick="openDetail(<?php echo $isbn; ?>)">
-                                        <h4><?php echo $row3['book_title']; ?></h4>
-                                        <label id="author" class="author"><?php echo $row3['author']; ?></label><br />
-                                        <label id="publiyear" class="publiyear">Published on <?php echo $row3['publication_year']; ?></label><br />
-                                        <label id="location" class="location"><?php echo $row3['book_location']; ?></label>
+                                    <div class="detail" onclick="openDetail('<?php echo $isbn; ?>')">
+                                        <h4><?php echo $row5['book_title']; ?></h4>
+                                        <label id="author" class="author"><?php echo $row5['author']; ?></label><br />
+                                        <label id="location" class="location"><?php echo $row5['book_location']; ?></label>
                                     </div>
 
-                                    <div class="edit-action" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
-                                        <i class="fa fa-edit"></i>
-                                    </div>
+                                    <div class="fav-action" onclick="openFav('<?php echo $isbn; ?>', '<?php echo $currentURL; ?>')">
+                                        <?php
+                                        $query6 = "SELECT * FROM [bookmark] WHERE [user_id] = ? AND [ISBN] = ?";
+                                        $array6 = [$_SESSION['userid'], $isbn];
+                                        $statement6 = sqlsrv_query($conn, $query6, $array6);
 
-                                    <div class="del-action">
-                                        <a href="../admin/backend/delbookdb.php?bktitle=<?php echo $bktitle; ?>&ISBN=<?php echo $isbn; ?>&currentURL=<?php echo $currentURL . $separator; ?>" class="del" onclick="return confirm('Are you sure you want to delete this book?');"><i class="fa fa-trash"></i></a>
+                                        if (sqlsrv_has_rows($statement6)) {
+                                        ?>
+                                            <i class="fa fa-star" style="color: #c6c6c6d1;"></i>
+                                        <?php } else { ?>
+                                            <i class="fa fa-star"></i>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -346,13 +386,6 @@ include('../clients/navbar.php');
             </div>
         </div>
     </div>
-    </div>
-
-    <div class="overlay-bg" id="overlay-bg"></div>
-
-    <div class="edit-book-container" id="edit-book-container"></div>
-
-    <br /><br />
 
     <span>
         <?php
@@ -365,7 +398,7 @@ include('../clients/navbar.php');
     </span>
 
     <script>
-        //search function for approved list
+        //search function
         function searchApproved(event) {
             if (event.key === 'Enter') {
                 //prevent form submission (if within a form)
@@ -375,30 +408,6 @@ include('../clients/navbar.php');
 
                 document.getElementById('search-btn').click();
             }
-        }
-
-        function openForm(bisbn, currentURL) {
-            $.ajax({
-                type: 'GET',
-                url: '../admin/ebookdetail.php',
-                data: {
-                    isbn: bisbn,
-                    cURL: currentURL
-                },
-                success: function(response) {
-                    $('#edit-book-container').html(response);
-                    document.getElementById("edit-book-container").style.display = "block";
-                    document.getElementById("overlay-bg").style.display = "block";
-                },
-                error: function() {
-                    alert('Failed to load user details.');
-                }
-            });
-        }
-
-        function closeForm() {
-            document.getElementById("edit-book-container").style.display = "none";
-            document.getElementById("overlay-bg").style.display = "none";
         }
     </script>
 </body>

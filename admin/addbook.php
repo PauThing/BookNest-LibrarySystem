@@ -59,7 +59,7 @@ include('../clients/navbar.php');
                     </div>
 
                     <div class="InputText">
-                        <input type="text" name="author" id="author" autocomplete="off" required>
+                        <input type="text" name="author" id="author" autocomplete="off">
                         <label for="author">Author</label>
                     </div>
 
@@ -87,6 +87,11 @@ include('../clients/navbar.php');
                     </div>
 
                     <br /><br />
+
+                    <div class="InputText">
+                        <input type="number" name="blocation" id="blocation" min="1" max="18" autocomplete="off" required>
+                        <label for="blocation">Location - Rak ?</label>
+                    </div>
 
                     <div class="InputText">
                         <input type="number" name="bamount" id="bamount" min="1" autocomplete="off" required>

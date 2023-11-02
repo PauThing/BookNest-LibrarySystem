@@ -155,7 +155,7 @@ include('../clients/connect.php');
                         <div class="navbar">
                             <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/catalog.php">BOOK CATALOG</a>
-                            <a href="../admin/bookreturn.php">BOOK RETURN</a>
+                            <a href="../admin/eonloanbook.php">BOOK RETURN</a>
                             <a href="../admin/ediscussionr.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>
@@ -195,7 +195,7 @@ include('../clients/connect.php');
                         <div class="navbar">
                             <a href="../admin/index.php">DASHBOARD</a>
                             <a href="../admin/ebookcatalog.php">BOOK CATALOG</a>
-                            <a href="../admin/bookreturn.php">BORROW & RETURN</a>
+                            <a href="../admin/eonloanbook.php">BORROW & RETURN</a>
                             <a href="../admin/ediscussionr.php">DISCUSSION ROOM</a>
                             <div class="dropdown">
                                 <button class="dropbtn">USING THE LIBRARY</button>

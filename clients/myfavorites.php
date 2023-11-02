@@ -27,8 +27,12 @@ include('../clients/navbar.php');
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function openNewBook() {
-            window.location.href = '../admin/addbook.php';
+        function openDetail(isbn, url) {
+            window.location.href = '../clients/bookdetails.php?ISBN=' + isbn + '&currentURL=' + url;
+        }
+
+        function delFav(isbn, url) {
+            window.location.href = '../clients/backend/delfavoritedb.php?ISBN=' + isbn + '&currentURL=' + url;
         }
 
         function updateCategory(category) {
@@ -46,19 +50,7 @@ include('../clients/navbar.php');
 
 <body>
     <div class="big-container">
-        <div class="add-book" onclick="openNewBook()">
-            <i class="fa fa-plus"></i> New Book
-        </div>
-
         <div class="tab-container">
-            <form method="post" action="../admin/ebookcatalog.php">
-                <div class="search-box">
-                    <input type="text" name="searchInput" id="searchInput" class="searchInput" placeholder="Search by book title or book category" onkeyup="searchApproved(event)">
-                    <input type="hidden" name="currentPage" id="currentPage" value="1">
-                    <button class="search-btn" name="search-btn" style="display: none;"></button>
-                </div>
-            </form>
-
             <div class="tabs">
                 <button id="bcategory" class="bcategory" onclick="updateCategory('Computer Science and Information')">Computer Science and Information</button>
                 <button id="bcategory" class="bcategory" onclick="updateCategory('Philosophy and Psychology')">Philosophy and Psychology</button>
@@ -71,13 +63,28 @@ include('../clients/navbar.php');
             <div class="tab-content">
                 <div class="catalog-container">
                     <?php
-                    $itemsPerPage = 10;
+                    $itemsPerPage = 20;
                     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     $offset = ($currentPage - 1) * $itemsPerPage;
 
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['searchInput']) && !empty($_POST['searchInput'])) {
-                        $search = '%' . $_POST['searchInput'] . '%';
-                        $array = [$search, $search];
+                    if (isset($_GET['bcategory'])) {
+                        $bcategory = $_GET['bcategory'];
+
+                        $cquery = "SELECT COUNT(bm.ISBN) AS ttlrecord 
+                            FROM [bookmark] bm 
+                            LEFT JOIN [book] b ON bm.ISBN = b.ISBN
+                            WHERE bm.user_id = ? AND b.category = ?";
+                        $carray = [$_SESSION['userid'], $bcategory];
+                        $cstatement = sqlsrv_query($conn, $cquery, $carray);
+
+                        $ttlrecord = 0;
+
+                        if ($cstatement) {
+                            $crow = sqlsrv_fetch_array($cstatement);
+                            $ttlrecord = $crow['ttlrecord'];
+                        }
+                        // calculate the total number of pages
+                        $ttlpages = ceil($ttlrecord / $itemsPerPage);
 
                         //get the current URI
                         $currentURL = $_SERVER['REQUEST_URI'];
@@ -86,11 +93,17 @@ include('../clients/navbar.php');
                         $separator = (strpos($currentURL, '?') !== false) ? '&' : '?';
 
                         $query = "SELECT
+                                bm.*,
                                 bc.*,
-                                b.*
-                            FROM [bookcatalog] bc
-                            LEFT JOIN [book] b ON bc.ISBN = b.ISBN
-                            WHERE b.category LIKE ? OR b.book_title LIKE ?";
+                                b.*,
+                                u.*
+                            FROM [bookmark] bm
+                            LEFT JOIN [bookcatalog] bc ON bm.ISBN = bc.ISBN
+                            LEFT JOIN [book] b ON bm.ISBN = b.ISBN
+                            LEFT JOIN [user] u ON bm.user_id = u.user_id
+                            WHERE bm.user_id = ? AND b.category = ?
+                            ORDER BY b.book_title ASC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
+                        $array = [$_SESSION['userid'], $bcategory];
                         $statement = sqlsrv_query($conn, $query, $array);
 
                         $norecord = true;
@@ -100,8 +113,9 @@ include('../clients/navbar.php');
                     ?>
                             <div class="book">
                                 <div class="book-detail">
-                                    <div class="coverimage">
-                                        <?php //check if there is image data in the row
+                                    <div class="coverimage" onclick="openDetail('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
+                                        <?php
+                                        //check if there is image data in the row
                                         if ($row['cover_img']) {
                                             //get the image data from the row
                                             $imageBinary = $row['cover_img'];
@@ -124,19 +138,15 @@ include('../clients/navbar.php');
                                         ?>
                                     </div>
 
-                                    <div class="detail">
+                                    <div class="detail" onclick="openDetail('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
                                         <h4><?php echo $row['book_title']; ?></h4>
                                         <label id="author" class="author"><?php echo $row['author']; ?></label><br />
                                         <label id="publiyear" class="publiyear">Published on <?php echo $row['publication_year']; ?></label><br />
                                         <label id="location" class="location"><?php echo $row['book_location']; ?></label>
                                     </div>
 
-                                    <div class="edit-action" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
-                                        <i class="fa fa-edit"></i>
-                                    </div>
-
-                                    <div class="del-action">
-                                        <a href="../admin/backend/delbookdb.php?bktitle=<?php echo $bktitle; ?>&ISBN=<?php echo $isbn; ?>&currentURL=<?php echo $currentURL . $separator; ?>" class="del" onclick="return confirm('Are you sure you want to delete this book?');"><i class="fa fa-trash"></i></a>
+                                    <div class="del-action" onclick="delFav('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
+                                        <i class="fa fa-remove"></i>
                                     </div>
                                 </div>
                             </div>
@@ -147,20 +157,17 @@ include('../clients/navbar.php');
                         if ($norecord) {
                             echo "No record.";
                         }
-                    } else if (isset($_GET['bcategory'])) {
-                        $bcategory = $_GET['bcategory'];
-
-                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [book] WHERE [category] = ?";
-                        $carray = [$bcategory];
+                    } else {
+                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [bookmark] WHERE [user_id] = ?";
+                        $carray = [$_SESSION['userid']];
                         $cstatement = sqlsrv_query($conn, $cquery, $carray);
-
                         $ttlrecord = 0;
 
                         if ($cstatement) {
                             $crow = sqlsrv_fetch_array($cstatement);
                             $ttlrecord = $crow['ttlrecord'];
                         }
-                        // calculate the total number of pages
+                        //calculate the total number of pages
                         $ttlpages = ceil($ttlrecord / $itemsPerPage);
 
                         //get the current URI
@@ -170,13 +177,17 @@ include('../clients/navbar.php');
                         $separator = (strpos($currentURL, '?') !== false) ? '&' : '?';
 
                         $query2 = "SELECT
+                                bm.*,
                                 bc.*,
-                                b.*
-                            FROM [bookcatalog] bc
-                            LEFT JOIN [book] b ON bc.ISBN = b.ISBN
-                            WHERE b.category = ?
+                                b.*,
+                                u.*
+                            FROM [bookmark] bm
+                            LEFT JOIN [bookcatalog] bc ON bm.ISBN = bc.ISBN
+                            LEFT JOIN [book] b ON bm.ISBN = b.ISBN
+                            LEFT JOIN [user] u ON bm.user_id = u.user_id
+                            WHERE bm.user_id = ?
                             ORDER BY [book_title] ASC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
-                        $array2 = [$bcategory];
+                        $array2 = [$_SESSION['userid']];
                         $statement2 = sqlsrv_query($conn, $query2, $array2);
 
                         $norecord = true;
@@ -186,7 +197,7 @@ include('../clients/navbar.php');
                         ?>
                             <div class="book">
                                 <div class="book-detail">
-                                    <div class="coverimage">
+                                    <div class="coverimage" onclick="openDetail('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
                                         <?php
                                         //check if there is image data in the row
                                         if ($row2['cover_img']) {
@@ -211,100 +222,15 @@ include('../clients/navbar.php');
                                         ?>
                                     </div>
 
-                                    <div class="detail">
+                                    <div class="detail" onclick="openDetail('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
                                         <h4><?php echo $row2['book_title']; ?></h4>
                                         <label id="author" class="author"><?php echo $row2['author']; ?></label><br />
                                         <label id="publiyear" class="publiyear">Published on <?php echo $row2['publication_year']; ?></label><br />
                                         <label id="location" class="location"><?php echo $row2['book_location']; ?></label>
                                     </div>
 
-                                    <div class="edit-action" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
-                                        <i class="fa fa-edit"></i>
-                                    </div>
-
-                                    <div class="del-action">
-                                        <a href="../admin/backend/delbookdb.php?bktitle=<?php echo $bktitle; ?>&ISBN=<?php echo $isbn; ?>&currentURL=<?php echo $currentURL . $separator; ?>" class="del" onclick="return confirm('Are you sure you want to delete this book?');"><i class="fa fa-trash"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php
-                            $norecord = false;
-                        }
-
-                        if ($norecord) {
-                            echo "No record.";
-                        }
-                    } else {
-                        $cquery = "SELECT COUNT(*) AS ttlrecord FROM [bookcatalog]";
-                        $cstatement = sqlsrv_query($conn, $cquery);
-                        $ttlrecord = 0;
-
-                        if ($cstatement) {
-                            $crow = sqlsrv_fetch_array($cstatement);
-                            $ttlrecord = $crow['ttlrecord'];
-                        }
-                        //calculate the total number of pages
-                        $ttlpages = ceil($ttlrecord / $itemsPerPage);
-
-                        //get the current URI
-                        $currentURL = $_SERVER['REQUEST_URI'];
-
-                        //check if the current URL already contains query parameters
-                        $separator = (strpos($currentURL, '?') !== false) ? '&' : '?';
-
-                        $query3 = "SELECT
-                                bc.*,
-                                b.*
-                            FROM [bookcatalog] bc
-                            LEFT JOIN [book] b ON bc.ISBN = b.ISBN
-                            ORDER BY [book_title] ASC OFFSET $offset ROWS FETCH NEXT $itemsPerPage ROWS ONLY";
-                        $statement3 = sqlsrv_query($conn, $query3);
-
-                        $norecord = true;
-                        while ($row3 = sqlsrv_fetch_array($statement3, SQLSRV_FETCH_ASSOC)) {
-                            $isbn = $row3['ISBN'];
-                            $bktitle = $row3['book_title'];
-                        ?>
-                            <div class="book">
-                                <div class="book-detail">
-                                    <div class="coverimage">
-                                        <?php
-                                        //check if there is image data in the row
-                                        if ($row3['cover_img']) {
-                                            //get the image data from the row
-                                            $imageBinary = $row3['cover_img'];
-
-                                            //detect the image format
-                                            $image = getimagesizefromstring($imageBinary);
-                                            if ($image !== false) {
-                                                //determine the MIME type based on the detected image format
-                                                $mimeType = $image['mime'];
-                                        ?>
-                                                <img src="data:<?php echo $mimeType; ?>;base64,<?php echo base64_encode($imageBinary); ?>" class="cover-img">
-
-                                        <?php
-                                            } else {
-                                                echo "Unable to detect image format.";
-                                            }
-                                        } else {
-                                            echo "<img src='../clients/assets/cover_unavailable.png' class='cover-img'>";
-                                        }
-                                        ?>
-                                    </div>
-
-                                    <div class="detail">
-                                        <h4><?php echo $row3['book_title']; ?></h4>
-                                        <label id="author" class="author"><?php echo $row3['author']; ?></label><br />
-                                        <label id="publiyear" class="publiyear">Published on <?php echo $row3['publication_year']; ?></label><br />
-                                        <label id="location" class="location"><?php echo $row3['book_location']; ?></label>
-                                    </div>
-
-                                    <div class="edit-action" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
-                                        <i class="fa fa-edit"></i>
-                                    </div>
-
-                                    <div class="del-action">
-                                        <a href="../admin/backend/delbookdb.php?bktitle=<?php echo $bktitle; ?>&ISBN=<?php echo $isbn; ?>&currentURL=<?php echo $currentURL . $separator; ?>" class="del" onclick="return confirm('Are you sure you want to delete this book?');"><i class="fa fa-trash"></i></a>
+                                    <div class="del-action" onclick="delFav('<?php echo $isbn; ?>', '<?php echo $currentURL . $separator; ?>')">
+                                        <i class="fa fa-remove"></i>
                                     </div>
                                 </div>
                             </div>
@@ -350,13 +276,6 @@ include('../clients/navbar.php');
             </div>
         </div>
     </div>
-    </div>
-
-    <div class="overlay-bg" id="overlay-bg"></div>
-
-    <div class="edit-book-container" id="edit-book-container"></div>
-
-    <br /><br />
 
     <span>
         <?php
@@ -369,41 +288,7 @@ include('../clients/navbar.php');
     </span>
 
     <script>
-        //search function
-        function searchApproved(event) {
-            if (event.key === 'Enter') {
-                //prevent form submission (if within a form)
-                event.preventDefault();
 
-                const searchInput = document.getElementById('searchInput').value;
-
-                document.getElementById('search-btn').click();
-            }
-        }
-
-        function openForm(bisbn, currentURL) {
-            $.ajax({
-                type: 'GET',
-                url: '../admin/ebookdetail.php',
-                data: {
-                    isbn: bisbn,
-                    cURL: currentURL
-                },
-                success: function(response) {
-                    $('#edit-book-container').html(response);
-                    document.getElementById("edit-book-container").style.display = "block";
-                    document.getElementById("overlay-bg").style.display = "block";
-                },
-                error: function() {
-                    alert('Failed to load user details.');
-                }
-            });
-        }
-
-        function closeForm() {
-            document.getElementById("edit-book-container").style.display = "none";
-            document.getElementById("overlay-bg").style.display = "none";
-        }
     </script>
 </body>
 

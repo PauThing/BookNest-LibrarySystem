@@ -358,7 +358,7 @@ body {
 .tabs {
     display: flex;
     justify-content: center;
-    width: 90%;
+    width: 85%;
     margin: 0 auto;
     padding-top: 1em;
 }
@@ -405,9 +405,8 @@ body {
     border: none;
 }
 
-.search-box .searchInput,
-.search-box .searchInput2 {
-    width: 88%;
+.search-box .searchInput {
+    width: 80%;
     padding: 1em;
     border: none;
     border-radius: 2.5em;
@@ -425,8 +424,9 @@ body {
 
 /* catalog list */
 .catalog-container {
-    width: 90%;
+    width: 80%;
     margin: 1em auto;
+    padding: 1em;
     border: none;
     background-color: white;
 }
@@ -435,14 +435,13 @@ body {
     display: flex;
     width: 100%;
     margin: auto;
-    padding: 0.5em 0;
 }
 
 .catalog-container .book .book-detail {
     display: flex;
     width: 100%;
     border-bottom: 0.1em solid #d2d2d2;
-    padding: 0.6em;
+    padding: 1em;
     cursor: pointer;
 }
 
@@ -458,38 +457,47 @@ body {
 }
 
 .catalog-container .detail {
-    flex: 2.3;
+    flex: 2.2;
     font-size: 0.8em;
     margin: auto 0;
 }
 
-.catalog-container .book .publiyear,
 .catalog-container .book .location {
     color: #585858;
 }
 
 .catalog-container .book .del-action,
-.catalog-container .book .edit-action {
-    flex: 0.1;
+.catalog-container .book .edit-action,
+.catalog-container .book .fav-action {
+    flex: 0.15;
     margin: auto;
     padding: 4em 0 ;
     width: 100%;
     text-align: center;
-    transition: ease-in-out 0.2s;
 }
 
 .catalog-container .del-action .del,
-.catalog-container .edit-action .edit {
-    padding: 0 0.8em;
+.catalog-container .edit-action i {
     color: var(--dark-color);
 }
 
 .catalog-container .edit-action:hover {
     background-color: #92ff90;
+    transition: ease-in-out 0.2s;
 }
 
 .catalog-container .del-action:hover {
     background-color: #ff9292;
+    transition: ease-in-out 0.2s;
+}
+
+.catalog-container .fav-action i {
+    color: #f9c152;
+}
+
+.catalog-container .fav-action i:hover {
+    color: var(--dark-color);
+    transition: ease-in-out 0.2s;
 }
 
 /* pagination */
@@ -541,6 +549,194 @@ body {
     color: #fff;
 }
 
+/* book details */
+.book-detail-container {
+    width: 70%;
+    margin: 1em auto;
+    padding: 0.6em;
+    border: none;
+    background-color: white;
+}
+
+.book-detail-container .book {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    padding: 0.8em;
+}
+
+.book-detail-container .book .book-detail {
+    display: flex;
+    width: 100%;
+    padding: 1em;
+    cursor: pointer;
+}
+
+.book-detail-container .coverimage {
+    flex: 0.6;
+    margin: auto;
+    padding: 0 0.5em;
+}
+
+.book-detail-container .coverimage .cover-img {
+    width: 10em;
+    height: 15em;
+}
+
+.book-detail-container .detail {
+    flex: 1.6;
+    margin: auto;
+    padding: 0 1em;
+    font-size: 0.9em;
+}
+
+.book-detail-container .detail h3{
+    text-align: left;
+}
+
+.book-detail-container .book .author,
+.book-detail-container .book .publication {
+    color: #0f4685;
+}
+
+.book-detail-container .book .publiyear,
+.book-detail-container .book .location,
+.book-detail-container .book .status {
+    color: #585858;
+}
+
+.book-detail-container .book .borrow-action {
+    flex: 0.3;
+    margin: auto;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.book-detail-container .borrow-action a {
+    width: 80%;
+    padding: 9em 1em;
+    border-radius: 0.3em;
+    background-color: var(--button-color);
+    color: var(--dark-color);
+}
+
+.book-detail-container .borrow-action a:hover {
+    background-color: var(--button-hover-color);
+    transition: ease-in-out 0.2s;
+}
+
+/* book borrow information */
+.book-borrow-container {
+    display: none;
+    position: absolute;
+    top: 15em;
+    margin-left: 26em;
+    width: 50%;
+    animation: fade-in 0.5s;
+    overflow-y: auto;
+    border: none;
+}
+
+.book-borrow-form {
+    width: 90%;
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    margin-bottom: 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+}
+
+.book-borrow-container .book {
+    width: 100%;
+    margin: auto;
+    padding: 0.8em;
+}
+
+.book-borrow-container .book .book-detail {
+    display: flex;
+    width: 100%;
+    padding: 1em;
+}
+
+.book-borrow-container .coverimage {
+    flex: 0.4;
+    margin: auto;
+    padding: 0 0.5em;
+}
+
+.book-borrow-container .coverimage .cover-img {
+    width: 8em;
+    height: 12em;
+}
+
+.book-borrow-container .detail {
+    flex: 1.5;
+    margin: auto;
+    padding: 0 1em;
+}
+
+.book-borrow-container h3 {
+    text-align: left;
+}
+
+.book-borrow-container .detail label {
+    text-align: left;
+    color: #0b2e55;
+    font-size: 0.8em;
+}
+
+.book-borrow-container .detail input {
+    margin: 0.2em 0;
+    border: none;
+    background-color: transparent;
+    color: #232d38;
+    font-size: 0.9em;
+}
+
+.book-borrow-container .book .borrow-action {
+    padding-top: 1em;
+    text-align: center;
+}
+
+.book-borrow-container .borrow-action .brwconfirm {
+    width: 8em;
+    padding: 0.5em 0;
+    text-align: center;
+    border: none;
+    border-radius: 0.3em;
+    background-color: var(--button-color);
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.book-borrow-container .borrow-action .brwconfirm:hover {
+    box-shadow: inset -4em 0 0 0 var(--button-hover-color), inset 4em 0 0 0 var(--button-hover-color);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.cancel {
+    float: right;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
 /* button */
 .new-book-btn,
 .edit-book-btn {
@@ -557,9 +753,9 @@ body {
     background-color: var(--button-color);
     color: #0f0c30;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.9em;
     font-weight: bold;
-    padding: 0.5rem 0;
+    padding: 0.5em 0;
     cursor: pointer;
     text-transform: uppercase;
     -webkit-transition: all 0.2s;

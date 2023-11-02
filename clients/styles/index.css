@@ -233,8 +233,46 @@ body {
 /* monthly report */
 .monthr-container {
     width: 80%;
-    margin: auto auto;
-    padding: 2em;
+    margin: 3em auto;
+    padding: 3em;
     background-color: white;
     border: none;
+}
+
+.monthr-container .wrap {
+    width: 100%;
+    background-color: #3e3e3e;
+}
+
+.monthr-container .wrap #bookChart,
+.monthr-container .wrap #catChart,
+.monthr-container .wrap #resChart {
+    margin: auto;
+    padding: 2em;
+}
+
+.monthr-container .wrap .selectInput {
+    padding: 0.6em;
+    background-color: #666666;
+}
+
+.monthr-container .wrap .selectInput label {
+    margin-right: 1em ;
+    font-size: 0.9em;
+    color: white;
+    pointer-events: none;
+}
+
+.monthr-container .wrap .selectInput #yearR,
+.monthr-container .wrap .selectInput #yearC,
+.monthr-container .wrap .selectInput #yearB,
+.monthr-container .wrap .selectInput #monthC,
+.monthr-container .wrap .selectInput #monthB {
+    width: 15%;
+    border: none;
+    border-radius: 0.2em;
+    outline: none;
+    padding: 0.3em;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8em;
 }

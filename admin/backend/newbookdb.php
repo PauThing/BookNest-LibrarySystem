@@ -9,6 +9,7 @@ if (isset($_POST["new-book"])) {
 	$publication = $_POST['publication'];
 	$pyear = $_POST['pyear'];
 	$bcategory = $_POST['bcat'];
+	$blocation = "BookNest Library, Rak " . $_POST['blocation'];
 	$bamount = $_POST['bamount'];
 
 	if (!empty($_FILES['file-upload-field']['tmp_name']) && $_FILES['file-upload-field']['error'] === UPLOAD_ERR_OK) {
@@ -35,24 +36,22 @@ if (isset($_POST["new-book"])) {
 	date_default_timezone_set('Asia/Kuala_Lumpur');
 	$create = date('Y-m-d H:i:s');
 
-	$blocation = "BookNest Library";
-
 	$query = "SELECT * FROM [book] WHERE [ISBN] = ?";
 	$array = [$bisbn];
 	$statement = sqlsrv_query($conn, $query, $array);
 
 	if (sqlsrv_has_rows($statement)) {
 		$_SESSION['message'] = "The book already exists!";
-		header("location: ../../clients/signup.php");
+		header("location: ../../admin/addbook.php");
 	} else {
-		if (!preg_match("/^[a-zA-Z0-9\s\-,:&]+$/", $btitle)) {
+		if (!preg_match("/^[a-zA-Z0-9\s\-,.:'+#&]+$/", $btitle)) {
 			$_SESSION['message'] = "The book title can only contain letters, numbers, comma, dash, & symbol and white space.";
 			header("location: ../../admin/addbook.php?st=error");
-		} else if (!preg_match("/^[a-zA-Z\s,.]+$/", $bauthor)) {
+		} else if (!preg_match("/^[a-zA-Z\s,.']+$/", trim($bauthor))) {
 			$_SESSION['message'] = "The author can only contain letters, comma, dot and white space.";
 			header("location: ../../admin/addbook.php?st=error");
-		} else if (!preg_match("/^[a-zA-Z\s,.:]+$/", $publication)) {
-			$_SESSION['message'] = "The author can only contain letters, comma, dot and white space.";
+		} else if (!preg_match("/^[a-zA-Z\s\-,.:'&]+$/", $publication)) {
+			$_SESSION['message'] = "The publication can only contain letters, comma, dot and white space.";
 			header("location: ../../admin/addbook.php?st=error");
 		} else {
 			//transaction - a sequence of one or more SQL statements that are executed as a single unit of work
