@@ -11,6 +11,6 @@
 		setcookie('password', '', time() - 3600);
 	}
 
-	//redirect to index page with a JavaScript alert
+	//redirect to index page with an alert
 	echo '<script>alert("You have signed out."); window.location.href="../../clients/index.php";</script>';
 ?>
