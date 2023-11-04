@@ -66,78 +66,6 @@ function calLateFees($conn)
     }
 }
 
-function emailLate($conn, $mail)
-{
-    date_default_timezone_set('Asia/Kuala_Lumpur');
-    $currDate = date('Y-m-d');
-
-    $status = "On Loan";
-
-    // Query the database to get books that are overdue
-    $query = "SELECT * FROM [borrowinghistory] WHERE [status] = ?";
-    $array = [$status];
-    $statement = sqlsrv_query($conn, $query, $array);
-
-    if ($statement === false) {
-        die(print_r(sqlsrv_errors(), true));
-    }
-
-    while ($row = sqlsrv_fetch_array($statement)) {
-        $bisbn = $row['ISBN'];
-        $userid = $row['user_id'];
-
-        $dueDate = $row['due_at'];
-        $due = $dueDate->format('Y-m-d');
-
-        //calculate the difference in days between the due date and the current date
-        $dueD = date_create($due);
-        $currD = date_create($currDate);
-        $daysUntilDue = date_diff($currD, $dueD)->format('%R%a');
-
-        if ($daysUntilDue < 0) {
-            $query2 = "SELECT
-					bh.*,
-					b.*,
-					u.*
-				FROM [borrowinghistory] bh
-				LEFT JOIN [book] b ON bh.[ISBN] = b.[ISBN]
-				LEFT JOIN [user] u ON bh.[user_id] = u.[user_id]
-				WHERE bh.[ISBN] = '$bisbn' AND bh.[user_id] = '$userid'";
-            $statement2 = sqlsrv_query($conn, $query2);
-            $row2 = sqlsrv_fetch_array($statement2);
-
-            $fullname = $row2['fullname'];
-            $email = $row2['user_email'];
-            $booktitle = $row2['book_title'];
-
-            //sender and recipient
-            $mail->setFrom('booknest.online@gmail.com', 'BookNest Library');
-            $mail->addAddress($email);
-
-            //content
-            $mail->isHTML(true);
-            $mail->Subject = 'Book is OVERDUE';
-            $mail->Body = "<span>Hello <b>" . $fullname . "</b>, </span>
-				<br /><br />
-				<span>Just a reminder, the book below is overdue.</span><br />
-				<label>ISBN: <b>" . $bisbn . "</b></label><br />
-				<label>Book: <b>" . $booktitle . "</b></label><br />
-				<label>Due Date: <b>" . $due . "</b></label>
-				<br /><br />
-				<span>Please return your book as soon as possible. Thank you.</span>
-				<br /><br />
-				<span>Regards,</span><br />
-				<span><i>BookNest Library</i></span>";
-
-            //send email
-            $mail->send();
-        } else {
-            die(print_r(sqlsrv_errors(), true));
-            $_SESSION['message'] = "Failed to send this email.";
-        }
-    }
-}
-
 if (isset($_POST['signin'])) {
     $userid = $_POST['uID'];
     $password = $_POST['password'];
@@ -169,7 +97,6 @@ if (isset($_POST['signin'])) {
                         $_SESSION['loggedin'] = true;
 
                         calLateFees($conn);
-                        emailLate($conn, $mail);
 
                         header('location: ../../admin/index.php');
                         break;
@@ -180,7 +107,6 @@ if (isset($_POST['signin'])) {
                         $_SESSION['loggedin'] = true;
 
                         calLateFees($conn);
-                        emailLate($conn, $mail);
 
                         header('location: ../../admin/index.php');
                         break;
