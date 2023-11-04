@@ -422,11 +422,59 @@ body {
     color: var(--button-hover-color);
 }
 
+/* recommendation */
+.recommendation-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: 0 auto;
+    border: none;
+    background-color: #125271;
+    color: white;
+}
+
+.recommendation-container h5 {
+    padding: 0 1em;
+}
+
+.recommendation-container .books-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.recommendation-container .book {
+    justify-items: space-between;
+    width: 20%;
+}
+
+.recommendation-container .book .book-detail {
+    text-align: center;
+    padding: 0.8em;
+    cursor: pointer;
+}
+
+.recommendation-container .book .book-detail:hover {
+    background-color: #2371987a;
+}
+
+.recommendation-container .cover-img {
+    width: 5.5em;
+    height: 7.5em;
+}
+
+.recommendation-container .detail p {
+    font-size: 0.8em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 /* catalog list */
 .catalog-container {
-    width: 80%;
-    margin: 1em auto;
-    padding: 1em;
+    width: 85%;
+    margin: 0 auto;
     border: none;
     background-color: white;
 }

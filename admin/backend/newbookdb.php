@@ -65,7 +65,7 @@ if (isset($_POST["new-book"])) {
 			$query2 = "INSERT INTO [bookcatalog] ([ISBN], [book_location], [total_qty], [available_qty], [updated_at]) VALUES (?, ?, ?, ?, ?)";
 			$array2 = [$bisbn, $blocation, $bamount, $bamount, $create];
 			$statement2 = sqlsrv_query($conn, $query2, $array2);
-			
+
 			//check if the statement executed successfully
 			if ($statement && $statement2) {
 				sqlsrv_commit($conn);

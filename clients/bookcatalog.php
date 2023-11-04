@@ -67,6 +67,11 @@ include('../clients/navbar.php');
                 <button id="bcategory" class="bcategory" onclick="updateCategory('History and Geography')">History and Geography</button>
                 <button id="bcategory" class="bcategory" onclick="updateCategory('Business and Economics')">Business and Economics</button>
             </div>
+            <div id="recommendation-container" class="recommendation-container">
+                <h5>You May Interested: </h5>
+
+                <div class="books-row"></div>
+            </div>
 
             <div class="tab-content">
                 <div class="catalog-container">
@@ -408,6 +413,100 @@ include('../clients/navbar.php');
 
                 document.getElementById('search-btn').click();
             }
+        }
+
+        $(document).ready(function() {
+            fetchRecommendations();
+        });
+
+        function fetchRecommendations() {
+            $.getJSON('../recommendations.json', function(data) {
+                displayRecommendations(data);
+            }).fail(function(jqxhr, textStatus, error) {
+                console.error("Error fetching recommendations: " + error);
+            });
+        }
+
+        async function displayRecommendations(recommendations) {
+            var recommendationContainer = document.getElementById("recommendation-container");
+
+            for (var userId in recommendations) {
+                var books = recommendations[userId];
+
+                var sortedBooks = Object.entries(books).sort((a, b) => b[1] - a[1]);
+                var topFiveBooks = sortedBooks.slice(0, 5);
+
+                for (var [isbn] of topFiveBooks) {
+                    (function(userId, bookIsbn) {
+                        getBookData(userId, bookIsbn)
+                            .then(function(bookData) {
+                                if (bookData && !bookData.error) {
+                                    var bookTitle = bookData.book_title;
+                                    var coverImage = bookData.cover_img;
+
+                                    var bookDiv = document.createElement("div");
+                                    bookDiv.classList.add("book");
+
+                                    var bookDetailDiv = document.createElement("div");
+                                    bookDetailDiv.classList.add("book-detail");
+                                    bookDetailDiv.onclick = function() {
+                                        openDetail(bookIsbn);
+                                    };
+
+                                    var coverImageElement = document.createElement("img");
+                                    coverImageElement.classList.add("cover-img");
+                                    if (coverImage) {
+                                        coverImageElement.src = "data:image/jpeg;base64," + coverImage;
+                                    } else {
+                                        coverImageElement.src = "../clients/assets/cover_unavailable.png";
+                                    }
+
+                                    var detailElement = document.createElement("div");
+                                    detailElement.classList.add("detail");
+                                    detailElement.innerHTML = "<p>" + bookTitle + "</p>";
+
+                                    bookDetailDiv.appendChild(coverImageElement);
+                                    bookDetailDiv.appendChild(detailElement);
+                                    bookDiv.appendChild(bookDetailDiv);
+                                    recommendationContainer.appendChild(bookDiv);
+                                } else {
+                                    console.error("Error fetching book data for ISBN: " + bookIsbn);
+                                }
+                            })
+                            .catch(function(error) {
+                                console.error("Error fetching book data: " + error);
+                            });
+                    })(userId, isbn);
+                }
+            }
+        }
+
+        function getBookData(userId, bookIsbn) {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    type: "GET",
+                    url: "../clients/backend/getbookdata.php",
+                    data: {
+                        userid: userId,
+                        isbn: bookIsbn
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        console.log("Book data retrieved successfully:", data);
+
+                        if (data.error) {
+                            console.error("Error fetching book data:", data.error);
+                            reject(data.error);
+                        } else {
+                            resolve(data);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error fetching book data.", errorThrown);
+                        reject(errorThrown);
+                    }
+                });
+            });
         }
     </script>
 </body>

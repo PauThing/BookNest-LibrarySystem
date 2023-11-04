@@ -63,7 +63,7 @@ include('../clients/navbar.php');
                         FROM [borrowinghistory] bh
                         LEFT JOIN [bookcatalog] bc ON bh.[catalog_id] = bc.[catalog_id]
                         LEFT JOIN [book] b ON bh.[ISBN] = b.[ISBN]
-                        WHERE bh.[borrow_at] = '$beforeCurrD' OR bh.[borrow_at] = '$currD'
+                        WHERE bh.[status] = 'On Loan' AND (bh.[borrow_at] = '$beforeCurrD' OR bh.[borrow_at] = '$currD')
                         ORDER BY [due_at] ASC";
 
                     $statement = sqlsrv_query($conn, $query);
