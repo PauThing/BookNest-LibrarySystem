@@ -276,7 +276,7 @@ include('../clients/navbar.php');
 
         //get current month and year
         const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed in JavaScript
+        const currentMonth = currentDate.getMonth() + 1; //months are 0-indexed in JavaScript
 
         //set default selected value
         monthC.value = currentMonth;

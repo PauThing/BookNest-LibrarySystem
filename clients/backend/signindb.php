@@ -98,6 +98,9 @@ if (isset($_POST['signin'])) {
 
                         calLateFees($conn);
 
+                        $pythonScript = '../../python/recommendation.py';
+                        shell_exec("python $pythonScript");
+
                         header('location: ../../admin/index.php');
                         break;
 
@@ -107,6 +110,9 @@ if (isset($_POST['signin'])) {
                         $_SESSION['loggedin'] = true;
 
                         calLateFees($conn);
+                        
+                        $pythonScript = '../../python/recommendation.py';
+                        shell_exec("python $pythonScript");
 
                         header('location: ../../admin/index.php');
                         break;

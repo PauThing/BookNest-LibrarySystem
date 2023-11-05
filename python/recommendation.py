@@ -1,3 +1,4 @@
+import os
 import json
 import pyodbc
 import pandas as pd
@@ -87,5 +88,11 @@ for user_id, recommendations in recommendations_dict.items():
 #convert the recommendation data to JSON format
 # recommendations_json = json.dumps(recommendations_dict)
 
-with open('recommendations.json', 'w') as json_file:
+#define the correct path
+root_directory = 'D:/Personal/FYP-LibrarySystem'
+
+#construct the correct path with the JSON file
+json_file_path = os.path.join(root_directory, 'recommendations.json')
+
+with open(json_file_path, 'w') as json_file:
     json.dump(recommendations_dict, json_file)
