@@ -67,7 +67,7 @@ include('../clients/navbar.php');
                 <button id="bcategory" class="bcategory" onclick="updateCategory('History and Geography')">History and Geography</button>
                 <button id="bcategory" class="bcategory" onclick="updateCategory('Business and Economics')">Business and Economics</button>
             </div>
-            <div id="recommendation-container" class="recommendation-container">
+            <div id="recommendation-container" class="recommendation-container" style="visibility: hidden;">
                 <h5>You May Interested: </h5>
 
                 <div class="books-row"></div>
@@ -472,6 +472,7 @@ include('../clients/navbar.php');
                                 } else {
                                     console.error("Error fetching book data for ISBN: " + bookIsbn);
                                 }
+                                document.getElementById("recommendation-container").style.visibility = "visible";
                             })
                             .catch(function(error) {
                                 console.error("Error fetching book data: " + error);
