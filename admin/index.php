@@ -306,21 +306,46 @@ include('../clients/navbar.php');
                 var xValues = data.map(item => item.book_title);
                 var yValues = data.map(item => item.borrowrecords);
 
+                //define the period for the moving average
+                const movingAveragePeriod = 3;
+
+                //calculate the moving average
+                const movingAverages = calculateMovingAverage(yValues, movingAveragePeriod);
+
                 new Chart("bookChart", {
                     type: "bar",
                     data: {
                         labels: xValues,
                         datasets: [{
-                            backgroundColor: "#FFECA2",
-                            borderColor: "#FFB700",
-                            borderWidth: 1,
-                            data: yValues
-                        }]
+                                //backgroundColor: "#FFECA2",
+                                backgroundColor(c){
+                                    const value = c.raw;
+                                    let alpha = (10 + value) / 40;
+                                    if (alpha > 1) {
+                                        alpha = 1;
+                                    };
+                                    return `rgba(255, 236, 162, ${alpha})`;
+                                },
+                                borderColor: "#FFB700",
+                                borderWidth: 1,
+                                data: yValues
+                            },
+                            {
+                                label: `Average Number (${movingAveragePeriod} Months)`,
+                                fill: false,
+                                borderColor: "#00A7E1",
+                                borderWidth: 2,
+                                data: movingAverages,
+                                type: 'line'
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
                         scales: {
-                            y: {
+                            line: {
+                                type: 'linear',
+                                position: 'left',
                                 grid: {
                                     color: "#737373"
                                 },
@@ -329,6 +354,11 @@ include('../clients/navbar.php');
                                     font: {
                                         size: 13
                                     }
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    display: false
                                 }
                             },
                             x: {
@@ -357,6 +387,23 @@ include('../clients/navbar.php');
                     }
                 });
             });
+    }
+
+    //function to calculate moving average
+    function calculateMovingAverage(data, period) {
+        const movingAverages = [];
+
+        for (let i = 0; i < data.length; i++) {
+            if (i < period - 1) {
+                //not enough data points for the initial period
+                movingAverages.push(null);
+            } else {
+                const average = data.slice(i - period + 1, i + 1).reduce((sum, value) => sum + value, 0) / period;
+                movingAverages.push(average);
+            }
+        }
+
+        return movingAverages;
     }
 
     yearB.addEventListener("change", () => {
