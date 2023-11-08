@@ -108,8 +108,19 @@
 
             //send email
             $mail->send();
-            $_SESSION['message'] = "Rejected the user. An email will be sending out as notification to the user.";
-            header("location: ../../admin/userlist.php");
+
+            $query2 = "DELETE FROM [user] WHERE [user_id] = ?";
+		    $array2 = [$userid];
+		    $statement2 = sqlsrv_query($conn, $query2, $array2);
+
+            if ($statement2) {
+                $_SESSION['message'] = "Rejected the user. An email will be sending out as notification to the user.";
+                header("location: ../../admin/userlist.php");
+            } else {
+                //die(print_r(sqlsrv_errors(), true));
+                $_SESSION['message'] = "Failed to reject the user.";
+                header("location: ../../admin/userlist.php?st=error");
+            }
         } else {
             //die(print_r(sqlsrv_errors(), true));
             $_SESSION['message'] = "Failed to reject the user.";
