@@ -539,10 +539,6 @@ body {
     transition: ease-in-out 0.2s;
 }
 
-.catalog-container .fav-action i {
-    color: #c6c6c6d1;
-}
-
 .catalog-container .fav-action i:hover {
     color: var(--dark-color);
     transition: ease-in-out 0.2s;
