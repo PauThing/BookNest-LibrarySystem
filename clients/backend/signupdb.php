@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	include('../../clients/connect.php');
 
 	if (isset($_POST["signup"])) {

@@ -342,7 +342,7 @@ include('../clients/navbar.php');
 
                                         if (sqlsrv_has_rows($statement6)) {
                                         ?>
-                                            <i class="fa fa-star" style="color: #c6c6c6d1;"></i>
+                                            <i class="fa fa-star" style="color: #f9c152;"></i>
                                         <?php } else { ?>
                                             <i class="fa fa-star"></i>
                                         <?php } ?>
