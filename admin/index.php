@@ -317,7 +317,6 @@ include('../clients/navbar.php');
                     data: {
                         labels: xValues,
                         datasets: [{
-                                //backgroundColor: "#FFECA2",
                                 backgroundColor(c){
                                     const value = c.raw;
                                     let alpha = (10 + value) / 40;
@@ -328,6 +327,7 @@ include('../clients/navbar.php');
                                 },
                                 borderColor: "#FFB700",
                                 borderWidth: 1,
+                                maxBarThickness: 60,
                                 data: yValues
                             },
                             {
@@ -350,6 +350,7 @@ include('../clients/navbar.php');
                                     color: "#737373"
                                 },
                                 ticks: {
+                                    stepSize: 1,
                                     color: "white",
                                     font: {
                                         size: 13

@@ -88,6 +88,10 @@ if (isset($_POST['signin'])) {
                         $_SESSION['userid'] = $row['user_id'];
                         $_SESSION['usertype'] = $usertype;
                         $_SESSION['loggedin'] = true;
+
+                        $pythonScript = '../../python/recommendation.py';
+                        shell_exec("python $pythonScript");
+                        
                         header('location: ../index.php');
                         break;
 

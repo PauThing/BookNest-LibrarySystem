@@ -346,6 +346,7 @@ include('../clients/navbar.php');
                                         color: "#737373"
                                     },
                                     ticks: {
+                                        stepSize: 1,
                                         color: 'white',
                                         font: {
                                             size: 13
@@ -470,6 +471,7 @@ include('../clients/navbar.php');
                                 backgroundColor: "#FFECA2",
                                 borderColor: "#FFB700",
                                 borderWidth: 1,
+                                maxBarThickness: 60,
                                 data: yValues
                             }]
                         },
@@ -481,6 +483,7 @@ include('../clients/navbar.php');
                                         color: "#737373"
                                     },
                                     ticks: {
+                                        stepSize: 1,
                                         color: "white",
                                         font: {
                                             size: 13
