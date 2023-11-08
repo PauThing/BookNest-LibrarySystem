@@ -33,12 +33,6 @@ interaction_matrix = pd.pivot_table(df, values=None, index='user_id', columns='I
 #replace NaN (no interactions) with 0
 interaction_matrix.fillna(0, inplace=True)
 
-#calculate book similarities using cosine similarity
-book_similarity = cosine_similarity(interaction_matrix.T)
-
-#create a DataFrame to store item similarities
-book_similarity_df = pd.DataFrame(book_similarity, index=interaction_matrix.columns, columns=interaction_matrix.columns)
-
 #calculate User Similarity Matrix based on user interactions
 user_similarity_matrix = cosine_similarity(interaction_matrix)
 
@@ -84,9 +78,6 @@ for target_user_id in unique_user_ids:
 #convert Series to dictionary
 for user_id, recommendations in recommendations_dict.items():
     recommendations_dict[user_id] = recommendations.to_dict()
-
-#convert the recommendation data to JSON format
-# recommendations_json = json.dumps(recommendations_dict)
 
 #define the correct path
 root_directory = 'D:/Personal/FYP-LibrarySystem'

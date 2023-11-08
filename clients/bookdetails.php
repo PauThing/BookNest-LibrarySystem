@@ -114,21 +114,22 @@ include('../clients/navbar.php');
 
                                 <label id="status" class="status">Status:
                                     <?php if ($row['available_qty'] > 0) {
-                                        echo "Available";
+                                        echo "<b><span style='color: green;'>Available</span></b>";
                                     } else {
-                                        echo "Unavailable";
+                                        echo "<b><span style='color: red;'>Unavailable</span></b>";
                                     } ?>
                                 </label>
                             </div>
 
-                            <div class="borrow-action">
-                                <?php if ($row['available_qty'] > 0) { ?>
+                            <?php if ($row['available_qty'] > 0) { ?>
+                                <div class="borrow-available">
                                     <a href="javascript:void(0);" onclick="openForm('<?php echo $isbn; ?>', '<?php echo $currentURL; ?>')">Borrow</a>
-                                <?php } else { ?>
+                                </div>
+                            <?php } else { ?>
+                                <div class="borrow-unavailable">
                                     <a disabled>Borrow</a>
-                                <?php } ?>
-                            </div>
-                    <?php
+                                </div>
+                    <?php }
                         }
                     } ?>
                 </div>

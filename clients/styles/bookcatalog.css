@@ -653,22 +653,33 @@ body {
     color: #585858;
 }
 
-.book-detail-container .book .borrow-action {
+.book-detail-container .book .borrow-available,
+.book-detail-container .book .borrow-unavailable {
     flex: 0.3;
     margin: auto;
     text-align: center;
     font-size: 0.9em;
 }
 
-.book-detail-container .borrow-action a {
+.book-detail-container .borrow-available a {
     width: 80%;
     padding: 9em 1em;
     border-radius: 0.3em;
+    font-weight: bold;
     background-color: var(--button-color);
     color: var(--dark-color);
 }
 
-.book-detail-container .borrow-action a:hover {
+.book-detail-container .borrow-unavailable a {
+    width: 80%;
+    padding: 9em 1em;
+    border-radius: 0.3em;
+    font-weight: bold;
+    background-color: #adadad;
+    color: var(--dark-color);
+}
+
+.book-detail-container .borrow-available a:hover {
     background-color: var(--button-hover-color);
     transition: ease-in-out 0.2s;
 }
