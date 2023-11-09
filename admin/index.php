@@ -189,6 +189,7 @@ include('../clients/navbar.php');
                                     color: "#737373"
                                 },
                                 ticks: {
+                                    stepSize: 1,
                                     color: 'white',
                                     font: {
                                         size: 13
@@ -389,22 +390,22 @@ include('../clients/navbar.php');
             });
     }
 
-    //function to calculate moving average
-    function calculateMovingAverage(data, period) {
-        const movingAverages = [];
+        //function to calculate moving average
+        function calculateMovingAverage(data, period) {
+            const movingAverages = [];
 
-        for (let i = 0; i < data.length; i++) {
-            if (i < period - 1) {
-                //not enough data points for the initial period
-                movingAverages.push(null);
-            } else {
-                const average = data.slice(i - period + 1, i + 1).reduce((sum, value) => sum + value, 0) / period;
-                movingAverages.push(average);
+            for (let i = 0; i < data.length; i++) {
+                if (i < period - 1) {
+                    //not enough data points for the initial period
+                    movingAverages.push(null);
+                } else {
+                    const average = data.slice(i - period + 1, i + 1).reduce((sum, value) => sum + value, 0) / period;
+                    movingAverages.push(average);
+                }
             }
-        }
 
-        return movingAverages;
-    }
+            return movingAverages;
+        }
 
     yearB.addEventListener("change", () => {
         const selectedYear = yearB.value;

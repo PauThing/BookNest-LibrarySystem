@@ -371,7 +371,7 @@ include('../clients/navbar.php');
                                 },
                                 title: {
                                     display: true,
-                                    text: "Reservation Analysis " + selectedYear,
+                                    text: "Discussion Room Reservation Analysis " + selectedYear,
                                     color: "white",
                                     font: {
                                         size: 18,

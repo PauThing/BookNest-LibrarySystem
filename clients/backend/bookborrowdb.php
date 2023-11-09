@@ -127,6 +127,9 @@
 				//send email
 				$mail->send();
 
+				$pythonScript = '../../python/recommendation.py';
+                shell_exec("python $pythonScript");
+
 				header("location: ". $url . $separator . "st=success");
 			} else {
 				die(print_r(sqlsrv_errors(), true));
