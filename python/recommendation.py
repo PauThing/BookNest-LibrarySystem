@@ -2,11 +2,6 @@ import os
 import json
 import pyodbc
 import pandas as pd
-import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.metrics import pairwise_distances
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics.pairwise import cosine_similarity
 
 #connect to your SQL Server database

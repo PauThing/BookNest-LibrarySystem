@@ -110,7 +110,7 @@
 
 				header("location: ". $url . $separator . "st=success");
 			} else {
-				die(print_r(sqlsrv_errors(), true));
+				//die(print_r(sqlsrv_errors(), true));
 				$_SESSION['message'] = "Failed to renew this book.";
 				header("location: ". $url . $separator . "st=error");
 			}

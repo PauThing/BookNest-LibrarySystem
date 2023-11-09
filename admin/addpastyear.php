@@ -56,7 +56,7 @@ include('../clients/navbar.php');
                     </div>
 
                     <div class="InputFile">
-                        <label for="file-upload-field">Folder Upload</label>
+                        <label for="file-upload-field">Files Upload</label>
                         <br />
                         <div class="file-upload-wrapper" data-text="Select multiple PDF files">
                             <input type="file" name="file-upload-field[]" id="file-upload-field" class="file-upload-field" accept=".pdf" multiple required onchange="updateDataText(this)">
