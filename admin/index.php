@@ -120,7 +120,7 @@ include('../clients/navbar.php');
 
     //get current month and year
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed in JavaScript
+    const currentMonth = currentDate.getMonth() + 1;
 
     //set default selected value
     monthC.value = currentMonth;
@@ -167,8 +167,7 @@ include('../clients/navbar.php');
 
                 //update the data array based on the fetched data
                 data.forEach(item => {
-                    //assuming your data has a "month" field (1-12) and a "reserverecords" field
-                    const monthIndex = item.month - 1; //months are 0-indexed in JavaScript
+                    const monthIndex = item.month - 1;
                     monthData[monthIndex] = item.reserverecords;
                 });
 
@@ -214,7 +213,7 @@ include('../clients/navbar.php');
                             },
                             title: {
                                 display: true,
-                                text: "Reservation Analysis " + selectedYear,
+                                text: "Discussion Room Reservation Analysis " + selectedYear,
                                 color: "white",
                                 font: {
                                     size: 18,
