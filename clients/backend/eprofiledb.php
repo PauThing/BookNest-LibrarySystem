@@ -25,7 +25,8 @@
             }
 
             //update the data in database
-            $query = "UPDATE [user] SET [fullname] = ?, [user_email] = ?, [profile_img] = CONVERT(varbinary(max), ?), [registered_at] = ?, [updated_at] = ? WHERE [user_id] = '$userid'";
+            $query = "UPDATE [user] SET [fullname] = ?, [user_email] = ?, [profile_img] = CONVERT(varbinary(max), ?), [registered_at] = ?, [updated_at] = ? 
+            WHERE [user_id] = '$userid'";
             $array = [$fullname, $email, $pimgBinary, $register, $update];
             $statement = sqlsrv_query($conn, $query, $array);
 

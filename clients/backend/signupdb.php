@@ -49,6 +49,9 @@
 			if (!preg_match("/^[a-zA-Z-' ]*$/", $fullname)) {
 				$_SESSION['message'] = "Your name can only contain letters and white space.";
 				header("location: ../../clients/signup.php?st=error");
+			} else if (!preg_match("/^[a-zA-Z0-9]*$/", $userid)) {
+				$_SESSION['message'] = "Your student ID can only contain letters and numbers.";
+				header("location: ../../clients/signup.php?st=error");
 			} else {
 				//insert the data into database
 				$query = "INSERT INTO [user] ([user_id], [fullname], [user_email], [user_password], [stu_img], [profile_img], [usertype], [acc_status], [registered_at], [updated_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), CONVERT(varbinary(max), ?), ?, ?, ?, ?)";

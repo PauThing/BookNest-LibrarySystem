@@ -38,7 +38,10 @@ if (isset($_POST["new-admin"])) {
 		$update = date('Y-m-d H:i:s');
 
 		if (!preg_match("/^[a-zA-Z-' ]*$/", $fullname)) {
-			$_SESSION['message'] = "Your name can only contain letters and white space.";
+			$_SESSION['message'] = "The name can only contain letters and white space.";
+			header("location: ../../admin/adminlist.php?st=error");
+		} else if (!preg_match("/^[a-zA-Z0-9]*$/", $adminid)) {
+			$_SESSION['message'] = "The admin ID can only contain letters and numbers.";
 			header("location: ../../admin/adminlist.php?st=error");
 		} else {
 			//insert the data into database

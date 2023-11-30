@@ -100,6 +100,9 @@
 			} else if (!preg_match("/^[A-Za-z0-9]+$/", $modulecode)) {
 				$_SESSION['message'] = "The module code can only contain letters and numbers.";
 				header("location: ../../admin/addstuproject.php?st=error");
+			} else if (!preg_match("/^[a-zA-Z-' ]*$/", $programme)) {
+				$_SESSION['message'] = "The programme can only contain letters.";
+				header("location: ../../admin/addstuproject.php?st=error");
 			} else {
 				//insert the data into database
 				$query2 = "INSERT INTO [studentproject] ([sp_id], [title], [filename], [filetype], [filedata], [programme], [created_at]) VALUES (?, ?, ?, ?, CONVERT(varbinary(max), ?), ?, ?)";
